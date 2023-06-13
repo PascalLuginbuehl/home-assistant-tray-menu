@@ -15,6 +15,7 @@ const config: ForgeConfig = {
   plugins: [
     new WebpackPlugin({
       mainConfig,
+      devContentSecurityPolicy: "connect-src 'self' http://192.168.1.10:8123 'unsafe-eval'",
       renderer: {
         config: rendererConfig,
         entryPoints: [
@@ -28,7 +29,7 @@ const config: ForgeConfig = {
           },
           {
             html: './src/panel/index.html',
-            js: './src/panel/renderer.ts',
+            js: './src/panel/renderer.tsx',
             name: 'panel_window',
             preload: {
               js: './src/panel/preload.ts',

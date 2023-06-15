@@ -2,11 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { initializeIcons } from '@fluentui/font-icons-mdl2';
-initializeIcons();
-
-import "./css/vars.scss"
-import "./css/panel.scss"
 
 const container = document.getElementById('app');
 
@@ -21,8 +16,4 @@ const queryClient = new QueryClient({
   },
 })
 
-root.render(<QueryClientProvider client={queryClient}><div id="root"><App /></div></QueryClientProvider>);
-
-window.electronAPI.registerHeightRequestCallback(() => {
-  window.electronAPI.sendHeight(window.document.getElementById("root").offsetHeight)
-})
+root.render(<QueryClientProvider client={queryClient}><App /></QueryClientProvider>);

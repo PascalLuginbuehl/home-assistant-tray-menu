@@ -1,8 +1,13 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { Suspense } from "react";
 
-function render() {
-  ReactDOM.render(<h2>Hello from React!</h2>, document.body);
+import { Entities } from "./entities";
+
+export function App() {
+  return (
+    <div>
+      <Suspense fallback="Loading...">
+        <Entities />
+      </Suspense>
+    </div>
+  )
 }
-
-render();

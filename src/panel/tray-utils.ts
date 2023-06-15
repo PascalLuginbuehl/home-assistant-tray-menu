@@ -12,6 +12,7 @@ export function createTray(app: Electron.App, window: BrowserWindow) {
   setTrayMenu(tray, app)
   tray.on("click", async () => {
     showPanel(window, true)
+    window.webContents.send('request-height')
     window.focus()
   })
 }

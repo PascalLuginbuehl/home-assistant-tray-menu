@@ -35,16 +35,29 @@
     "eslint-plugin-import": "^2.25.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "node-loader": "^2.0.0",
+    "sass": "^1.63.4",
+    "sass-loader": "^13.3.2",
     "style-loader": "^3.0.0",
     "ts-loader": "^9.2.2",
     "ts-node": "^10.0.0",
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fluentui/font-icons-mdl2": "^8.5.21",
+    "@fluentui/react-icons-mdl2": "^1.3.45",
+    "@fontsource/roboto": "^5.0.3",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.5",
+    "@mui/x-date-pickers": "^6.7.0",
     "@tanstack/react-query": "^4.29.12",
     "axios": "^1.4.0",
+    "clsx": "^1.2.1",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-hook-form-mui": "^6.2.0"
   }
 }

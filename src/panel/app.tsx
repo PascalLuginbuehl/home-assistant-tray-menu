@@ -4,17 +4,28 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React from 'react';
 
-function serviceAction(domain: string, service: string, serviceData: unknown) {
+function serviceAction(domain: string, service: string, serviceData: unknown, apiURL: string, token: string) {
   return axios.post(
-    `http://192.168.1.10:8123/api/services/${domain}/${service}`,
-     serviceData,
-     {
+    `${apiURL}/api/services/${domain}/${service}`,
+    serviceData,
+    {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ***REMOVED***"
+        Authorization: `Bearer ${token}`
       }
     }
   )
+}
+
+async function fetchStates(apiURL: string, token: string) {
+   const { data } = await axios.get<IState[]>(
+    `${apiURL}/api/states`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  )
+
+  return data
 }
 interface IState {
    "attributes": unknown
@@ -23,28 +34,6 @@ interface IState {
    "last_updated": string
    "state": string
 }
-
-const getStates = async (entity_ids: string[]) => {
-  const data = await Promise.all(entity_ids.map(id => getState(id)))
-
-  return data
-}
-
-
-const getState = async(entity_id: string) => {
-  const { data } = await axios.get<IState>(
-    `http://192.168.1.10:8123/api/states/${entity_id}`,
-     {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ***REMOVED***"
-      }
-    }
-  )
-
-  return data
-}
-
 
 const configuration = [{
     "label": "Bedroom Corner",
@@ -85,8 +74,9 @@ const configuration = [{
 export function App() {
   const { data, refetch } = useQuery({
     queryKey: ['states'],
-    queryFn: () => {
-      return getStates(configuration.map(e => e.action.serviceData.entity_id))
+    queryFn: async () => {
+      const states = await fetchStates()
+      states.filter(state => configuration.map(e => e.action.serviceData.entity_id).includes(state.entity_id))
     },
     suspense: true
  })

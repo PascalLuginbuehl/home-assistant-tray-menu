@@ -1,19 +1,20 @@
 import { BrowserWindow, Menu, Tray } from "electron"
 import path from "path"
-import { showPanel } from "./windowController"
+import PanelController from "./panel-controller"
 
 export function getTrayIconPath() {
   return path.join(__dirname, '../..', '/assets/redIcon@3x.png')
 }
 
-export function createTray(app: Electron.App, window: BrowserWindow) {
+
+export function createTray(app: Electron.App, panelWindow: BrowserWindow) {
   const tray = new Tray(getTrayIconPath())
   tray.setToolTip('Twinkle Tray')
   setTrayMenu(tray, app)
   tray.on("click", async () => {
-    showPanel(window, true)
-    window.webContents.send('request-height')
-    window.focus()
+    PanelController.showPanel(true)
+    panelWindow.webContents.send('request-height')
+    panelWindow.focus()
   })
 }
 

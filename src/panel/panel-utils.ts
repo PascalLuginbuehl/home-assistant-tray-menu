@@ -1,5 +1,5 @@
 import { BrowserWindow, screen } from 'electron'
-import { IPanelSize, ITaskbarPosition, TaskbarPositionsEnum } from './windowController';
+import { IPanelSize, ITaskbarPosition, TaskbarPositionsEnum } from './panel-controller';
 
 export function taskbarPosition(): ITaskbarPosition {
   const primaryDisplay = screen.getPrimaryDisplay()

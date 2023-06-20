@@ -45,9 +45,6 @@ const getState = async(entity_id: string) => {
   return data
 }
 
-const wrappedGetStates = (entity_ids: string[]) => () => {
-  return getStates(entity_ids)
-}
 
 const configuration = [{
     "label": "Bedroom Corner",
@@ -86,8 +83,13 @@ const configuration = [{
 
 
 export function App() {
-
-  const { data, refetch } = useQuery({ queryKey: ['states'], queryFn: wrappedGetStates(configuration.map(e => e.action.serviceData.entity_id)), suspense: true })
+  const { data, refetch } = useQuery({
+    queryKey: ['states'],
+    queryFn: () => {
+      return getStates(configuration.map(e => e.action.serviceData.entity_id))
+    },
+    suspense: true
+ })
 
   return (
     <div className='window-base'>

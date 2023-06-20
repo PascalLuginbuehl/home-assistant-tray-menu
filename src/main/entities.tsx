@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query'
-import { AutocompleteElement, FormContainer, MultiSelectElement, TextFieldElement } from 'react-hook-form-mui';
+import { AutocompleteElement, FormContainer, TextFieldElement } from 'react-hook-form-mui';
 import { Button, ListItemText, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import FormGroupList from './form/FormGroupList';
+import { ISettings } from '../store';
 
 async function fetchStates() {
    const { data } = await axios.get<IState[]>(
@@ -34,7 +35,7 @@ export interface IState {
   }
 }
 
-interface TFormValues {
+interface TFormValues extends ISettings {
   selectedSwitches: string[]
   selectSwitch: string | null
 }
@@ -54,10 +55,10 @@ export function Entities() {
       <FormContainer<TFormValues> defaultValues={{selectedSwitches: initialSelectedSwitches, selectSwitch: null}} onSuccess={(values) => console.log(values)}>
         <Grid container spacing={1}>
           <Grid xs={12}>
-            <TextFieldElement name="url" placeholder='http://192.168.1.x:8123' fullWidth/>
+            <TextFieldElement<TFormValues> name="hassURL" label="HASS URL" placeholder='http://192.168.1.x:8123' fullWidth/>
           </Grid>
           <Grid xs={12}>
-            <TextFieldElement name="long-lived-token" fullWidth />
+            <TextFieldElement<TFormValues> name="longLivedAccessToken" label="Long Lived Access Token" fullWidth />
           </Grid>
 
           <Grid xs={12}>

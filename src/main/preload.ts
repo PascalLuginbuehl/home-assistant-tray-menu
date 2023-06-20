@@ -1,2 +1,22 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge, ipcRenderer } from "electron"
+import store, { ISettings } from "../store"
+
+const contextBridgeApi = {
+  registerUpdateCallback: (callback: () => void) => {
+    ipcRenderer.on('settings', () => {
+      callback()
+    })
+  },
+  saveSettings: (settings: ISettings) => {
+    ipcRenderer.send("settings:save")
+    store.set("settings", settings)
+  },
+  loadSettings: () => {
+    store.get("settings")
+  }
+}
+
+export type ContextBridgeApi = typeof contextBridgeApi
+
+//register functions for security reasons
+contextBridge.exposeInMainWorld('electronAPI', contextBridgeApi)

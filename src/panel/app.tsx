@@ -4,29 +4,36 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React from 'react';
 
-function serviceAction(domain: string, service: string, serviceData: unknown, apiURL: string, token: string) {
-  return axios.post(
-    `${apiURL}/api/services/${domain}/${service}`,
+let settings = window.electronAPI.store.get("settings")
+console.log(settings)
+
+settings = {
+ hassURL: "http://192.168.1.10:8123",
+ longLivedAccessToken: "***REMOVED***",
+ entityIds: []
+}
+
+const baseApiClient = axios.create({
+    baseURL: settings.hassURL,
+});
+
+baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
+baseApiClient.defaults.headers.common['Authorization'] = `Bearer ${settings.longLivedAccessToken}`;
+
+
+function serviceAction(domain: string, service: string, serviceData: unknown) {
+  return baseApiClient.post(
+    `/api/services/${domain}/${service}`,
     serviceData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
   )
 }
 
-async function fetchStates(apiURL: string, token: string) {
-   const { data } = await axios.get<IState[]>(
-    `${apiURL}/api/states`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  )
+async function fetchStates() {
+  const { data } = await baseApiClient.get<IState[]>("/api/states")
 
   return data
 }
+
 interface IState {
    "attributes": unknown
    "entity_id": string
@@ -72,14 +79,18 @@ const configuration = [{
 
 
 export function App() {
-  const { data, refetch } = useQuery({
+  const { data, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
     queryFn: async () => {
       const states = await fetchStates()
-      states.filter(state => configuration.map(e => e.action.serviceData.entity_id).includes(state.entity_id))
+      return states.filter(state => configuration.map(e => e.action.serviceData.entity_id).includes(state.entity_id))
     },
     suspense: true
- })
+  })
+
+  if(!isSuccess) {
+    return null
+  }
 
   return (
     <div className='window-base'>

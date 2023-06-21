@@ -10,9 +10,9 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      suspense: true,
-    },
+    // queries: {
+    //   suspense: true,
+    // },
   },
 })
 

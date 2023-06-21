@@ -3,7 +3,7 @@ import { JSONSchemaType } from 'ajv'
 
 export interface ISettings {
   longLivedAccessToken: string,
-  hassURL: string,
+  hassApiUrl: string,
   entityIds: string[]
 }
 
@@ -19,18 +19,21 @@ const schema: JSONSchemaType<SchemaType> = {
       properties: {
         longLivedAccessToken: {
           type: "string",
+          default: "",
         },
-        hassURL: {
+        hassApiUrl: {
           type: "string",
+          default: "",
         },
         entityIds: {
           type: 'array',
           items: {
             type: 'string',
           },
+          default: []
         },
       },
-      required: []
+      required: ['longLivedAccessToken', 'hassApiUrl', 'entityIds']
     }
   },
   required: ["settings"],
@@ -48,7 +51,7 @@ const store = new Store<SchemaType>({
   defaults: {
     settings: {
       entityIds: [],
-      hassURL: "",
+      hassApiUrl: "",
       longLivedAccessToken: ""
     }
   }

@@ -15,7 +15,6 @@ if (require('electron-squirrel-startup')) {
 
 // IPC listener
 ipcMain.on('electron-store-get', async (event, val) => {
-  console.log(event)
   event.returnValue = store.get(val);
 });
 ipcMain.on('electron-store-set', async (event, key, val) => {

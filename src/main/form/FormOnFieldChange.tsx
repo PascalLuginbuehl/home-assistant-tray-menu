@@ -34,8 +34,6 @@ function FormOnFieldChange<FormValues>({ onChange, fields }: FormOnFieldChangePr
                 }
             });
 
-            console.log(watchFields)
-
             if (valuesChanged) {
                 onChange(watchFields);
             }

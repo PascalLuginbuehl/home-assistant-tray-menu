@@ -87,12 +87,11 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
         setAddedIds(addedIds.filter((addedId) => addedId !== itemValueId));
 
         if (enableAutoSubmit) {
-            void saveAction();
+          void saveAction?.();
         }
     }
 
     function addSelectedItem(): void {
-      console.log("hHi")
         // id 0 is allowed!
         if (selectFieldValue === null) {
             return;

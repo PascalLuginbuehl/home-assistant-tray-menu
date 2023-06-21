@@ -1,8 +1,8 @@
 {
-  "name": "ha-menu-2",
-  "productName": "ha-menu-2",
+  "name": "home-assistant-tray-menu",
+  "productName": "home-assistant-tray-menu",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Home Assistant Tray App for Windows",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

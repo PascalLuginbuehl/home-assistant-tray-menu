@@ -17,6 +17,7 @@ const contextBridgeApi = {
   },
   store: {
     getSettings(): SchemaType["settings"] {
+      // TODO: use invoke here instead
       return ipcRenderer.sendSync('electron-store-get', "settings");
     },
     setSettings(value: SchemaType["settings"]) {

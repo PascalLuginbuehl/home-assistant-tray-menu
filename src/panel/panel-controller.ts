@@ -50,7 +50,7 @@ class PanelController {
       this.panelSize.height = height //+ (settings?.isWin11 ? 24 : 0)
       this.panelSize.width = 356 //+ (settings?.isWin11 ? 24 : 0)
       if (this.panelSize.visible) {
-        this.showPanel(true)
+        this.showPanel()
       }
     })
   }
@@ -101,7 +101,7 @@ class PanelController {
 
     panelWindow.on("blur", () => {
       // if(!panelWindow.webContents.isDevToolsOpened()) {
-        this.showPanel(false)
+        this.hidePanel()
       // }
     })
 
@@ -127,8 +127,7 @@ class PanelController {
 
 
   // Set brightness panel state (visible or not)
-  showPanel(show = true) {
-    if (show) {
+  showPanel() {
       this.panelWindow.restore()
 
       repositionPanel(this.panelWindow, this.panelSize)
@@ -150,19 +149,20 @@ class PanelController {
       resumeMouseEvents()
       this.panelWindow.setOpacity(1)
       this.panelWindow.show()
+  }
 
-    } else {
-      console.log("Hide panel")
-      // Hide panel
-      this.panelWindow.setAlwaysOnTop(false)
-      this.panelSize.visible = false
 
-      // Pause mouse events
-      pauseMouseEvents()
-      this.panelWindow.minimize();
-      this.panelWindow.setOpacity(0)
-      // startHidePanel()
-    }
+  hidePanel() {
+    console.log("Hide panel")
+    // Hide panel
+    this.panelWindow.setAlwaysOnTop(false)
+    this.panelSize.visible = false
+
+    // Pause mouse events
+    pauseMouseEvents()
+    this.panelWindow.minimize();
+    this.panelWindow.setOpacity(0)
+    // startHidePanel()
   }
 }
 

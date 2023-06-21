@@ -17,6 +17,7 @@ if (require('electron-squirrel-startup')) {
 ipcMain.on('electron-store-get', async (event, val) => {
   event.returnValue = store.get(val);
 });
+
 ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
@@ -44,6 +45,11 @@ const openSettings = () => {
 
 const initTray = (): void => {
   const panel = PanelController.createInstance()
+  // trigger reload to load new API Keys and API Url
+  ipcMain.on('electron-store-set', async () => {
+    panel.reload()
+  });
+
   const tray = createTray(app, panel)
   // showPanel(panel, true, 100)
 };

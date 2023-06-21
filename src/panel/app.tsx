@@ -4,14 +4,7 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React from 'react';
 
-let settings = window.electronAPI.store.getSettings()
-console.log(settings)
-
-settings = {
- hassApiUrl: "http://192.168.1.10:8123",
- longLivedAccessToken: "***REMOVED***",
- entityIds: []
-}
+const settings = window.electronAPI.store.getSettings()
 
 const baseApiClient = axios.create({
     baseURL: settings.hassApiUrl,

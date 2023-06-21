@@ -11,8 +11,9 @@ export function createTray(app: Electron.App, panelWindow: BrowserWindow) {
   const tray = new Tray(getTrayIconPath())
   tray.setToolTip('Twinkle Tray')
   setTrayMenu(tray, app)
+
   tray.on("click", async () => {
-    PanelController.showPanel(true)
+    PanelController.showPanel()
     panelWindow.webContents.send('request-height')
     panelWindow.focus()
   })

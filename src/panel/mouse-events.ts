@@ -18,7 +18,7 @@ export function enableMouseEvents(window: BrowserWindow) {
             console.log("clicked")
             // Panel is displayed
             // if(!window.webContents.isDevToolsOpened()) {
-              PanelController.showPanel(false)
+              PanelController.hidePanel()
             // }
           }
 

@@ -20,14 +20,16 @@ export interface TFormValues extends ISettings {
   selectSwitch: string | null
 }
 
-export function Entities() {
-  const [apiUrl, setApiUrl] = useState<string | null>(null)
-  const [token, setToken] = useState<string | null>(null)
+export function App() {
+  const settings = window.electronAPI.store.getSettings()
+
+  const [apiUrl, setApiUrl] = useState<string | null>(settings.hassApiUrl)
+  const [token, setToken] = useState<string | null>(settings.longLivedAccessToken)
 
   return (
     <div>
       <FormContainer<TFormValues>
-        defaultValues={window.electronAPI.store.getSettings()}
+        defaultValues={settings}
         onSuccess={async (values) => {
             window.electronAPI.store.setSettings(values)
             try {

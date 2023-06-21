@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ListItemText, Typography } from '@mui/material';
 import FormGroupList from './form/FormGroupList';
 import Grid from '@mui/material/Unstable_Grid2';
-import { TFormValues } from './entities';
+import { TFormValues } from './app';
 import { AutocompleteElement, useFormContext } from 'react-hook-form-mui';
 
 
@@ -52,13 +52,12 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
       console.log(apiUrl, token)
 
       if(!apiUrl || !token) {
-        return Promise.reject()
+        return Promise.reject("No tokens given")
       }
 
       return fetchStates(apiUrl, token)
     },
     retry: false,
-
     // suspense: true
   })
 
@@ -66,9 +65,6 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
     console.log("HI")
     refetch()
   }, [apiUrl, token])
-
-  // const settings = window.electronAPI.loadSettings()
-  // console.log(settings)
 
   if (!isSuccess || isError) {
     return (

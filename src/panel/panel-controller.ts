@@ -73,7 +73,7 @@ class PanelController {
       skipTaskbar: true,
       resizable: false,
       type: "toolbar",
-      title: "Twinkle Tray Flyout",
+      title: "Home Assistant Menu Flyout",
       maximizable: false,
       minimizable: false,
       webPreferences: {

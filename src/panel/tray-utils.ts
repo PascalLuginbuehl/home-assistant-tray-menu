@@ -1,6 +1,7 @@
 import { BrowserWindow, Menu, Tray } from "electron"
 import path from "path"
 import PanelController from "./panel-controller"
+import { openSettings } from "../"
 
 export function getTrayIconPath() {
   return path.join(__dirname, '../..', '/assets/redIcon@3x.png')
@@ -30,7 +31,7 @@ export function setTrayMenu(tray: Tray, app: Electron.App) {
     // getTimeAdjustmentsMenuItem(),
     // getDetectIdleMenuItem(),
     // getPausableSeparatorMenuItem(),
-    { label: T.t("GENERIC_SETTINGS"), type: 'normal', click: () => {} },
+    { label: T.t("GENERIC_SETTINGS"), type: 'normal', click: () => openSettings() },
     { type: 'separator' },
     { label: T.t("GENERIC_QUIT"), type: 'normal', click: () => app.quit() }
   ])

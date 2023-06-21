@@ -16,4 +16,8 @@ const queryClient = new QueryClient({
   },
 })
 
-root.render(<QueryClientProvider client={queryClient}><App /></QueryClientProvider>);
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);

@@ -4,100 +4,98 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React from 'react';
 
-const settings = window.electronAPI.store.getSettings()
+const settings = window.electronAPI.store.getSettings();
 
 const baseApiClient = axios.create({
-    baseURL: settings.hassApiUrl,
+  baseURL: settings.hassApiUrl,
 });
 
 baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
-baseApiClient.defaults.headers.common['Authorization'] = `Bearer ${settings.longLivedAccessToken}`;
-
+baseApiClient.defaults.headers.common.Authorization = `Bearer ${settings.longLivedAccessToken}`;
 
 function serviceAction(domain: string, service: string, serviceData: unknown) {
   return baseApiClient.post(
     `/api/services/${domain}/${service}`,
     serviceData,
-  )
+  );
 }
 
 async function fetchStates() {
-  const { data } = await baseApiClient.get<IState[]>("/api/states")
+  const { data } = await baseApiClient.get<IState[]>('/api/states');
 
-  return data
+  return data;
 }
 
 interface IState {
-   "attributes": unknown
-   "entity_id": string
-   "last_changed": string
-   "last_updated": string
-   "state": string
+  'attributes': unknown
+  'entity_id': string
+  'last_changed': string
+  'last_updated': string
+  'state': string
 }
 
 const configuration = [{
-    "label": "Bedroom Corner",
-    "icon": "floor-lamp-outline@2x.png",
-    "action": {
-      "domain": "switch",
-      "service": "toggle",
-      "serviceData": {
-        "entity_id": "switch.pascal_bedroom_corner_lamp"
-      }
-    }
+  label: 'Bedroom Corner',
+  icon: 'floor-lamp-outline@2x.png',
+  action: {
+    domain: 'switch',
+    service: 'toggle',
+    serviceData: {
+      entity_id: 'switch.pascal_bedroom_corner_lamp',
+    },
   },
-  {
-    "label": "Bedroom",
-    "icon": "ceiling-light@2x.png",
-    "action": {
-      "domain": "switch",
-      "service": "toggle",
-      "serviceData": {
-        "entity_id": "switch.pascal_bedroom_light"
-      }
-    }
+},
+{
+  label: 'Bedroom',
+  icon: 'ceiling-light@2x.png',
+  action: {
+    domain: 'switch',
+    service: 'toggle',
+    serviceData: {
+      entity_id: 'switch.pascal_bedroom_light',
+    },
   },
-  {
-    "label": "3D Printer",
-    "icon": "ceiling-light@2x.png",
-    "action": {
-      "domain": "switch",
-      "service": "toggle",
-      "serviceData": {
-        "entity_id": "switch.corridor_led_strip"
-      }
-    }
-  }
-]
-
+},
+{
+  label: '3D Printer',
+  icon: 'ceiling-light@2x.png',
+  action: {
+    domain: 'switch',
+    service: 'toggle',
+    serviceData: {
+      entity_id: 'switch.corridor_led_strip',
+    },
+  },
+},
+];
 
 export function App() {
   const { data, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
     queryFn: async () => {
-      const states = await fetchStates()
-      return states.filter(state => configuration.map(e => e.action.serviceData.entity_id).includes(state.entity_id))
+      const states = await fetchStates();
+      return states.filter((state) => configuration.map((e) => e.action.serviceData.entity_id).includes(state.entity_id));
     },
-    suspense: true
-  })
+    suspense: true,
+  });
 
-  if(!isSuccess) {
-    return null
+  if (!isSuccess) {
+    return null;
   }
 
   return (
-    <div className='window-base'>
+    <div className="window-base">
       <div className="titlebar">
         <h2 className="title">Hello from React!</h2>
       </div>
 
-      {configuration.map(({label, action}) => (
+      {configuration.map(({ label, action }) => (
         <button
           key={label}
-          className={clsx("actionButton", data.find(d => action.serviceData.entity_id === d.entity_id).state === "on" && "selected")}
+          className={clsx('actionButton', data.find((d) => action.serviceData.entity_id === d.entity_id).state === 'on' && 'selected')}
           onClick={async () => {
-            await serviceAction(action.domain, action.service, action.serviceData)
-            await refetch()
+            await serviceAction(action.domain, action.service, action.serviceData);
+            await refetch();
           }}
         >
           <LampIcon />
@@ -105,6 +103,5 @@ export function App() {
         </button>
       ))}
     </div>
-  )
+  );
 }
-

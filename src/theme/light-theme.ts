@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
-import { applyThemeChanges as applyThemeOverrides } from './theme-overrides';
-import { typography } from './typography';
+import applyThemeOverrides from './theme-overrides';
+import typography from './typography';
 
 const lightThemePalette = createTheme({
   ...typography,

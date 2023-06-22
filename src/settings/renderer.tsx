@@ -1,8 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import { App } from './app';
 import darkTheme from '../theme/dark-theme';
 
 // this element does 100% exist
@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
     //   suspense: true,
     // },
   },
-})
+});
 
 // const theme = useMediaQuery("(prefers-color-scheme: dark)") ? darkTheme : lightTheme;
 
@@ -28,5 +28,5 @@ root.render(
       <CssBaseline />
       <App />
     </ThemeProvider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );

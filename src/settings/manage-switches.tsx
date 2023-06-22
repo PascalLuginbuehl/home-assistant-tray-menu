@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query';
 import { ListItemText, Typography } from '@mui/material';
-import FormGroupList from './form/FormGroupList';
 import Grid from '@mui/material/Unstable_Grid2';
-import { TFormValues } from './app';
 import { AutocompleteElement, useFormContext } from 'react-hook-form-mui';
-
+import FormGroupList from './form/FormGroupList';
+import type { TFormValues } from './app';
 
 async function fetchStates(apiUrl: string, token: string) {
   const { data } = await axios.get<IState[]>(
@@ -15,11 +14,11 @@ async function fetchStates(apiUrl: string, token: string) {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      }
-    }
-  )
+      },
+    },
+  );
 
-  return data
+  return data;
 }
 
 export interface IState {
@@ -43,38 +42,39 @@ interface ManageSwitchesProps {
 }
 
 export default function ManageSwitches(props: ManageSwitchesProps) {
-  const { apiUrl, token } = props
+  const { apiUrl, token } = props;
 
   const { handleSubmit } = useFormContext<TFormValues>();
 
-  const { data, isSuccess, isError, refetch} = useQuery({
-    queryKey: ['todos'], queryFn: () => {
-      console.log(apiUrl, token)
+  const {
+    data, isSuccess, isError, refetch,
+  } = useQuery({
+    queryKey: ['todos'],
+    queryFn: () => {
+      // console.log(apiUrl, token);
 
-      if(!apiUrl || !token) {
-        return Promise.reject("No tokens given")
+      if (!apiUrl || !token) {
+        return Promise.reject(new Error('No tokens given'));
       }
 
-      return fetchStates(apiUrl, token)
+      return fetchStates(apiUrl, token);
     },
     retry: false,
     // suspense: true
-  })
+  });
 
   useEffect(() => {
-    console.log("HI")
-    refetch()
-  }, [apiUrl, token])
+    refetch();
+  }, [apiUrl, token, refetch]);
 
   if (!isSuccess || isError) {
     return (
       <Typography>Could not fetch</Typography>
-    )
+    );
   }
 
-  const filteredData = data.filter(e => e.entity_id.startsWith("switch."))
-  const options = filteredData.map(e => ({ id: e.entity_id, label: e.attributes.friendly_name }))
-
+  const filteredData = data.filter((e) => e.entity_id.startsWith('switch.'));
+  const options = filteredData.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name }));
 
   return (
     <Grid container>
@@ -84,9 +84,9 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
 
       <Grid xs={12}>
         <FormGroupList<TFormValues, { id: string, label: string } >
-          name='entityIds'
-          selectFieldName='selectSwitch'
-          optionValueField='id'
+          name="entityIds"
+          selectFieldName="selectSwitch"
+          optionValueField="id"
           options={options}
           renderOption={(option) => (
             <ListItemText
@@ -96,14 +96,12 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
           renderSelectField={(filteredOptions) => (
             <AutocompleteElement name="selectSwitch" options={filteredOptions} textFieldProps={{ fullWidth: true }} matchId autocompleteProps={{ fullWidth: true }} />
           )}
-
           enableAutoSave
           saveAction={handleSubmit((values) => {
-            console.log(values)
-            window.electronAPI.store.setSettings(values)
+            window.electronAPI.store.setSettings(values);
           })}
         />
       </Grid>
     </Grid>
-  )
+  );
 }

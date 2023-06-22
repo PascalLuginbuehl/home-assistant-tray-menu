@@ -5,6 +5,9 @@
     "node": true
   },
   "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
@@ -12,5 +15,13 @@
     "plugin:import/electron",
     "plugin:import/typescript"
   ],
-  "parser": "@typescript-eslint/parser"
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "max-len": ["error", { "code": 180 } ],
+    "react/require-default-props": "off"
+  }
 }

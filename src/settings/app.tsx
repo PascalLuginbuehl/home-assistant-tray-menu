@@ -11,9 +11,9 @@ async function checkApiUrl(apiURL: string, token: string) {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-    }
-  })
-  return data
+    },
+  });
+  return data;
 }
 
 export interface TFormValues extends ISettings {
@@ -21,39 +21,38 @@ export interface TFormValues extends ISettings {
 }
 
 export function App() {
-  const settings = window.electronAPI.store.getSettings()
+  const settings = window.electronAPI.store.getSettings();
 
-  const [apiUrl, setApiUrl] = useState<string | null>(settings.hassApiUrl)
-  const [token, setToken] = useState<string | null>(settings.longLivedAccessToken)
+  const [apiUrl, setApiUrl] = useState<string | null>(settings.hassApiUrl);
+  const [token, setToken] = useState<string | null>(settings.longLivedAccessToken);
 
   return (
     <Box p={1}>
       <FormContainer<TFormValues>
         defaultValues={settings}
         onSuccess={async (values) => {
-            window.electronAPI.store.setSettings(values)
-            try {
-              await checkApiUrl(values.hassApiUrl, values.longLivedAccessToken)
-              setApiUrl(values.hassApiUrl)
-              setToken(values.longLivedAccessToken)
-            } catch(e) {
-              console.log(e)
-            }
+          window.electronAPI.store.setSettings(values);
+          try {
+            await checkApiUrl(values.hassApiUrl, values.longLivedAccessToken);
+            setApiUrl(values.hassApiUrl);
+            setToken(values.longLivedAccessToken);
+          } catch (e) {
+            console.log(e);
+          }
 
-            console.log(values)
-            return
-          }}
+          console.log(values);
+        }}
       >
         <Grid container spacing={1}>
           <Grid xs={12}>
-            <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder='http://192.168.1.x:8123' fullWidth/>
+            <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder="http://192.168.1.x:8123" fullWidth />
           </Grid>
           <Grid xs={12}>
             <TextFieldElement<TFormValues> name="longLivedAccessToken" label="Long Lived Access Token" fullWidth />
           </Grid>
 
           <Grid xs={12}>
-            <Button type={'submit'} color={'primary'} variant='contained'>
+            <Button type="submit" color="primary" variant="contained">
               Test connection
             </Button>
           </Grid>
@@ -61,6 +60,5 @@ export function App() {
         <ManageSwitches apiUrl={apiUrl} token={token} />
       </FormContainer>
     </Box>
-  )
+  );
 }
-

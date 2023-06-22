@@ -1,15 +1,17 @@
 const fontFamily = '"Segoe UI Variable Text", "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif';
 
-export const typography = {
+const typography = {
   components: {
-      // Ugly fix
-      MuiTypography: {
-          defaultProps: {
-              fontFamily,
-          },
+    // Ugly fix
+    MuiTypography: {
+      defaultProps: {
+        fontFamily,
       },
+    },
   },
   typography: {
     fontFamily,
   },
 };
+
+export default typography;

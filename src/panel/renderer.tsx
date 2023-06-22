@@ -23,7 +23,13 @@ const queryClient = new QueryClient({
   },
 })
 
-root.render(<QueryClientProvider client={queryClient}><div id="root"><App /></div></QueryClientProvider>);
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <div id="root">
+      <App />
+    </div>
+  </QueryClientProvider>
+);
 
 window.electronAPI.registerHeightRequestCallback(() => {
   window.electronAPI.sendHeight(container.offsetHeight)

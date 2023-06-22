@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { FormContainer, TextFieldElement } from 'react-hook-form-mui';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { ISettings } from '../store';
 import ManageSwitches from './manage-switches';
@@ -27,7 +27,7 @@ export function App() {
   const [token, setToken] = useState<string | null>(settings.longLivedAccessToken)
 
   return (
-    <div>
+    <Box p={1}>
       <FormContainer<TFormValues>
         defaultValues={settings}
         onSuccess={async (values) => {
@@ -60,7 +60,7 @@ export function App() {
         </Grid>
         <ManageSwitches apiUrl={apiUrl} token={token} />
       </FormContainer>
-    </div>
+    </Box>
   )
 }
 

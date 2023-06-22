@@ -69,7 +69,7 @@ const configuration = [{
 },
 ];
 
-export function App() {
+export default function App() {
   const { data, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
     queryFn: async () => {
@@ -91,8 +91,17 @@ export function App() {
 
       {configuration.map(({ label, action }) => (
         <button
+          type="button"
           key={label}
-          className={clsx('actionButton', data.find((d) => action.serviceData.entity_id === d.entity_id).state === 'on' && 'selected')}
+          className={
+            clsx(
+              'actionButton',
+              data
+                .find((d) => action.serviceData.entity_id === d.entity_id)
+                ?.state === 'on'
+                && 'selected',
+            )
+          }
           onClick={async () => {
             await serviceAction(action.domain, action.service, action.serviceData);
             await refetch();

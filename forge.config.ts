@@ -28,9 +28,9 @@ const config: ForgeConfig = {
             },
           },
           {
-            html: './src/panel/index.html',
-            js: './src/panel/renderer.tsx',
-            name: 'panel_window',
+            html: './src/tray/index.html',
+            js: './src/tray/renderer.tsx',
+            name: 'tray_window',
             preload: {
               js: './src/preload.ts',
             },

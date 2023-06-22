@@ -7,7 +7,7 @@ type PropsComparator<C extends React.ComponentType> = (
 ) => boolean;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function genericMemo<C extends React.ComponentType<any>>(Component: C, propsComparator?: PropsComparator<C>): C {
+export default function genericMemo<C extends React.ComponentType<any>>(Component: C, propsComparator?: PropsComparator<C>): C {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return React.memo(Component, propsComparator) as any as C;
 }

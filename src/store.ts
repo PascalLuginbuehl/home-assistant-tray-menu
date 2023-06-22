@@ -1,5 +1,6 @@
 import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
+import { ipcMain } from 'electron';
 
 export interface ISettings {
   longLivedAccessToken: string,
@@ -55,5 +56,17 @@ const store = new Store<SchemaType>({
     },
   },
 });
+
+export const createStoreEvents = () => {
+  // IPC listener
+  ipcMain.on('electron-store-get', async (event, val) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = store.get(val);
+  });
+
+  ipcMain.on('electron-store-set', async (event, key, val) => {
+    store.set(key, val);
+  });
+};
 
 export default store;

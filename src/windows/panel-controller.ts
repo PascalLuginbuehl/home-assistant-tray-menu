@@ -127,7 +127,7 @@ class PanelController {
 
     this.panelSize.visible = true;
 
-    this.panelSize.bounds = screen.dipToScreenRect(this.panelWindow, this.panelWindow.getBounds());
+    // this.panelSize.bounds = screen.dipToScreenRect(this.panelWindow, this.panelWindow.getBounds());
     this.panelSize.bounds = this.panelWindow.getBounds();
 
     // Bottom, left, right
@@ -139,6 +139,7 @@ class PanelController {
 
     this.panelWindow.setOpacity(1);
     this.panelWindow.show();
+    console.log('shown');
   }
 
   hidePanel() {

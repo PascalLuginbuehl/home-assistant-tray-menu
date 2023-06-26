@@ -2,10 +2,16 @@ import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
 import { ipcMain } from 'electron';
 
+export interface IEntityConfig {
+  entity_id: string,
+  // domain: 'switch',
+  // service: 'toggle',
+  // label: string,
+}
 export interface ISettings {
   longLivedAccessToken: string,
   hassApiUrl: string,
-  entityIds: string[]
+  entities: IEntityConfig[]
 }
 
 export type SchemaType = {
@@ -26,15 +32,21 @@ const schema: JSONSchemaType<SchemaType> = {
           type: 'string',
           default: '',
         },
-        entityIds: {
+        entities: {
           type: 'array',
           items: {
-            type: 'string',
+            type: 'object',
+            properties: {
+              entity_id: {
+                type: 'string',
+              },
+            },
+            required: ['entity_id'],
           },
           default: [],
         },
       },
-      required: ['longLivedAccessToken', 'hassApiUrl', 'entityIds'],
+      required: ['longLivedAccessToken', 'hassApiUrl', 'entities'],
     },
   },
   required: ['settings'],
@@ -50,7 +62,7 @@ const store = new Store<SchemaType>({
   schema: schema.properties,
   defaults: {
     settings: {
-      entityIds: [],
+      entities: [],
       hassApiUrl: '',
       longLivedAccessToken: '',
     },

@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ListItemText, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { AutocompleteElement, useFormContext } from 'react-hook-form-mui';
+import IState from '../interfaces/IState';
 import FormGroupList from './form/FormGroupList';
 import type { TFormValues } from './app';
 
@@ -19,21 +20,6 @@ async function fetchStates(apiUrl: string, token: string) {
   );
 
   return data;
-}
-
-export interface IState {
-  entity_id: string
-  state: string
-  attributes: {
-    friendly_name: string
-  }
-  last_changed: string
-  last_updated: string
-  context: {
-    id: string
-    parent_id: string | null
-    user_id: string
-  }
 }
 
 interface ManageSwitchesProps {
@@ -98,7 +84,8 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
           )}
           enableAutoSave
           saveAction={handleSubmit((values) => {
-            window.electronAPI.store.setSettings(values);
+            // FIX ME
+            // window.electronAPI.store.setSettings(values);
           })}
         />
       </Grid>

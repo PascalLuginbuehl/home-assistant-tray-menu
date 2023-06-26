@@ -16,12 +16,14 @@ async function checkApiUrl(apiURL: string, token: string) {
   return data;
 }
 
-export interface TFormValues extends ISettings {
+export interface TFormValues extends Omit<ISettings, 'entities'> {
   selectSwitch: string | null
+  entityIds: string[]
 }
 
 export function App() {
   const settings = window.electronAPI.store.getSettings();
+  const transformedSettings = { ...settings, entityIds: settings.entities.map((e) => e.entity_id) };
 
   const [apiUrl, setApiUrl] = useState<string | null>(settings.hassApiUrl);
   const [token, setToken] = useState<string | null>(settings.longLivedAccessToken);
@@ -29,9 +31,11 @@ export function App() {
   return (
     <Box p={1}>
       <FormContainer<TFormValues>
-        defaultValues={settings}
+        defaultValues={transformedSettings}
         onSuccess={async (values) => {
-          window.electronAPI.store.setSettings(values);
+          const transformedValues: ISettings = { ...values, entities: values.entityIds.map((e) => ({ entity_id: e })) };
+
+          window.electronAPI.store.setSettings(transformedValues);
           try {
             await checkApiUrl(values.hassApiUrl, values.longLivedAccessToken);
             setApiUrl(values.hassApiUrl);
@@ -45,7 +49,7 @@ export function App() {
       >
         <Grid container spacing={1}>
           <Grid xs={12}>
-            <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder="http://192.168.1.x:8123" fullWidth />
+            <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder="http://homeassistant.local:8123" fullWidth />
           </Grid>
           <Grid xs={12}>
             <TextFieldElement<TFormValues> name="longLivedAccessToken" label="Long Lived Access Token" fullWidth />

@@ -1,6 +1,14 @@
 # Home Assistant Companion
 Home Assistant Menu / Tray / Agent
 
+
+Enables Quick actions
+
+
+# Outlook
+More integrations
+Colors, etc.
+
 # Related:
 - <https://github.com/codechimp-org/ha-menu>
 - <https://github.com/addyire/ha-menu>

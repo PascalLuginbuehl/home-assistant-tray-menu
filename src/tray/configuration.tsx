@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LampIcon } from '@fluentui/react-icons-mdl2';
 import clsx from 'clsx';
 import axios from 'axios';
-import configuration from './mock-config';
+import IState from '../interfaces/IState';
 
 const settings = window.electronAPI.store.getSettings();
 
@@ -14,7 +14,7 @@ const baseApiClient = axios.create({
 baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
 baseApiClient.defaults.headers.common.Authorization = `Bearer ${settings.longLivedAccessToken}`;
 
-function serviceAction(domain: string, service: string, serviceData: unknown) {
+function serviceAction(domain: string, service: string, serviceData: { entity_id: string }) {
   return baseApiClient.post(
     `/api/services/${domain}/${service}`,
     serviceData,
@@ -27,20 +27,12 @@ async function fetchStates() {
   return data;
 }
 
-interface IState {
-  'attributes': unknown
-  'entity_id': string
-  'last_changed': string
-  'last_updated': string
-  'state': string
-}
-
 export default function Configuration() {
   const { data, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
     queryFn: async () => {
       const states = await fetchStates();
-      return states.filter((state) => configuration.map((e) => e.action.serviceData.entity_id).includes(state.entity_id));
+      return states.filter((state) => settings.entities.map((e) => e.entity_id).includes(state.entity_id));
     },
     suspense: true,
   });
@@ -48,29 +40,28 @@ export default function Configuration() {
   if (!isSuccess) {
     return null;
   }
+
   return (
     <>
       {
-      configuration.map(({ label, action }) => (
+      data.map((state) => (
         <button
           type="button"
-          key={label}
+          key={state.entity_id}
           className={
             clsx(
               'actionButton',
-              data
-                .find((d) => action.serviceData.entity_id === d.entity_id)
-                ?.state === 'on'
+              state.state === 'on'
               && 'selected',
             )
           }
           onClick={async () => {
-            await serviceAction(action.domain, action.service, action.serviceData);
+            await serviceAction('switch', 'toggle', { entity_id: state.entity_id });
             await refetch();
           }}
         >
           <LampIcon />
-          {label}
+          {state.attributes.friendly_name}
         </button>
       ))
     }

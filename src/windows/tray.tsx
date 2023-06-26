@@ -9,8 +9,7 @@ const initTray = (app: Electron.App): void => {
     panel.reload();
   });
 
-  const tray = createTray(app, panel);
-  // showPanel(panel, true, 100)
+  createTray(app, panel);
 };
 
 export default initTray;

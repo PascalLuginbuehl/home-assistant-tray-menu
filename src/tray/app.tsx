@@ -17,9 +17,9 @@ export default function App() {
   const { reset } = useQueryErrorResetBoundary();
   return (
     <div className="window-base">
-      <div className="titlebar">
-        <h2 className="title">Hello from React!</h2>
-      </div>
+      {/* <div className="titlebar">
+        <h2 className="title">Home Assistant Controls</h2>
+      </div> */}
 
       <ErrorBoundary
         onReset={reset}

@@ -68,9 +68,9 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
   const {
     field: { value: listInputValueTemp, onChange },
   } = useController<TFieldValues>({ name });
-  const listInputValue = listInputValueTemp as unknown[];
+  const listInputValue = listInputValueTemp;
 
-  const listInputDefaultValue = get(defaultValues, name) as unknown[];
+  const listInputDefaultValue = get(defaultValues, name);
 
   const [addedIds, setAddedIds] = React.useState<unknown[]>([]);
 
@@ -86,7 +86,7 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
 
     // console.debug("deleteSelectedItem: itemIndex=", itemValue);
 
-    onChange(listInputValue.filter((valueId) => valueId !== itemValueId));
+    onChange(listInputValue.filter((valueId: unknown) => valueId !== itemValueId));
 
     setAddedIds(addedIds.filter((addedId) => addedId !== itemValueId));
 
@@ -105,8 +105,8 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
       parsed = selectFieldValue;
     } else {
       const strFieldValue = selectFieldValue as unknown as string;
-      parsed = parseInt(strFieldValue);
-      if (isNaN(parseInt(strFieldValue))) {
+      parsed = parseInt(strFieldValue, 10);
+      if (Number.isNaN(parseInt(strFieldValue, 10))) {
         parsed = strFieldValue;
       }
     }
@@ -116,12 +116,16 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
     const newValue = [...listInputValue];
     newValue.push(parsed);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     onChange(newValue);
 
     if (!listInputDefaultValue?.includes(parsed)) {
       setAddedIds([...addedIds, parsed]);
     }
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     setSelectFieldValue(null);
 
     if (enableAutoSubmit) {
@@ -129,20 +133,20 @@ export default function FormGroupList<TFieldValues extends FieldValues, OptionsO
     }
   }
 
-  const remainingOptions = [];
-  const defaultSelectedOptions = [];
+  const remainingOptions: OptionsObject[] = [];
+  const defaultSelectedOptions: OptionsObject[] = [];
 
-  for (const option of options) {
+  options.forEach((option) => {
     const optionId = option[optionValueField];
     if (listInputValue.includes(optionId)) {
       if (listInputDefaultValue?.includes(optionId)) {
         defaultSelectedOptions.push(option);
       }
-      continue;
+      return;
     }
 
     remainingOptions.push(option);
-  }
+  });
 
   const newSelectedOptions = addedIds
     .map((addedId) => options.find((option) => option[optionValueField] === addedId))

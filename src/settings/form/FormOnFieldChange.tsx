@@ -1,19 +1,21 @@
 import React from 'react';
 import isEqual from 'react-fast-compare';
-import { FieldPath, FieldPathValues, useWatch } from 'react-hook-form-mui';
+import {
+  FieldPath, FieldPathValues, FieldValues, useWatch,
+} from 'react-hook-form-mui';
 import { usePrevious } from 'react-use';
 
 import genericMemo from '../../utils/genericMemo';
 
 export interface FormOnFieldChangeProps<
-    FormValues,
-    TFieldNames extends readonly FieldPath<FormValues>[] = readonly FieldPath<FormValues>[],
+  FormValues extends FieldValues,
+  TFieldNames extends readonly FieldPath<FormValues>[] = readonly FieldPath<FormValues>[],
 > {
   fields: readonly [...TFieldNames];
   onChange: (values: FieldPathValues<FormValues, TFieldNames>) => void;
 }
 
-function FormOnFieldChange<FormValues>({ onChange, fields }: FormOnFieldChangeProps<FormValues>): null {
+function FormOnFieldChange<FormValues extends FieldValues>({ onChange, fields }: FormOnFieldChangeProps<FormValues>): null {
   const didMount = React.useRef(false);
 
   // watch cannot be used here. exact: false is needed here

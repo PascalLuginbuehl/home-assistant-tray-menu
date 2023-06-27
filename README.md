@@ -3,11 +3,13 @@ Home Assistant Menu / Tray / Agent
 
 
 Enables Quick actions
-
+# developers
+- Built using electron-forge
+- material ui
+- tray implementation from <https://github.com/xanderfrangos/twinkle-tray>
 
 # Outlook
-More integrations
-Colors, etc.
+More integrations (Colors, etc.)
 
 # Related:
 - <https://github.com/codechimp-org/ha-menu>

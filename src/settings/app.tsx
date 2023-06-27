@@ -41,10 +41,9 @@ export function App() {
             setApiUrl(values.hassApiUrl);
             setToken(values.longLivedAccessToken);
           } catch (e) {
-            console.log(e);
+            // eslint-disable-next-line no-console
+            console.error('Form submit failed', e);
           }
-
-          console.log(values);
         }}
       >
         <Grid container spacing={1}>

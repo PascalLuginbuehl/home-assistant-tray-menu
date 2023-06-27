@@ -30,6 +30,8 @@ export function repositionPanel(window: BrowserWindow, panelSize: IPanelSize) {
     const primaryDisplay = screen.getPrimaryDisplay();
 
     const taskbar = taskbarPosition();
+    // TODO rewrite
+    // eslint-disable-next-line no-param-reassign
     panelSize.taskbar = taskbar;
 
     if (window) {
@@ -55,9 +57,12 @@ export function repositionPanel(window: BrowserWindow, panelSize: IPanelSize) {
           y: primaryDisplay.bounds.y + primaryDisplay.bounds.height - panelSize.height - taskbar.gap,
         });
       }
+      // TODO rewrite
+      // eslint-disable-next-line no-param-reassign
       panelSize.base = window.getBounds().y;
     }
   } catch (e) {
-    console.log("Couldn't reposition panel", e);
+    // eslint-disable-next-line no-console
+    console.warn("Couldn't reposition panel", e);
   }
 }

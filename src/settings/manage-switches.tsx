@@ -83,7 +83,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
             <AutocompleteElement name="selectSwitch" options={filteredOptions} textFieldProps={{ fullWidth: true }} matchId autocompleteProps={{ fullWidth: true }} />
           )}
           enableAutoSave
-          saveAction={handleSubmit((values) => {
+          saveAction={handleSubmit(() => {
             // FIX ME
             // window.electronAPI.store.setSettings(values);
           })}

@@ -39,6 +39,18 @@ const config: ForgeConfig = {
       },
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'pascalluginbuehl',
+          name: 'home-assistant-tray-menu',
+        },
+        prerelease: true,
+      },
+    },
+  ],
 };
 
 export default config;

@@ -1,15 +1,16 @@
 {
   "name": "home-assistant-tray-menu",
   "productName": "home-assistant-tray-menu",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Home Assistant Tray App for Windows",
   "main": ".webpack/main",
+  "repository": "github:pascalluginbuehl/home-assistant-tray-menu",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint ./src"
   },
   "keywords": [],
   "author": {
@@ -43,6 +44,7 @@
     "typescript": "~5.1.3"
   },
   "dependencies": {
+    "@electron-forge/publisher-github": "^6.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fluentui/font-icons-mdl2": "^8.5.22",

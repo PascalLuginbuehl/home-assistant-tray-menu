@@ -30,6 +30,8 @@ async function fetchStates() {
 export default function Configuration() {
   const { data, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
+    refetchOnWindowFocus: true,
+    staleTime: 1 * 60 * 1000,
     queryFn: async () => {
       const states = await fetchStates();
       return states.filter((state) => settings.entities.map((e) => e.entity_id).includes(state.entity_id));

@@ -139,11 +139,9 @@ class PanelController {
 
     this.panelWindow.setOpacity(1);
     this.panelWindow.show();
-    console.log('shown');
   }
 
   hidePanel() {
-    console.log('Hide panel');
     // Hide panel
     this.panelWindow.setAlwaysOnTop(false);
     this.panelSize.visible = false;

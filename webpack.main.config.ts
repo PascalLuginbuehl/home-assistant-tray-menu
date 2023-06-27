@@ -15,4 +15,8 @@ export const mainConfig: Configuration = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json', ".scss"],
   },
+  output: {
+    // [file] is the key thing here. [query] and [fragment] are optional
+    assetModuleFilename: '[file][query][fragment]',
+  },
 };

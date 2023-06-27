@@ -39,4 +39,9 @@ export const rules: Required<ModuleOptions>['rules'] = [
       "sass-loader",
     ],
   },
+  // Import image files according to https://github.com/electron/forge/issues/1431#issuecomment-1132921895
+  {
+    test: /\.(gif|icns|ico|jpg|png|otf|eot|woff|woff2|ttf)$/,
+    type: 'asset/resource',
+  },
 ];

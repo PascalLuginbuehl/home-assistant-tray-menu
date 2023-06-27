@@ -75,9 +75,6 @@ class PanelController {
       webPreferences: {
         preload: TRAY_WINDOW_PRELOAD_WEBPACK_ENTRY,
 
-        devTools: true,
-        // devTools: settings.isDev,
-
         // Non default values
         spellcheck: false,
         webgl: false,
@@ -91,13 +88,8 @@ class PanelController {
     // and load the index.html of the app.
     panelWindow.loadURL(TRAY_WINDOW_WEBPACK_ENTRY);
 
-    // Open the DevTools.
-    panelWindow.webContents.openDevTools({ mode: 'detach' });
-
     panelWindow.on('blur', () => {
-      // if(!panelWindow.webContents.isDevToolsOpened()) {
       this.hidePanel();
-      // }
     });
 
     // This rewrites request headers

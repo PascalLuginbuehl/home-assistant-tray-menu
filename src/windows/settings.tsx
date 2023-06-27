@@ -29,11 +29,7 @@ const openSettings = () => {
     },
   });
 
-  // and load the index.html of the app.
   settingsWindow.loadURL(SETTINGS_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  settingsWindow.webContents.openDevTools({ mode: 'detach' });
 };
 
 export default openSettings;

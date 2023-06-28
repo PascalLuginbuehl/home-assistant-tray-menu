@@ -6,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useQuery } from '@tanstack/react-query';
 import { ISettings } from '../store';
 import ManageSwitches from './manage-switches';
+import SwitchManager from './switch-manager';
 
 async function checkApiUrl(apiURL: string, token: string) {
   const { data } = await axios.get(`${apiURL}/api/`, {
@@ -17,7 +18,7 @@ async function checkApiUrl(apiURL: string, token: string) {
   return data;
 }
 
-export interface TFormValues extends Omit<ISettings, 'entities'> {
+export interface TFormValues extends ISettings {
   selectSwitch: string | null
   entityIds: string[]
 }
@@ -77,6 +78,9 @@ export function App() {
           <Grid xs={12}>
             <CheckboxElement<TFormValues> name="isAutoLaunchEnabled" label="Enable Autostart" />
           </Grid>
+          <Grid xs={12}>
+            <SwitchManager />
+          </Grid>
 
           <Grid xs={12}>
             <Button type="submit" color="primary" variant="contained">
@@ -84,6 +88,7 @@ export function App() {
             </Button>
           </Grid>
         </Grid>
+
         <ManageSwitches apiUrl={apiUrl} token={token} />
       </FormContainer>
     </Box>

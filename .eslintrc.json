@@ -24,5 +24,6 @@
     "max-len": ["error", { "code": 180 } ],
     "react/require-default-props": "off",
     "linebreak-style": "off"
-  }
+  },
+  "ignorePatterns": ["webpack.*.config.ts", "webpack.*.ts", "forge.config.ts"]
 }

@@ -10,7 +10,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": {
@@ -35,6 +36,8 @@
     "eslint": "^8.43.0",
     "eslint-plugin-import": "^2.27.5",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.3",
     "node-loader": "^2.0.0",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
@@ -73,5 +76,8 @@
     "react-hook-form": "^7.45.0",
     "react-hook-form-mui": "^6.3.1",
     "react-use": "^17.4.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --max-warnings=0"
   }
 }

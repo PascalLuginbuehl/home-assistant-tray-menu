@@ -2,17 +2,35 @@ import {
   ipcMain, Menu, Tray,
 } from 'electron';
 import path from 'path';
+import axios from 'axios';
 import PanelController from './panel-controller';
 import openSettings from './settings';
-import redIconImagePath from '../../assets/redIcon@3x.png';
+import defaultIconImagePath from '../../assets/icon@3x.png';
+import transparentIconImagePath from '../../assets/transparentIcon@3x.png';
+import warningIconImagePath from '../../assets/alert@2x.png';
+import errorIconImagePath from '../../assets/redIcon@3x.png';
+import store from '../store';
 
-export function getTrayIconPath() {
-  return path.resolve(__dirname, redIconImagePath);
-}
+const ICON_PATHS = {
+  DEFAULT: path.resolve(__dirname, defaultIconImagePath),
+  TRANSPARENT: path.resolve(__dirname, transparentIconImagePath),
+  WARNING_ICON: path.resolve(__dirname, warningIconImagePath),
+  ERROR: path.resolve(__dirname, errorIconImagePath),
+};
 
 const T = {
   t: (key: string) => key,
 };
+
+async function checkApiUrl(apiURL: string, token: string) {
+  const { data } = await axios.get(`${apiURL}/api/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  return data;
+}
 
 export function setTrayMenu(tray: Tray, app: Electron.App) {
   if (tray === null) return;
@@ -33,7 +51,7 @@ const initTray = (app: Electron.App): void => {
     panelWindow.reload();
   });
 
-  const tray = new Tray(getTrayIconPath());
+  const tray = new Tray(ICON_PATHS.DEFAULT);
   tray.setToolTip('Twinkle Tray');
   setTrayMenu(tray, app);
 
@@ -42,6 +60,19 @@ const initTray = (app: Electron.App): void => {
     panelWindow.webContents.send('request-height');
     panelWindow.focus();
   });
+
+  const checkHassStatus = async () => {
+    const settings = store.get('settings');
+    try {
+      await checkApiUrl(settings.hassApiUrl, settings.longLivedAccessToken);
+      tray.setImage(ICON_PATHS.DEFAULT);
+    } catch (e) {
+      tray.setImage(ICON_PATHS.ERROR);
+    }
+    setTimeout(checkHassStatus, 5 * 60 * 1000);
+  };
+
+  checkHassStatus();
 };
 
 export default initTray;

@@ -2,11 +2,6 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { SchemaType } from './store';
 
 const contextBridgeApi = {
-  registerUpdateCallback: (callback: () => void) => {
-    ipcRenderer.on('settings', () => {
-      callback();
-    });
-  },
   registerHeightRequestCallback: (callback: () => void) => {
     ipcRenderer.on('request-height', () => {
       callback();
@@ -16,12 +11,12 @@ const contextBridgeApi = {
     ipcRenderer.send('panel-height', height);
   },
   store: {
-    getSettings(): SchemaType['settings'] {
-      // TODO: use invoke here instead
-      return ipcRenderer.sendSync('electron-store-get', 'settings');
+    getSettings: async (): Promise<SchemaType['settings']> => {
+      const result = await ipcRenderer.invoke('electron-store:get', 'settings');
+      return result;
     },
-    setSettings(value: SchemaType['settings']) {
-      ipcRenderer.send('electron-store-set', 'settings', value);
+    setSettings: (value: SchemaType['settings']) => {
+      ipcRenderer.send('electron-store:set', 'settings', value);
     },
   },
 };

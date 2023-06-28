@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { FormContainer, TextFieldElement } from 'react-hook-form-mui';
+import React, { useEffect, useState } from 'react';
+import { CheckboxElement, FormContainer, TextFieldElement } from 'react-hook-form-mui';
 import { Box, Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useQuery } from '@tanstack/react-query';
 import { ISettings } from '../store';
 import ManageSwitches from './manage-switches';
 
@@ -22,16 +23,35 @@ export interface TFormValues extends Omit<ISettings, 'entities'> {
 }
 
 export function App() {
-  const settings = window.electronAPI.store.getSettings();
-  const transformedSettings = { ...settings, entityIds: settings.entities.map((e) => e.entity_id) };
+  const [apiUrl, setApiUrl] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const [apiUrl, setApiUrl] = useState<string | null>(settings.hassApiUrl);
-  const [token, setToken] = useState<string | null>(settings.longLivedAccessToken);
+  const { data, isSuccess } = useQuery({
+    queryKey: ['settings'],
+    queryFn: window.electronAPI.store.getSettings,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setApiUrl(data.hassApiUrl);
+      setToken(data.longLivedAccessToken);
+    }
+  }, [isSuccess, data]);
+
+  if (!isSuccess) {
+    return 'Loading';
+  }
+
+  const formDefaultValues = {
+    ...data,
+    entityIds: data.entities.map((e) => e.entity_id),
+    enabledAutoStart: false,
+  };
 
   return (
     <Box p={1}>
       <FormContainer<TFormValues>
-        defaultValues={transformedSettings}
+        defaultValues={formDefaultValues}
         onSuccess={async (values) => {
           const transformedValues: ISettings = { ...values, entities: values.entityIds.map((e) => ({ entity_id: e })) };
 
@@ -52,6 +72,10 @@ export function App() {
           </Grid>
           <Grid xs={12}>
             <TextFieldElement<TFormValues> name="longLivedAccessToken" label="Long Lived Access Token" fullWidth />
+          </Grid>
+
+          <Grid xs={12}>
+            <CheckboxElement<TFormValues> name="isAutoLaunchEnabled" label="Enable Autostart" />
           </Grid>
 
           <Grid xs={12}>

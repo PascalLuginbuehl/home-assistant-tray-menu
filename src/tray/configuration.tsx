@@ -3,16 +3,20 @@ import { useQuery } from '@tanstack/react-query';
 import { LampIcon } from '@fluentui/react-icons-mdl2';
 import clsx from 'clsx';
 import axios from 'axios';
+import { IEntityConfig } from '../store';
 import IState from '../interfaces/IState';
 
-const settings = window.electronAPI.store.getSettings();
+const baseApiClient = axios.create();
 
-const baseApiClient = axios.create({
-  baseURL: settings.hassApiUrl,
+let configuredEntities: IEntityConfig[] = [];
+window.electronAPI.store.getSettings().then((settings) => {
+  baseApiClient.defaults.baseURL = settings.hassApiUrl;
+
+  baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
+  baseApiClient.defaults.headers.common.Authorization = `Bearer ${settings.longLivedAccessToken}`;
+
+  configuredEntities = settings.entities;
 });
-
-baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
-baseApiClient.defaults.headers.common.Authorization = `Bearer ${settings.longLivedAccessToken}`;
 
 function serviceAction(domain: string, service: string, serviceData: { entity_id: string }) {
   return baseApiClient.post(
@@ -34,7 +38,7 @@ export default function Configuration() {
     staleTime: 1 * 60 * 1000,
     queryFn: async () => {
       const states = await fetchStates();
-      return states.filter((state) => settings.entities.map((e) => e.entity_id).includes(state.entity_id));
+      return states.filter((state) => configuredEntities.map((e) => e.entity_id).includes(state.entity_id));
     },
     suspense: true,
   });

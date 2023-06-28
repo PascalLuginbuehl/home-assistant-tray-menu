@@ -1,6 +1,7 @@
 import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
 import { ipcMain } from 'electron';
+import AutoLaunch from 'auto-launch';
 
 export interface IEntityConfig {
   entity_id: string,
@@ -11,6 +12,7 @@ export interface IEntityConfig {
 export interface ISettings {
   longLivedAccessToken: string,
   hassApiUrl: string,
+  isAutoLaunchEnabled: boolean
   entities: IEntityConfig[]
 }
 
@@ -32,6 +34,10 @@ const schema: JSONSchemaType<SchemaType> = {
           type: 'string',
           default: '',
         },
+        isAutoLaunchEnabled: {
+          type: 'boolean',
+          default: true,
+        },
         entities: {
           type: 'array',
           items: {
@@ -46,7 +52,7 @@ const schema: JSONSchemaType<SchemaType> = {
           default: [],
         },
       },
-      required: ['longLivedAccessToken', 'hassApiUrl', 'entities'],
+      required: ['longLivedAccessToken', 'hassApiUrl', 'entities', 'isAutoLaunchEnabled'],
     },
   },
   required: ['settings'],
@@ -65,19 +71,46 @@ const store = new Store<SchemaType>({
       entities: [],
       hassApiUrl: '',
       longLivedAccessToken: '',
+      isAutoLaunchEnabled: true,
     },
   },
 });
 
+const appAutoLauncher = new AutoLaunch({
+  name: 'Home Assistant Tray Menu',
+});
+
+async function setAutoLaunch(state: boolean) {
+  const isEnabled = await appAutoLauncher.isEnabled();
+
+  if (isEnabled === state) {
+    return;
+  }
+
+  if (state) {
+    appAutoLauncher.enable();
+    // eslint-disable-next-line no-console
+    console.debug('auto-launch enabled');
+  } else {
+    appAutoLauncher.disable();
+    // eslint-disable-next-line no-console
+    console.debug('auto-launch disabled');
+  }
+}
+
+// Set auto-launch state
+setAutoLaunch(store.get('settings').isAutoLaunchEnabled);
+
 export const createStoreEvents = () => {
   // IPC listener
-  ipcMain.on('electron-store-get', async (event, val) => {
-    // eslint-disable-next-line no-param-reassign
-    event.returnValue = store.get(val);
-  });
+  ipcMain.handle('electron-store:get', async (event, val) => store.get(val));
 
-  ipcMain.on('electron-store-set', async (event, key, val) => {
+  ipcMain.on('electron-store:set', async (event, key, val) => {
     store.set(key, val);
+
+    if (key === 'settings') {
+      setAutoLaunch(val.isAutoLaunchEnabled);
+    }
   });
 };
 

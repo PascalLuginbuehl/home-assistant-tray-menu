@@ -45,10 +45,11 @@ export function setTrayMenu(tray: Tray, app: Electron.App) {
 }
 
 const initTray = (app: Electron.App): void => {
-  const panelWindow = PanelController.createInstance();
+  const panelController = new PanelController();
+
   // trigger reload to load new API Keys and API Url
   ipcMain.on('electron-store-set', async () => {
-    panelWindow.reload();
+    panelController.panelWindow.reload();
   });
 
   const tray = new Tray(ICON_PATHS.DEFAULT);
@@ -56,9 +57,9 @@ const initTray = (app: Electron.App): void => {
   setTrayMenu(tray, app);
 
   tray.on('click', async () => {
-    PanelController.showPanel();
-    panelWindow.webContents.send('request-height');
-    panelWindow.focus();
+    panelController.showPanel();
+    panelController.panelWindow.webContents.send('request-height');
+    panelController.panelWindow.focus();
   });
 
   const checkHassStatus = async () => {

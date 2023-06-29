@@ -2,6 +2,7 @@ export default interface IState {
   entity_id: string
   state: string
   attributes: {
+    icon?: string
     friendly_name: string
   }
   last_changed: string
@@ -9,6 +10,6 @@ export default interface IState {
   context: {
     id: string
     parent_id: string | null
-    user_id: string
+    user_id: string | null
   }
 }

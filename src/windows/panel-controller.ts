@@ -22,7 +22,7 @@ export interface ITaskbarPosition {
   gap: number
 }
 
-class PanelController {
+export default class PanelController {
   public panelSize: IPanelSize = {
     width: 356,
     height: 500,
@@ -34,11 +34,9 @@ class PanelController {
 
   public panelWindow: BrowserWindow;
 
-  createInstance() {
+  constructor() {
     this.panelWindow = this.createPanel();
     this.attachResizeEvent();
-
-    return this.panelWindow;
   }
 
   attachResizeEvent() {
@@ -143,5 +141,3 @@ class PanelController {
     // startHidePanel()
   }
 }
-
-export default new PanelController();

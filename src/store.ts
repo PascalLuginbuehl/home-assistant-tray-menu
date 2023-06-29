@@ -7,7 +7,7 @@ export interface IEntityConfig {
   entity_id: string,
   // domain: 'switch',
   // service: 'toggle',
-  // label: string,
+  label: string | null,
 }
 export interface ISettings {
   longLivedAccessToken: string,
@@ -46,8 +46,13 @@ const schema: JSONSchemaType<SchemaType> = {
               entity_id: {
                 type: 'string',
               },
+              label: {
+                // https://github.com/ajv-validator/ajv/issues/2163#issuecomment-1440299363
+                type: ['string', 'null'] as unknown as 'string',
+                default: null,
+              },
             },
-            required: ['entity_id'],
+            required: ['entity_id', 'label'],
           },
           default: [],
         },

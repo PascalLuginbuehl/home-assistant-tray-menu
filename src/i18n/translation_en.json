@@ -1,0 +1,9 @@
+{
+  "GENERIC": {
+    "SETTINGS": "Settings",
+    "QUIT": "Quit"
+  },
+  "SETTINGS": {
+    "SAVE_SWITCHES": "Save Switches"
+  }
+}

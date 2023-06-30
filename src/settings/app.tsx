@@ -1,24 +1,14 @@
 import axios from 'axios';
 import React from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Box, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import { ISettings } from '../store';
 import EntitiesForm from './entities-form';
-import Connection, { TFormValues } from './connection';
+import Connection from './connection';
 import IState from '../interfaces/IState';
 
 const baseApiClient = axios.create();
 baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
-
-async function checkApiUrl(apiURL: string, token: string) {
-  const { data } = await axios.get(`${apiURL}/api/`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  return data;
-}
 
 async function fetchStates() {
   const { data } = await baseApiClient.get<IState[]>('/api/states');
@@ -51,25 +41,8 @@ export default function App() {
     if (!isSuccess) {
       return;
     }
-
     await window.electronAPI.store.setSettings({ ...settings, ...newSettings });
   };
-
-  const {
-    isError, mutateAsync: setApiUrl, isLoading,
-  } = useMutation({
-    mutationFn: async (newSettings: TFormValues) => {
-      await saveSettings(newSettings);
-      try {
-        await checkApiUrl(newSettings.hassApiUrl, newSettings.longLivedAccessToken);
-      } catch (e) {
-        throw new Error('API URL oder Long lived access token invalid');
-      } finally {
-        await refetch();
-        await refetchStates();
-      }
-    },
-  });
 
   if (!isSuccess) {
     return 'Loading settings';
@@ -79,20 +52,20 @@ export default function App() {
     <Box p={1}>
       <Connection
         settings={settings}
-        onSave={async (newSettings) => {
-          await setApiUrl(newSettings);
+        onSaveSettings={async (newSettings) => {
+          await saveSettings(newSettings);
+          await refetch();
+          await refetchStates();
         }}
       />
-      {isLoading && <CircularProgress />}
-      {isError && <Typography>Some error occured</Typography>}
 
       {(!isSuccessStates || isErrorStates) ? (
         <Typography>Could not fetch</Typography>
       ) : (
         <EntitiesForm
           entities={settings.entities}
-          onSave={(newSettings) => {
-            saveSettings({ entities: newSettings });
+          onSave={async (entities) => {
+            await saveSettings({ entities });
           }}
           states={states}
         />

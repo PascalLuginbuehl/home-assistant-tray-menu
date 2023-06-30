@@ -7,6 +7,7 @@ import {
   Box,
   List, alpha,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import type { TFormValues } from '../entities-form';
 import FormOnFieldChange from '../form/FormOnFieldChange';
 import type IState from '../../interfaces/IState';
@@ -20,6 +21,8 @@ interface ManageSwitchesProps {
 
 export default function ManageSwitches(props: ManageSwitchesProps) {
   const { states } = props;
+  const { t } = useTranslation('SETTINGS');
+
   const {
     field: { onChange: setSelectFieldValue },
   } = useController<TFormValues>({ name: 'selectSwitch' });
@@ -84,6 +87,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
         name="selectSwitch"
         options={filteredOptions2}
         textFieldProps={{ fullWidth: true }}
+        label={t('ADD_ENTITY')}
         matchId
         autocompleteProps={{ fullWidth: true }}
       />

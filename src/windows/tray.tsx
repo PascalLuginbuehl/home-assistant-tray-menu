@@ -33,9 +33,9 @@ export function setTrayMenu(tray: Tray, app: Electron.App) {
   if (tray === null) return;
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: i18next.t('SETTINGS', { ns: 'GENERIC' }), type: 'normal', click: () => openSettings() },
+    { label: i18next.t('SETTINGS'), type: 'normal', click: () => openSettings() },
     { type: 'separator' },
-    { label: i18next.t('QUIT', { ns: 'GENERIC' }), type: 'normal', click: () => app.quit() },
+    { label: i18next.t('QUIT'), type: 'normal', click: () => app.quit() },
   ]);
 
   tray.setContextMenu(contextMenu);

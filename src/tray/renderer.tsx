@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 import App from './app';
+import '../i18next';
 
 import './css/vars.scss';
 import './css/panel.scss';

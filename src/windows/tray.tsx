@@ -3,6 +3,7 @@ import {
 } from 'electron';
 import path from 'path';
 import axios from 'axios';
+import i18next from '../i18next';
 import PanelController from './panel-controller';
 import openSettings from './settings';
 import defaultIconImagePath from '../../assets/icon@3x.png';
@@ -16,10 +17,6 @@ const ICON_PATHS = {
   TRANSPARENT: path.resolve(__dirname, transparentIconImagePath),
   WARNING_ICON: path.resolve(__dirname, warningIconImagePath),
   ERROR: path.resolve(__dirname, errorIconImagePath),
-};
-
-const T = {
-  t: (key: string) => key,
 };
 
 async function checkApiUrl(apiURL: string, token: string) {
@@ -36,9 +33,9 @@ export function setTrayMenu(tray: Tray, app: Electron.App) {
   if (tray === null) return;
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: T.t('GENERIC_SETTINGS'), type: 'normal', click: () => openSettings() },
+    { label: i18next.t('SETTINGS', { ns: 'GENERIC' }), type: 'normal', click: () => openSettings() },
     { type: 'separator' },
-    { label: T.t('GENERIC_QUIT'), type: 'normal', click: () => app.quit() },
+    { label: i18next.t('QUIT', { ns: 'GENERIC' }), type: 'normal', click: () => app.quit() },
   ]);
 
   tray.setContextMenu(contextMenu);

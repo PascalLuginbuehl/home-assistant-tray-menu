@@ -46,11 +46,8 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
       <DragDropContext onDragEnd={handleDrag}>
         <List
           sx={(theme) => ({
-            '& .MuiListItem-container:hover': {
+            '& .MuiListItem-root:hover': {
               backgroundColor: alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
-              '&:last-child': {
-                backgroundColor: 'inherit',
-              },
             },
           })}
         >

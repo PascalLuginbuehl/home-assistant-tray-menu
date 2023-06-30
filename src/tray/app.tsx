@@ -6,9 +6,10 @@ import Configuration from './configuration';
 function Fallback(props: FallbackProps) {
   const { resetErrorBoundary } = props;
   return (
-    <div>
+    <div style={{ height: 100, padding: 24 }}>
       There was an error!
-      <button onClick={() => resetErrorBoundary()} type="button">Try again</button>
+      <br />
+      <button onClick={() => resetErrorBoundary()} type="button">Retry</button>
     </div>
   );
 }

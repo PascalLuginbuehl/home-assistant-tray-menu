@@ -11,12 +11,10 @@ const contextBridgeApi = {
     ipcRenderer.send('panel-height', height);
   },
   store: {
-    getSettings: async (): Promise<SchemaType['settings']> => {
-      const result = await ipcRenderer.invoke('electron-store:get', 'settings');
-      return result;
-    },
-    setSettings: (value: SchemaType['settings']) => {
-      ipcRenderer.send('electron-store:set', 'settings', value);
+    getSettings: async (): Promise<SchemaType['settings']> => ipcRenderer.invoke('electron-store:get', 'settings'),
+    setSettings: async (value: SchemaType['settings']) => {
+      ipcRenderer.send('reload');
+      ipcRenderer.invoke('electron-store:set', 'settings', value);
     },
   },
 };

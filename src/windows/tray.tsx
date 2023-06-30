@@ -48,12 +48,12 @@ const initTray = (app: Electron.App): void => {
   const panelController = new PanelController();
 
   // trigger reload to load new API Keys and API Url
-  ipcMain.on('electron-store-set', async () => {
+  ipcMain.on('reload', () => {
     panelController.panelWindow.reload();
   });
 
   const tray = new Tray(ICON_PATHS.DEFAULT);
-  tray.setToolTip('Twinkle Tray');
+  tray.setToolTip('Home Assistant Controlls');
   setTrayMenu(tray, app);
 
   tray.on('click', async () => {

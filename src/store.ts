@@ -110,7 +110,7 @@ export const createStoreEvents = () => {
   // IPC listener
   ipcMain.handle('electron-store:get', async (event, val) => store.get(val));
 
-  ipcMain.on('electron-store:set', async (event, key, val) => {
+  ipcMain.handle('electron-store:set', async (event, key, val) => {
     store.set(key, val);
 
     if (key === 'settings') {

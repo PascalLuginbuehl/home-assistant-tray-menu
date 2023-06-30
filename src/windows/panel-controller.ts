@@ -77,9 +77,6 @@ export default class PanelController {
         spellcheck: false,
         webgl: false,
         enableWebSQL: false,
-
-        // FIX: Disables CORS preflight checks
-        webSecurity: false,
       },
     });
 
@@ -88,22 +85,6 @@ export default class PanelController {
 
     panelWindow.on('blur', () => {
       this.hidePanel();
-    });
-
-    // This rewrites request headers
-    panelWindow.webContents.session.webRequest.onBeforeSendHeaders(
-      (details, callback) => {
-        callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
-      },
-    );
-
-    panelWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-      callback({
-        responseHeaders: {
-          'Access-Control-Allow-Origin': ['*'],
-          ...details.responseHeaders,
-        },
-      });
     });
 
     return panelWindow;

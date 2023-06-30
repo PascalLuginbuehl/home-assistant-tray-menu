@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { SchemaType } from './store';
+import IState from './types/state';
+import APIUrlStateEnum from './types/api-state-enum';
 
 const contextBridgeApi = {
   registerHeightRequestCallback: (callback: () => void) => {
@@ -11,11 +13,17 @@ const contextBridgeApi = {
     ipcRenderer.send('panel-height', height);
   },
   store: {
-    getSettings: async (): Promise<SchemaType['settings']> => ipcRenderer.invoke('electron-store:get', 'settings'),
-    setSettings: async (value: SchemaType['settings']) => {
-      ipcRenderer.send('reload');
-      ipcRenderer.invoke('electron-store:set', 'settings', value);
+    getSettings: (): Promise<SchemaType['settings']> => ipcRenderer.invoke('electron-store:get', 'settings'),
+    setSettings: async (settings: SchemaType['settings']) => {
+      ipcRenderer.send('reload-api', settings);
+      return ipcRenderer.invoke('electron-store:set', 'settings', settings);
     },
+  },
+  checkAPIUrl: (apiUrl: string, llat: string): Promise<APIUrlStateEnum> => ipcRenderer.invoke('checkAPIUrl', apiUrl, llat),
+  state: {
+    getStates: async (): Promise<IState[]> => ipcRenderer.invoke('state:get-states'),
+    callServiceAction:
+      async (domain: string, service: string, serviceData: { entity_id: string }): Promise<void> => ipcRenderer.invoke('service:call-action', domain, service, serviceData),
   },
 };
 

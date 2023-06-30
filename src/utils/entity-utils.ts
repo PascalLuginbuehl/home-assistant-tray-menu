@@ -1,4 +1,4 @@
-import IState from '../interfaces/IState';
+import IState from '../types/state';
 import { IEntityConfig } from '../store';
 
 export default class EntityUtils {

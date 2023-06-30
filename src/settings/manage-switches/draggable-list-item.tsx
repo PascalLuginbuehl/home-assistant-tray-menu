@@ -10,7 +10,7 @@ import {
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { IEntityConfig } from '../../store';
-import IState from '../../interfaces/IState';
+import IState from '../../types/state';
 import type { TFormValues } from '../entities-form';
 import EntityUtils from '../../utils/entity-utils';
 
@@ -32,7 +32,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
 
   return (
     <Draggable
-      draggableId={`item-${entity.entity_id}`}
+      draggableId={`entity-${entity.entity_id}`}
       index={index}
       isDragDisabled={editing}
     >

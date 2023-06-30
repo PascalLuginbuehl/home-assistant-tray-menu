@@ -1,4 +1,4 @@
-import IState from '../interfaces/IState';
+import IState from '../types/state';
 
 const mockState: IState[] = [
   {

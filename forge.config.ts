@@ -15,7 +15,6 @@ const config: ForgeConfig = {
   plugins: [
     new WebpackPlugin({
       mainConfig,
-      devContentSecurityPolicy: "connect-src 'self' http://192.168.1.10:8123 'unsafe-eval'",
       renderer: {
         config: rendererConfig,
         entryPoints: [

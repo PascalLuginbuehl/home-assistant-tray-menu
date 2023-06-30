@@ -10,10 +10,9 @@ import {
 import { useTranslation } from 'react-i18next';
 import type { TFormValues } from '../entities-form';
 import FormOnFieldChange from '../form/FormOnFieldChange';
-import type IState from '../../interfaces/IState';
+import type IState from '../../types/state';
 import DraggableListItem from './draggable-list-item';
 import EntityUtils from '../../utils/entity-utils';
-// import mockState from './mock-state';
 
 interface ManageSwitchesProps {
   states: IState[]
@@ -41,8 +40,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
 
   const filteredOptions = states.filter((state) => fields.find((field) => state.entity_id === field.entity_id) === undefined);
 
-  // mockState.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name }))
-  const filteredOptions2 = filteredOptions.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name }));
+  const mappedFilteredOptions = filteredOptions.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name }));
 
   return (
     <>
@@ -54,7 +52,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
             },
           })}
         >
-          <Droppable droppableId="test-items">
+          <Droppable droppableId="entities">
             {(providedOuter) => (
               <Box
                 // eslint-disable-next-line react/jsx-props-no-spreading
@@ -62,7 +60,13 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
                 ref={providedOuter.innerRef}
               >
                 {fields.map((entity, index) => (
-                  <DraggableListItem key={`test[${entity.entity_id}]`} entity={entity} index={index} state={EntityUtils.getState(entity, states)} onRemove={() => remove(index)} />
+                  <DraggableListItem
+                    key={`entities[${entity.entity_id}]`}
+                    entity={entity}
+                    index={index}
+                    state={EntityUtils.getState(entity, states)}
+                    onRemove={() => remove(index)}
+                  />
                 ))}
                 {providedOuter.placeholder}
               </Box>
@@ -85,7 +89,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
       />
       <AutocompleteElement<TFormValues>
         name="selectSwitch"
-        options={filteredOptions2}
+        options={mappedFilteredOptions}
         textFieldProps={{ fullWidth: true }}
         label={t('ADD_ENTITY')}
         matchId

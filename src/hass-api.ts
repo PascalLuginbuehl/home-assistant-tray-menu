@@ -1,35 +1,23 @@
 import axios, { AxiosError } from 'axios';
-import { ipcMain } from 'electron';
-import { IState } from 'react-use/lib/usePermission';
 import store, { ISettings } from './store';
 import APIUrlStateEnum from './types/api-state-enum';
+import { setIconStatus } from './windows/tray';
 
-const settings = store.get('settings');
-
-const baseApiClient = axios.create();
+export const baseApiClient = axios.create();
 baseApiClient.defaults.headers.common['Content-Type'] = 'application/json';
 
-const setSettings = (storeSettings: ISettings) => {
+export const setAxiosParameters = (storeSettings: ISettings) => {
   baseApiClient.defaults.baseURL = storeSettings.hassApiUrl;
   baseApiClient.defaults.headers.common.Authorization = `Bearer ${storeSettings.longLivedAccessToken}`;
 };
 
-setSettings(settings);
+setAxiosParameters(store.get('settings'));
 
-ipcMain.on('reload-api', (event, storeSettings: ISettings) => {
-  setSettings(storeSettings);
-});
-
-ipcMain.handle(
-  'state:get-states',
-  () => baseApiClient.get<IState[]>('/api/states').then((response) => response.data),
-);
-
-ipcMain.handle('checkAPIUrl', async (event, hassApiUrl, llat): Promise<APIUrlStateEnum> => {
+export const checkAPIUrl = async (hassApiUrl: string, longLivedAccessToken: string): Promise<APIUrlStateEnum> => {
   try {
     await axios.get(`${hassApiUrl}/api/`, {
       headers: {
-        Authorization: `Bearer ${llat}`,
+        Authorization: `Bearer ${longLivedAccessToken}`,
         'Content-Type': 'application/json',
       },
     });
@@ -42,10 +30,12 @@ ipcMain.handle('checkAPIUrl', async (event, hassApiUrl, llat): Promise<APIUrlSta
 
     throw e;
   }
-});
+};
 
-ipcMain.handle(
-  'service:call-action',
-  (event, domain: string, service: string, serviceData: { entity_id: string }) => baseApiClient.post(`/api/services/${domain}/${service}`, serviceData)
-    .then((response) => response.data),
-);
+export const checkAPIStatusPeriodically = async () => {
+  const settings = store.get('settings');
+
+  const status = await checkAPIUrl(settings.hassApiUrl, settings.longLivedAccessToken);
+  setIconStatus(status);
+  setTimeout(checkAPIStatusPeriodically, 5 * 60 * 1000);
+};

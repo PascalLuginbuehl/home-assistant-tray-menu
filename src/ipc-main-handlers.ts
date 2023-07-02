@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
-import { ISettings } from './store';
+import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
 
 const handleError = (e: unknown) => {
@@ -41,3 +41,14 @@ ipcMain.handle(
     .then(handleAPIStatus)
     .catch(handleError),
 );
+
+// electron-store
+ipcMain.handle('electron-store:get', async (event, val) => store.get(val));
+
+ipcMain.handle('electron-store:set', async (event, key, val) => {
+  store.set(key, val);
+
+  if (key === 'settings') {
+    setAutoLaunch(val.isAutoLaunchEnabled);
+  }
+});

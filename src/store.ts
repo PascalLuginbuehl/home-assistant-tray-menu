@@ -6,6 +6,7 @@ export interface IEntityConfig {
   entity_id: string,
   // domain: 'switch',
   // service: 'toggle',
+  icon: string | null,
   label: string | null,
 }
 export interface ISettings {
@@ -46,6 +47,11 @@ const schema: JSONSchemaType<SchemaType> = {
                 type: 'string',
               },
               label: {
+                // https://github.com/ajv-validator/ajv/issues/2163#issuecomment-1440299363
+                type: ['string', 'null'] as unknown as 'string',
+                default: null,
+              },
+              icon: {
                 // https://github.com/ajv-validator/ajv/issues/2163#issuecomment-1440299363
                 type: ['string', 'null'] as unknown as 'string',
                 default: null,

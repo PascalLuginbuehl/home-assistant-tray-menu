@@ -1,6 +1,5 @@
 import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
-import { ipcMain } from 'electron';
 import AutoLaunch from 'auto-launch';
 
 export interface IEntityConfig {
@@ -85,7 +84,7 @@ const appAutoLauncher = new AutoLaunch({
   name: 'Home Assistant Tray Menu',
 });
 
-async function setAutoLaunch(state: boolean) {
+export async function setAutoLaunch(state: boolean) {
   const isEnabled = await appAutoLauncher.isEnabled();
 
   if (isEnabled === state) {
@@ -105,18 +104,5 @@ async function setAutoLaunch(state: boolean) {
 
 // Set auto-launch state
 setAutoLaunch(store.get('settings').isAutoLaunchEnabled);
-
-export const createStoreEvents = () => {
-  // IPC listener
-  ipcMain.handle('electron-store:get', async (event, val) => store.get(val));
-
-  ipcMain.handle('electron-store:set', async (event, key, val) => {
-    store.set(key, val);
-
-    if (key === 'settings') {
-      setAutoLaunch(val.isAutoLaunchEnabled);
-    }
-  });
-};
 
 export default store;

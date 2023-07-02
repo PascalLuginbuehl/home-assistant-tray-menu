@@ -1,8 +1,9 @@
 import {
   app, BrowserWindow,
 } from 'electron';
-import { createStoreEvents } from './store';
-import initTray from './windows/tray';
+import createTray from './windows/tray';
+import './ipc-main-handlers';
+import { checkAPIStatusPeriodically } from './hass-api';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -10,9 +11,9 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-createStoreEvents();
+checkAPIStatusPeriodically();
 
-app.on('ready', () => initTray(app));
+app.on('ready', () => createTray(app));
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

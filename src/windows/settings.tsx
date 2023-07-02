@@ -23,9 +23,6 @@ const openSettings = () => {
     title: 'Home Assistant Tray Menu Settings',
     webPreferences: {
       preload: SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY,
-
-      // FIX: Disables CORS preflight checks
-      webSecurity: false,
     },
   });
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormContainer } from 'react-hook-form-mui';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { IEntityConfig } from '../store';
 import ManageSwitches from './manage-switches/manage-switches';
-import IState from '../interfaces/IState';
+import IState from '../types/state';
+import SubmitButton from './form/submit-button';
 
 export interface TFormValues {
   entities: IEntityConfig[]
@@ -42,9 +42,9 @@ export default function EntitiesForm(props: EntitesFormProps) {
         </Grid>
 
         <Grid xs={12}>
-          <Button type="submit" color="primary" variant="contained">
+          <SubmitButton>
             {t('SAVE_SWITCHES')}
-          </Button>
+          </SubmitButton>
         </Grid>
       </Grid>
 

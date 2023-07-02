@@ -306,6 +306,12 @@ body[data-is-win11="true"] {
   text-align: left;
   background-color: transparent;
   color: var(--tray-text);
+  display: flex;
+  align-items: center;
+  & .spacing {
+    width: 36px;
+    height: 24px;
+  }
   &.selected {
     background-color: #333;
   }

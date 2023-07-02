@@ -1,7 +1,8 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { LampIcon } from '@fluentui/react-icons-mdl2';
 import clsx from 'clsx';
+import Icon from '@mdi/react';
+import { getIconsPath } from '../settings/manage-switches/icons';
 import EntityUtils from '../utils/entity-utils';
 
 export default function Configuration() {
@@ -47,8 +48,12 @@ export default function Configuration() {
                 await refetch();
               }}
             >
-              <LampIcon />
-              {EntityUtils.getEntityName(entity, state)}
+              <div className="spacing">
+                {entity.icon && <Icon path={getIconsPath(entity.icon)} size={1} />}
+              </div>
+              <span>
+                {EntityUtils.getEntityName(entity, state)}
+              </span>
             </button>
           );
         })

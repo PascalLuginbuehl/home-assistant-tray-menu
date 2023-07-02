@@ -82,7 +82,7 @@ export default function ManageSwitches(props: ManageSwitchesProps) {
             return;
           }
 
-          append({ entity_id: value as string, label: null });
+          append({ entity_id: value as string, label: null, icon: null });
 
           setSelectFieldValue(null);
         }}

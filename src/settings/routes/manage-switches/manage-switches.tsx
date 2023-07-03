@@ -8,11 +8,11 @@ import {
   List, alpha,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { TFormValues } from '../entities-form';
-import FormOnFieldChange from '../form/FormOnFieldChange';
-import type IState from '../../types/state';
+import type { TFormValues } from '../../entities-form';
+import FormOnFieldChange from '../../form/FormOnFieldChange';
+import type IState from '../../../types/state';
 import DraggableListItem from './draggable-list-item';
-import EntityUtils from '../../utils/entity-utils';
+import EntityUtils from '../../../utils/entity-utils';
 
 interface ManageSwitchesProps {
   states: IState[]

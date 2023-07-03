@@ -10,9 +10,9 @@ import { useQuery } from '@tanstack/react-query';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Box, Typography } from '@mui/material';
-import { ISettings } from '../store';
-import APIUrlStateEnum from '../types/api-state-enum';
-import SubmitButton from './form/submit-button';
+import { ISettings } from '../../../store';
+import APIUrlStateEnum from '../../../types/api-state-enum';
+import SubmitButton from '../../form/submit-button';
 
 export type TFormValues = Pick<ISettings, 'hassApiUrl' | 'longLivedAccessToken' | 'isAutoLaunchEnabled'>;
 
@@ -85,7 +85,18 @@ export default function Connection(props: ConnectionProps) {
           <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder="http://homeassistant.local:8123" fullWidth helperText=" " />
         </Grid>
         <Grid xs={12}>
-          <TextFieldElement<TFormValues> name="longLivedAccessToken" label={t('LONG_LIVED_ACCESS_TOKEN')} fullWidth multiline helperText=" " />
+          <TextFieldElement
+            name="longLivedAccessToken"
+            label={t('LONG_LIVED_ACCESS_TOKEN')}
+            fullWidth
+            multiline
+            helperText=" "
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
+          />
         </Grid>
 
         <Grid xs={12}>

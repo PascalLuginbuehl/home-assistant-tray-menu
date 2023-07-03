@@ -1,58 +1,35 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { ISettings } from '../store';
+import {
+  Box,
+} from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
+import Connection from './routes/connection/connection';
 import EntitiesForm from './entities-form';
-import Connection from './connection';
+import useSettings from '../utils/use-settings';
 
 export default function App() {
-  const { data: settings, isSuccess, refetch } = useQuery({
-    queryKey: ['settings'],
-    queryFn: async () => window.electronAPI.store.getSettings(),
-  });
+  const { settings, saveSettings } = useSettings();
 
-  const {
-    data: states, isSuccess: isSuccessStates, isError: isErrorStates, refetch: refetchStates,
-  } = useQuery({
-    queryKey: ['states'],
-    queryFn: () => window.electronAPI.state.getStates(),
-    retry: false,
-    enabled: !!settings?.hassApiUrl && !!settings?.longLivedAccessToken,
-  });
-
-  const saveSettings = async (newSettings: Partial<ISettings>) => {
-    if (!isSuccess) {
-      return;
-    }
-    await window.electronAPI.store.setSettings({ ...settings, ...newSettings });
-  };
-
-  if (!isSuccess) {
+  if (!settings) {
     return 'Loading settings';
   }
 
   return (
     <Box p={1}>
-      <Connection
-        settings={settings}
-        onSaveSettings={async (newSettings) => {
-          await saveSettings(newSettings);
-          await refetch();
-          await refetchStates();
-        }}
-      />
-
-      {(!isSuccessStates || isErrorStates) ? (
-        <Typography>Could not fetch</Typography>
-      ) : (
-        <EntitiesForm
-          entities={settings.entities}
-          onSave={async (entities) => {
-            await saveSettings({ entities });
-          }}
-          states={states}
+      <Routes>
+        <Route
+          path="/connection"
+          element={(
+            <Connection
+              settings={settings}
+              onSaveSettings={async (newSettings) => {
+                await saveSettings(newSettings);
+              }}
+            />
+            )}
         />
-      )}
+        <Route path="/" element={<EntitiesForm entities={settings.entities} onSave={(entities) => saveSettings({ entities })} />} />
+      </Routes>
     </Box>
   );
 }

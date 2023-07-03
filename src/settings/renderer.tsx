@@ -7,6 +7,7 @@ import darkTheme from '../theme/dark-theme';
 import '../i18next';
 import Navigation from './navigation';
 import App from './app';
+import { SettingsProvider } from '../utils/use-settings';
 
 // this element does 100% exist
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -23,10 +24,12 @@ root.render(
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <HashRouter>
-        <Box display="flex">
-          <Navigation />
-          <App />
-        </Box>
+        <SettingsProvider>
+          <Box display="flex">
+            <Navigation />
+            <App />
+          </Box>
+        </SettingsProvider>
       </HashRouter>
     </ThemeProvider>
   </QueryClientProvider>,

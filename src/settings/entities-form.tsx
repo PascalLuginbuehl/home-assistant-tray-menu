@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { IconButton, Typography } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { useSettings } from '../utils/use-settings';
 import { IEntityConfig } from '../store';
 import ManageSwitches from './routes/manage-switches/manage-switches';
 import SubmitButton from './form/submit-button';
@@ -14,13 +15,8 @@ export interface TFormValues {
   selectSwitch: string | null
 }
 
-interface EntitesFormProps {
-  entities: IEntityConfig[]
-  onSave: (entities: IEntityConfig[]) => void
-}
-
-export default function EntitiesForm(props: EntitesFormProps) {
-  const { entities, onSave } = props;
+export default function EntitiesForm() {
+  const { settings: { entities }, saveSettings } = useSettings();
   const { t } = useTranslation('SETTINGS');
 
   const {
@@ -46,13 +42,20 @@ export default function EntitiesForm(props: EntitesFormProps) {
     <FormContainer<TFormValues>
       defaultValues={formDefaultValues}
       onSuccess={async (values) => {
-        onSave(values.entities);
+        await saveSettings({ entities: values.entities });
       }}
     >
+
       <Grid container spacing={1}>
-        <IconButton onClick={() => refetch()} disabled={isRefetching}>
-          <ReplayIcon />
-        </IconButton>
+        <Grid xs={12}>
+          <Typography variant="h4" gutterBottom>Entities</Typography>
+        </Grid>
+
+        <Grid xs={12}>
+          <IconButton onClick={() => refetch()} disabled={isRefetching}>
+            <ReplayIcon />
+          </IconButton>
+        </Grid>
 
         <Grid xs={12}>
           <ManageSwitches states={filteredStates} />

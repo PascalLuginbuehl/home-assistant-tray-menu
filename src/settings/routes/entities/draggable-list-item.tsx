@@ -113,7 +113,6 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                         </ListItem>
                       ),
                     }}
-
                   />
                   <TextFieldElement<TFormValues>
                     name={`entities.${index}.label`}

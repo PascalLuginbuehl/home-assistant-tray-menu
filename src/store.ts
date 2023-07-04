@@ -88,12 +88,11 @@ const store = new Store<SchemaType>({
 
 export async function setAutoLaunch(state: boolean) {
   // Don't set autoLaunch for dev environment
-  if (app.isPackaged) {
+  if (!app.isPackaged) {
     return;
   }
 
   const { openAtLogin } = await app.getLoginItemSettings();
-  app.getLoginItemSettings();
 
   if (openAtLogin === state) {
     return;

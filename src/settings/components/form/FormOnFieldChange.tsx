@@ -5,7 +5,7 @@ import {
 } from 'react-hook-form-mui';
 import { usePrevious } from 'react-use';
 
-import genericMemo from '../../utils/genericMemo';
+import genericMemo from '../../../utils/genericMemo';
 
 export interface FormOnFieldChangeProps<
   FormValues extends FieldValues,

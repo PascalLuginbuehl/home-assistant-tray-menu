@@ -5,16 +5,14 @@
     "API_STATUS": "API Status"
   },
   "CONNECTION": {
-    "TEST_CONNECTION": "Test connection",
+    "TITLE": "API Connection",
     "LONG_LIVED_ACCESS_TOKEN": "Long Lived Access Token",
     "LAUNCH_AT_STARTUP": "Launch at startup",
     "LLAT_UNAUTHORIZED": "long lived access token was not authorized on the server",
-    "NETWORK_ERROR": "Could not reach server",
-    "TITLE": "API Connection"
+    "NETWORK_ERROR": "Could not reach server"
   },
   "ENTITIES": {
     "TITLE": "Entities",
-    "SAVE_ENTITIES": "Save Entities",
     "ADD_ENTITY": "Add entity"
   }
 }

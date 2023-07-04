@@ -106,8 +106,12 @@ export function createPanel(): BrowserWindow {
     },
   });
 
-  if (app.isPackaged) {
-    panelWindow.webContents.openDevTools({ mode: 'detach' });
+  if (!app.isPackaged) {
+    // create enough space for dev tools
+    panelWindow.webContents.on('devtools-opened', () => {
+      panelSize.height = 500; // + (settings?.isWin11 ? 24 : 0)
+      showPanel();
+    });
   }
 
   // and load the index.html of the app.

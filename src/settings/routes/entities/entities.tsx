@@ -1,21 +1,21 @@
-import React from 'react';
-import { FormContainer } from 'react-hook-form-mui';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { FormContainer, SubmitHandler, useForm } from 'react-hook-form-mui';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { IconButton, Typography } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
+import AutoSave from '../../components/form/auto-save';
 import { useSettings } from '../../../utils/use-settings';
 import { IEntityConfig } from '../../../store';
 import ManageEntities from './manage-entities';
-import SubmitButton from '../../form/submit-button';
 
 export interface TFormValues {
   entities: IEntityConfig[]
   selectSwitch: string | null
 }
 
-export default function Entities() {
+function Entities() {
   const { settings: { entities }, saveSettings } = useSettings();
   const { t } = useTranslation('ENTITIES');
 
@@ -24,28 +24,38 @@ export default function Entities() {
   } = useQuery({
     queryKey: ['states'],
     queryFn: () => window.electronAPI.state.getStates(),
+    select: (data) => data.filter((e) => e.entity_id.startsWith('switch.')),
     retry: false,
   });
 
-  const formDefaultValues: TFormValues = {
+  const formDefaultValues = useMemo<TFormValues>(() => ({
     entities,
     selectSwitch: null,
-  };
+  }), [entities]);
+
+  const formContext = useForm<TFormValues>({
+    defaultValues: formDefaultValues,
+  });
+
+  const { reset } = formContext;
+
+  // reinitialize by hand
+  useEffect(() => {
+    reset(formDefaultValues);
+  }, [formDefaultValues, reset]);
+
+  const onSaveFunction = useCallback<SubmitHandler<TFormValues>>((values) => {
+    saveSettings({ entities: values.entities });
+  }, [saveSettings]);
 
   if (!isSuccessStates || isErrorStates) {
     return <Typography>Could not fetch</Typography>;
   }
 
-  const filteredStates = states.filter((e) => e.entity_id.startsWith('switch.'));
-
   return (
     <FormContainer<TFormValues>
-      defaultValues={formDefaultValues}
-      onSuccess={async (values) => {
-        await saveSettings({ entities: values.entities });
-      }}
+      formContext={formContext}
     >
-
       <Grid container spacing={1}>
         <Grid xs={12}>
           <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
@@ -58,15 +68,16 @@ export default function Entities() {
         </Grid>
 
         <Grid xs={12}>
-          <ManageEntities states={filteredStates} />
+          <ManageEntities states={states} />
         </Grid>
 
-        <Grid xs={12}>
-          <SubmitButton>
-            {t('SAVE_ENTITIES')}
-          </SubmitButton>
-        </Grid>
+        <AutoSave
+          onSubmit={onSaveFunction}
+        />
       </Grid>
     </FormContainer>
   );
 }
+
+Entities.whyDidYouRender = true;
+export default Entities;

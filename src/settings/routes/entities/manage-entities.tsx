@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { TFormValues } from './entities';
-import FormOnFieldChange from '../../form/FormOnFieldChange';
+import FormOnFieldChange from '../../components/form/FormOnFieldChange';
 import type IState from '../../../types/state';
 import DraggableListItem from './draggable-list-item';
 import EntityUtils from '../../../utils/entity-utils';

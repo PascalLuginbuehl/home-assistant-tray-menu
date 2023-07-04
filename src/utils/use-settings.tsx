@@ -30,6 +30,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     queryKey: ['settings'],
     queryFn: async () => window.electronAPI.store.getSettings(),
     retry: false,
+    cacheTime: 0,
   });
 
   const { data: apiURLState, refetch: refetchAPIUrlState } = useQuery({
@@ -38,6 +39,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     queryFn: () => window.electronAPI.checkAPIUrl(settings!.hassApiUrl, settings!.longLivedAccessToken),
     enabled: !!settings,
     retry: false,
+    cacheTime: 0,
   });
 
   const saveSettings = useCallback(async (newSettings: Partial<ISettings>) => {

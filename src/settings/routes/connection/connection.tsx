@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import {
-  FormContainer, SwitchElement, TextFieldElement, useForm,
+  FormContainer, SubmitHandler, SwitchElement, TextFieldElement, useForm,
 } from 'react-hook-form-mui';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,7 @@ import { Typography } from '@mui/material';
 import { useSettings } from '../../../utils/use-settings';
 import { ISettings } from '../../../store';
 import APIUrlStateEnum from '../../../types/api-state-enum';
-import SubmitButton from '../../form/submit-button';
+import AutoSave from '../../components/form/auto-save';
 
 export type TFormValues = Pick<ISettings, 'hassApiUrl' | 'longLivedAccessToken' | 'isAutoLaunchEnabled'>;
 
@@ -26,18 +26,23 @@ export default function Connection() {
 
   const { settings, apiURLState, saveSettings } = useSettings();
 
-  const formDefaultProps: TFormValues = {
+  const formDefaultValues = useMemo<TFormValues>(() => ({
     hassApiUrl: settings.hassApiUrl,
     longLivedAccessToken: settings.longLivedAccessToken,
     isAutoLaunchEnabled: settings.isAutoLaunchEnabled,
-  };
+  }), [settings]);
 
   const formContext = useForm<TFormValues>({
     resolver: yupResolver(schema),
-    defaultValues: formDefaultProps,
+    defaultValues: formDefaultValues,
   });
 
-  const { setError } = formContext;
+  const { setError, reset } = formContext;
+
+  // reinitialize by hand
+  useEffect(() => {
+    reset(formDefaultValues);
+  }, [formDefaultValues, reset]);
 
   useEffect(() => {
     switch (apiURLState) {
@@ -55,13 +60,14 @@ export default function Connection() {
     }
   }, [apiURLState, setError, t]);
 
+  const onSaveFunction = useCallback<SubmitHandler<TFormValues>>((newSettings) => {
+    saveSettings(newSettings);
+    // await refetch();
+  }, [saveSettings]);
+
   return (
     <FormContainer<TFormValues>
       formContext={formContext}
-      onSuccess={async (newSettings) => {
-        await saveSettings(newSettings);
-        // await refetch();
-      }}
     >
       <Grid container spacing={1}>
         <Grid xs={12}>
@@ -89,11 +95,9 @@ export default function Connection() {
           <SwitchElement<TFormValues> name="isAutoLaunchEnabled" label={t('LAUNCH_AT_STARTUP')} />
         </Grid>
 
-        <Grid xs={12}>
-          <SubmitButton>
-            {t('TEST_CONNECTION')}
-          </SubmitButton>
-        </Grid>
+        <AutoSave
+          onSubmit={onSaveFunction}
+        />
       </Grid>
     </FormContainer>
   );

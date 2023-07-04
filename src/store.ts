@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
-import AutoLaunch from 'auto-launch';
+import { app } from 'electron';
 
 export interface IEntityConfig {
   entity_id: string,
@@ -86,26 +86,20 @@ const store = new Store<SchemaType>({
   },
 });
 
-const appAutoLauncher = new AutoLaunch({
-  name: 'Home Assistant Tray Menu',
-});
-
 export async function setAutoLaunch(state: boolean) {
-  const isEnabled = await appAutoLauncher.isEnabled();
-
-  if (isEnabled === state) {
+  // Don't set autoLaunch for dev environment
+  if (app.isPackaged) {
     return;
   }
 
-  if (state) {
-    appAutoLauncher.enable();
-    // eslint-disable-next-line no-console
-    console.debug('auto-launch enabled');
-  } else {
-    appAutoLauncher.disable();
-    // eslint-disable-next-line no-console
-    console.debug('auto-launch disabled');
+  const { openAtLogin } = await app.getLoginItemSettings();
+  app.getLoginItemSettings();
+
+  if (openAtLogin === state) {
+    return;
   }
+
+  app.setLoginItemSettings({ openAtLogin: state });
 }
 
 // Set auto-launch state

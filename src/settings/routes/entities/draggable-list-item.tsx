@@ -11,10 +11,10 @@ import {
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import Icon from '@mdi/react';
-import { IEntityConfig } from '../../store';
-import IState from '../../types/state';
-import type { TFormValues } from '../entities-form';
-import EntityUtils from '../../utils/entity-utils';
+import { IEntityConfig } from '../../../store';
+import IState from '../../../types/state';
+import type { TFormValues } from './entities';
+import EntityUtils from '../../../utils/entity-utils';
 import icons, { getIconsPath } from './icons';
 
 interface DraggableListItemProps {

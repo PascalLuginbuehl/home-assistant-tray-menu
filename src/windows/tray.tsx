@@ -1,9 +1,10 @@
 import {
+  app,
   ipcMain, Menu, Tray,
 } from 'electron';
 import path from 'path';
 import i18next from '../i18next';
-import PanelController from './panel-controller';
+import { createPanel, showPanel } from './panel-controller';
 import openSettings from './settings';
 import defaultIconImagePath from '../../assets/icon@3x.png';
 import transparentIconImagePath from '../../assets/transparentIcon@3x.png';
@@ -20,7 +21,7 @@ const ICON_PATHS = {
 
 let tray: Tray | null = null;
 
-export function setTrayMenu(app: Electron.App) {
+export function setTrayMenu() {
   if (tray === null) return;
 
   const contextMenu = Menu.buildFromTemplate([
@@ -32,22 +33,22 @@ export function setTrayMenu(app: Electron.App) {
   tray.setContextMenu(contextMenu);
 }
 
-const createTray = (app: Electron.App): void => {
-  const panelController = new PanelController();
+const createTray = (): void => {
+  const panelWindow = createPanel();
 
   // trigger reload to load new API Keys and API Url
   ipcMain.on('reload-api', () => {
-    panelController.panelWindow.reload();
+    panelWindow.reload();
   });
 
   tray = new Tray(ICON_PATHS.DEFAULT);
   tray.setToolTip('Home Assistant Controlls');
-  setTrayMenu(app);
+  setTrayMenu();
 
   tray.on('click', async () => {
-    panelController.showPanel();
-    panelController.panelWindow.webContents.send('request-height');
-    panelController.panelWindow.focus();
+    showPanel();
+    panelWindow.webContents.send('request-height');
+    panelWindow.focus();
   });
 };
 

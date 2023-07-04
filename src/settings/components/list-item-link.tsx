@@ -42,9 +42,6 @@ export default function ListItemLink(props: DrawerListItemLinkProps): JSX.Elemen
             borderLeft: `3px solid ${theme.palette.primary.main}`,
             paddingLeft: `calc(${theme.spacing(2)} - 3px)`,
             color: theme.palette.primary.main,
-            '& .MuiListItemText-primary': {
-              fontWeight: 'bold',
-            },
             '&:hover': {
               backgroundColor: theme.palette.background.default,
             },

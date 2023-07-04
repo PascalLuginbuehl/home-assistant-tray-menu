@@ -22,7 +22,7 @@ const schema: yup.ObjectSchema<TFormValues> = yup.object({
   .required();
 
 export default function Connection() {
-  const { t } = useTranslation('SETTINGS');
+  const { t } = useTranslation('CONNECTION');
 
   const { settings, apiURLState, saveSettings } = useSettings();
 
@@ -65,7 +65,7 @@ export default function Connection() {
     >
       <Grid container spacing={1}>
         <Grid xs={12}>
-          <Typography variant="h4" gutterBottom>Connection</Typography>
+          <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
         </Grid>
         <Grid xs={12}>
           <TextFieldElement<TFormValues> name="hassApiUrl" label="HASS URL" placeholder="http://homeassistant.local:8123" fullWidth helperText=" " />

@@ -5,19 +5,19 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { IconButton, Typography } from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { useSettings } from '../utils/use-settings';
-import { IEntityConfig } from '../store';
-import ManageSwitches from './routes/manage-switches/manage-switches';
-import SubmitButton from './form/submit-button';
+import { useSettings } from '../../../utils/use-settings';
+import { IEntityConfig } from '../../../store';
+import ManageEntities from './manage-entities';
+import SubmitButton from '../../form/submit-button';
 
 export interface TFormValues {
   entities: IEntityConfig[]
   selectSwitch: string | null
 }
 
-export default function EntitiesForm() {
+export default function Entities() {
   const { settings: { entities }, saveSettings } = useSettings();
-  const { t } = useTranslation('SETTINGS');
+  const { t } = useTranslation('ENTITIES');
 
   const {
     data: states, isSuccess: isSuccessStates, isError: isErrorStates, refetch, isRefetching,
@@ -48,7 +48,7 @@ export default function EntitiesForm() {
 
       <Grid container spacing={1}>
         <Grid xs={12}>
-          <Typography variant="h4" gutterBottom>Entities</Typography>
+          <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
         </Grid>
 
         <Grid xs={12}>
@@ -58,16 +58,15 @@ export default function EntitiesForm() {
         </Grid>
 
         <Grid xs={12}>
-          <ManageSwitches states={filteredStates} />
+          <ManageEntities states={filteredStates} />
         </Grid>
 
         <Grid xs={12}>
           <SubmitButton>
-            {t('SAVE_SWITCHES')}
+            {t('SAVE_ENTITIES')}
           </SubmitButton>
         </Grid>
       </Grid>
-
     </FormContainer>
   );
 }

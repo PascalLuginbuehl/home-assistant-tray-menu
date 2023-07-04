@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { getIconsPath } from '../settings/routes/manage-switches/icons';
+import { getIconsPath } from '../settings/routes/entities/icons';
 import EntityUtils from '../utils/entity-utils';
 
 export default function Configuration() {

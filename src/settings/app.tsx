@@ -4,21 +4,25 @@ import {
 } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 import Connection from './routes/connection/connection';
-import EntitiesForm from './entities-form';
+import Entities from './routes/entities/entities';
+import Navigation from './navigation';
 
 export default function App() {
   return (
-    <Box p={2}>
-      <Routes>
-        <Route
-          path="/connection"
-          element={<Connection />}
-        />
-        <Route
-          path="/"
-          element={<EntitiesForm />}
-        />
-      </Routes>
+    <Box display="flex">
+      <Navigation />
+      <Box p={2}>
+        <Routes>
+          <Route
+            path="/connection"
+            element={<Connection />}
+          />
+          <Route
+            path="/"
+            element={<Entities />}
+          />
+        </Routes>
+      </Box>
     </Box>
   );
 }

@@ -1,11 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { HashRouter } from 'react-router-dom';
 import darkTheme from '../theme/dark-theme';
 import '../i18next';
-import Navigation from './navigation';
 import App from './app';
 import { SettingsProvider } from '../utils/use-settings';
 
@@ -25,10 +24,7 @@ root.render(
       <CssBaseline />
       <HashRouter>
         <SettingsProvider>
-          <Box display="flex">
-            <Navigation />
-            <App />
-          </Box>
+          <App />
         </SettingsProvider>
       </HashRouter>
     </ThemeProvider>

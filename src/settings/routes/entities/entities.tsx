@@ -3,7 +3,9 @@ import { FormContainer, SubmitHandler, useForm } from 'react-hook-form-mui';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { IconButton, Typography } from '@mui/material';
+import {
+  Box, IconButton, Tooltip, Typography,
+} from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import AutoSave from '../../components/form/auto-save';
 import { useSettings } from '../../../utils/use-settings';
@@ -57,14 +59,18 @@ function Entities() {
       formContext={formContext}
     >
       <Grid container spacing={1}>
-        <Grid xs={12}>
-          <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
-        </Grid>
+        <Grid xs={12} sx={{ display: 'flex' }}>
+          <Typography variant="h4">
+            {t('TITLE')}
+          </Typography>
 
-        <Grid xs={12}>
-          <IconButton onClick={() => refetch()} disabled={isRefetching}>
-            <ReplayIcon />
-          </IconButton>
+          <Box flex={1} />
+
+          <Tooltip title="Reload states from Home Assistant">
+            <IconButton onClick={() => refetch()} disabled={isRefetching} sx={{ height: 40 }}>
+              <ReplayIcon />
+            </IconButton>
+          </Tooltip>
         </Grid>
 
         <Grid xs={12}>

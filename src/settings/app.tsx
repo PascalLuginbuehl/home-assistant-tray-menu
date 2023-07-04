@@ -11,7 +11,7 @@ export default function App() {
   return (
     <Box display="flex">
       <Navigation />
-      <Box p={2}>
+      <Box p={2} flex={1}>
         <Routes>
           <Route
             path="/connection"

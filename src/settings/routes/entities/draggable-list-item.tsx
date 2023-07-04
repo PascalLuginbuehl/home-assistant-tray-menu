@@ -34,7 +34,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
     index, state, onRemove,
   } = props;
 
-  const [editing, setEditing] = useState<boolean>(false);
+  const [isEditing, setEditing] = useState<boolean>(false);
 
   const entity = useWatch<TFormValues, `entities.${number}`>({ name: `entities.${index}` });
   const autocompleteOptions = icons.map((option) => ({
@@ -45,14 +45,14 @@ export default function DraggableListItem(props: DraggableListItemProps) {
     <Draggable
       draggableId={`entity-${entity.entity_id}`}
       index={index}
-      isDragDisabled={editing}
+      isDragDisabled={isEditing}
     >
       {(provided) => (
         <ListItem
-          sx={{ userSelect: 'none' }}
+          sx={{ userSelect: 'none', gap: 1, pr: isEditing ? 12 : undefined }}
           key={entity.entity_id}
           ref={provided.innerRef}
-          secondaryAction={!editing ? (
+          secondaryAction={!isEditing ? (
             <IconButton edge="end" aria-label="rename" onClick={() => setEditing(true)}>
               <DriveFileRenameOutlineIcon />
             </IconButton>
@@ -78,7 +78,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
           {...provided.draggableProps}
         >
           {
-              !editing ? (
+              !isEditing ? (
                 <>
                   <ListItemIcon sx={{ minWidth: 36 }}>
                     {entity.icon && <Icon path={getIconsPath(entity.icon)} size={1} />}
@@ -92,12 +92,11 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                   <AutocompleteElement<TFormValues>
                     name={`entities.${index}.icon`}
                     options={autocompleteOptions}
-                    textFieldProps={{ fullWidth: true }}
                     label="Icon"
                     matchId
                     autocompleteProps={{
-                      fullWidth: true,
                       filterOptions,
+                      fullWidth: true,
 
                       renderOption: (optionProps, option, { selected }) => (
                         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -116,6 +115,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                   />
                   <TextFieldElement<TFormValues>
                     name={`entities.${index}.label`}
+                    fullWidth
                     label={state?.attributes.friendly_name ?? entity.entity_id}
                   />
                 </>

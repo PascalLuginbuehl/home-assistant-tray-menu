@@ -5,7 +5,7 @@ import {
 import { AutocompleteElement, useController, useFieldArray } from 'react-hook-form-mui';
 import {
   Box,
-  List, alpha,
+  List, ListItem, ListItemText, alpha,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { TFormValues } from './entities';
@@ -40,7 +40,7 @@ export default function ManageEntities(props: ManageSwitchesProps) {
 
   const filteredOptions = states.filter((state) => fields.find((field) => state.entity_id === field.entity_id) === undefined);
 
-  const mappedFilteredOptions = filteredOptions.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name }));
+  const mappedFilteredOptions = filteredOptions.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name, secondary: e.entity_id }));
 
   return (
     <>
@@ -90,10 +90,22 @@ export default function ManageEntities(props: ManageSwitchesProps) {
       <AutocompleteElement<TFormValues>
         name="selectSwitch"
         options={mappedFilteredOptions}
-        textFieldProps={{ fullWidth: true }}
         label={t('ADD_ENTITY')}
         matchId
-        autocompleteProps={{ fullWidth: true }}
+        autocompleteProps={{
+          fullWidth: true,
+
+          renderOption: (optionProps, option, { selected }) => (
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            <ListItem {...optionProps} key={option.id} dense disablePadding>
+              <ListItemText
+                primaryTypographyProps={selected ? { fontWeight: 'bold' } : undefined}
+                primary={option.label}
+                secondary={option.secondary}
+              />
+            </ListItem>
+          ),
+        }}
       />
     </>
   );

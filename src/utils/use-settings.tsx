@@ -2,7 +2,7 @@ import React, {
   createContext, useCallback, useContext, useMemo,
 } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import APIUrlStateEnum from '../types/api-state-enum';
 import { ISettings } from '../store';
 
@@ -65,7 +65,17 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [apiURLState, settings, refetchAPIUrlState, settingsSuccess, saveSettings]);
 
   if (value === null) {
-    return <Typography>LOL</Typography>;
+    return (
+      <Box
+        width="100vw"
+        height="100vh"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress size={60} />
+      </Box>
+    );
   }
 
   return (

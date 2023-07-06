@@ -17,7 +17,7 @@ export interface TFormValues {
   selectSwitch: string | null
 }
 
-function Entities() {
+export default function Entities() {
   const { settings: { entities }, saveSettings } = useSettings();
   const { t } = useTranslation('ENTITIES');
 
@@ -51,7 +51,18 @@ function Entities() {
   }, [saveSettings]);
 
   if (!isSuccessStates || isErrorStates) {
-    return <Typography>Could not fetch</Typography>;
+    return (
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          {t('TITLE')}
+        </Typography>
+        <Typography>
+          Could not load data from Home Assistant
+          <br />
+          Please try to reconfigure long-lived access token or API URL
+        </Typography>
+      </Box>
+    );
   }
 
   return (
@@ -84,6 +95,3 @@ function Entities() {
     </FormContainer>
   );
 }
-
-Entities.whyDidYouRender = true;
-export default Entities;

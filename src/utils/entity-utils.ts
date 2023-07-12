@@ -1,4 +1,4 @@
-import IState from '../types/state';
+import IState, { LightAttributes, SwitchAttributes } from '../types/state';
 import { IEntityConfig } from '../store';
 
 export default class EntityUtils {
@@ -22,5 +22,21 @@ export default class EntityUtils {
     }
 
     return null;
+  }
+
+  public static isSwitchType(state: IState): state is IState<SwitchAttributes> {
+    if (state.entity_id.startsWith('switch.')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public static isLightType(state: IState): state is IState<LightAttributes> {
+    if (state.entity_id.startsWith('light.')) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -33,6 +33,7 @@ export default function Connection() {
   }), [settings]);
 
   const formContext = useForm<TFormValues>({
+    mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: formDefaultValues,
   });
@@ -69,7 +70,7 @@ export default function Connection() {
     <FormContainer<TFormValues>
       formContext={formContext}
     >
-      <Grid container spacing={1}>
+      <Grid container spacing={0}>
         <Grid xs={12}>
           <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
         </Grid>

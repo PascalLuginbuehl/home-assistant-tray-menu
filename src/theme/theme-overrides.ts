@@ -51,9 +51,12 @@ const applyThemeChanges = (theme: Theme): Theme => createTheme(theme, {
           boxSizing: 'content-box',
           width: 50,
           height: 24,
-          padding: '13px',
+          padding: '4px',
+          marginLeft: '8px',
+          paddingRight: '12px',
         },
         switchBase: {
+          padding: 0,
           '&.Mui-checked': {
             transform: 'translateX(25px)',
           },

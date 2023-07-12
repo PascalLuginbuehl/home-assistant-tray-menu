@@ -26,7 +26,11 @@ export default function Entities() {
   } = useQuery({
     queryKey: ['states'],
     queryFn: () => window.electronAPI.state.getStates(),
-    select: (data) => data.filter((e) => e.entity_id.startsWith('switch.')),
+    select: (data) => data.filter((e) => e.entity_id.startsWith('switch.')
+     || e.entity_id.startsWith('sensor.')
+      || e.entity_id.startsWith('select.')
+       || e.entity_id.startsWith('light.')
+        || e.entity_id.startsWith('number.')),
     retry: false,
   });
 

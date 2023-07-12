@@ -6,6 +6,7 @@ import '../i18next';
 
 import './css/vars.scss';
 import './css/panel.scss';
+import './css/slider.scss';
 
 // this element does 100% exist
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

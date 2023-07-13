@@ -3,208 +3,43 @@
 //
 
 :root {
-    --system-accent-color: hsl(200, 80%, 83%);
-    --system-accent-light: hsl(200, 80%, 83%);
-    --system-accent-medium: hsl(200, 81%, 45%);
-    --system-accent-dark: hsl(200, 80%, 20%);
-
-    --slider-track-color: #727272;
-    --slider-track-color-focus: #A5A5A5;
-
-    --tray-background-base: #e4e4e4;
-    --tray-background: var(--tray-background-base);
-    --tray-background-transparent: rgba(219, 219, 219, 0.95);
-    --tray-background-blur: rgba(219, 219, 219, 0);
-    --tray-background-blur-start: rgba(219, 219, 219, 1);
-    --tray-text: black;
-    --tray-border: #aaaaaa;
-
-    --page-background: #ffffff;
-    --page-text: #000;
-    --page-text-mid: #333;
-
-    --sidebar-item-hover: #16161626;
-
-    --window-border: #ddd;
-
-    --titlebar-icon: #888;
-    --titlebar-icon-hover: #000;
-
-    --input-border: #555;
-    --input-border-hover: #000;
-    --input-active-background: #ddd;
+  --accent-light: 177 223 246; // rgb(177 223 246)
+  --accent-main: 22 146 208; // rgb(22 146 208)
+  --accent-dark: 10 65 92; // rgb(10, 65, 92)
 
 
-    --slider-track-color: rgba(0, 0, 0, 0.42);
-    --slider-track-color-focus: rgba(0, 0, 0, 0.65);
+  --system-accent-light: hsl(200, 80%, 83%);
+  --system-accent-main: hsl(200, 81%, 45%);
+  --system-accent-dark: hsl(200, 80%, 20%);
 
 
-    @media screen and (prefers-color-scheme: dark) {
-        --tray-background-base: #1f1f1f;
-        --tray-background-transparent: rgba(41, 41, 41, 0.95);
-        --tray-background-blur: rgba(41, 41, 41, 0);
-        --tray-background-blur-start: rgba(41, 41, 41, 1);
-        --tray-text: white;
-        --tray-border: #434343;
+  --text-primary: 0 0 0; // rgb(0, 0, 0)
+  --tray-text: #000000;
+  --tray-background: #e4e4e4;
+  --tray-border: #aaaaaa;
 
-        --page-background: #030303;
-        --page-text: #fff;
-        --page-text-mid: #bbb;
-        
-        --sidebar-item-hover: #ffffff26;
+  --input-border: #555;
+  --input-border-hover: #000;
+  --input-active-background: #ddd;
 
-        --window-border: #222;
+  // simple
+  --slider-track: 0 0 0; // rgb(0, 0, 0)
 
-        --titlebar-icon: #888;
-        --titlebar-icon-hover: #fff;
+  --slider-track-color: rgba(0, 0, 0, 0.42);
 
-        --input-border: #6f6f6f;
-        --input-border-hover: #fff;
-        --input-active-background: #444;
+  @media screen and (prefers-color-scheme: dark) {
+    --text-primary: 255 255 255; // rgb(255, 255, 255)
+    --tray-text: white;
+    --tray-background: #1f1f1f;
+    --tray-border: #434343;
 
-        --slider-track-color: rgba(255, 255, 255, 0.42);
-        --slider-track-color-focus: rgba(255, 255, 255, 0.65);
-    }
+    --input-border: #6f6f6f;
+    --input-border-hover: #fff;
+    --input-active-background: #444;
 
-}
+    // Simple
+    --slider-track: 255 255 255; // rgb(255, 255, 255)
 
-
-
-body[data-transparent="true"][data-acrylic="false"] {
-    .window-base {
-        --tray-background: var(--tray-background-transparent) !important;
-    }
-}
-
-body[data-transparent="true"][data-acrylic="true"][data-use-native-animation="false"] {
-    .window-base {
-        //--tray-background: var(--tray-background-blur-start) !important;
-        background: transparent !important;
-        background: var(--tray-background-blur-start) !important;
-    }
-}
-
-body[data-transparent="true"][data-acrylic="true"][data-use-native-animation="false"][data-colored-taskbar="true"] {
-    .window-base {
-        //--tray-background: var(--tray-background-blur-start) !important;
-        background: var(--system-accent-transparent) !important;
-    }
-}
-
-body[data-transparent="true"][data-acrylic="true"][data-use-native-animation="false"][data-acrylic-show="true"],
-body[data-transparent="true"][data-acrylic="true"][data-use-native-animation="false"][data-acrylic-show="true"][data-colored-taskbar="true"] {
-    .window-base {
-        background: var(--tray-background-blur) !important;
-        background: transparent !important;
-    }
-}
-
-body[data-transparent="true"][data-acrylic="true"][data-use-native-animation="true"] {
-    .window-base {
-        background: transparent !important;
-    }
-}
-
-@media screen and (prefers-color-scheme: dark) {
-    body[data-colored-taskbar="true"] {
-        .window-base {
-            --tray-background: var(--system-accent-dark) !important;
-        }
-
-        &[data-transparent="true"] {
-            .window-base {
-                --tray-background: var(--system-accent-transparent) !important;
-            }
-        }
-    }
-}
-
-
-body[data-colored-taskbar="true"] {
-    div#panel {
-        --tray-background-base: #1f1f1f;
-        --tray-background-transparent: var(--system-accent-transparent);
-        --tray-background: var(--system-accent-dark1) !important;
-        --tray-background-blur: rgba(41, 41, 41, 0);
-        --tray-background-blur-start: rgba(41, 41, 41, 1);
-        --tray-text: white;
-        --tray-border: #434343;
-    
-        --page-background: #030303;
-        --page-text: #fff;
-        --page-text-mid: #bbb;
-    
-        --window-border: #222;
-    
-        --titlebar-icon: #888;
-        --titlebar-icon-hover: #fff;
-    
-        --input-border: #6f6f6f;
-        --input-border-hover: #fff;
-        --input-active-background: #444;
-    
-        --slider-track-color: rgba(255, 255, 255, 0.42);
-        --slider-track-color-focus: rgba(255, 255, 255, 0.65);
-
-        #mica {
-            background-color: transparent !important;
-            .displays {
-                .blur {
-                    opacity: 0.3 !important;
-                }
-            }
-        }
-    }
-}
-
-body[data-colored-taskbar="true"][data-transparent="false"][data-acrylic="false"], html body[data-is-win11="true"][data-colored-taskbar="true"] {
-    div#panel {
-        --tray-background: var(--system-accent-transparent) !important;
-        --tray-background: var(--system-accent-dark2) !important;
-    }
-}
-
-
-
-// Windows 11 style
-html body[data-is-win11="true"], html body[data-is-win11="true"] {
-
-    --page-background: #f1f3f9 !important;
-    --page-section-bg: #ffffff98;
-    --tray-background: #f2f2f2 !important;
-    --tray-background-transparent: #f2f2f2 !important;
-    --tray-titlebar-bg: #eeeeee;
-    --slider-track-color: #868686;
-    --slider-thumb-border: #ffffff;
-    --button-background: #ffffffc4;
-    --button-highlight: #fffffffa;
-    --button-border: #5c5c5c2b;
-    --button-color-background: var(--system-accent-light2);
-    --button-color-border: var(--system-accent-light3);
-    --input-border: rgba(0, 0, 0, 0.77);
-
-    --mica-base-color: #f1f1f1;
-
-    @media screen and (prefers-color-scheme: dark) {
-
-        --page-background: #202020 !important;
-        --page-section-bg: #ffffff0a;
-        --tray-background: #242424 !important;
-        --tray-background-transparent: #242424 !important;
-        --tray-titlebar-bg: rgba(0,0,0,0.18);
-        --slider-track-color: #9b9b9b;
-        --slider-thumb-border: #414141;
-        --button-background: #8a8a8a2b;
-        --button-highlight: #b1b1b123;
-        --button-border: #9797972b;
-        --button-color-background: var(--system-accent-light2);
-        --button-color-border: var(--system-accent-light3);
-        --input-border: rgba(255, 255, 255, 0.77);
-
-        --mica-base-color: #2f2f2f;
-
-        &[data-use-mica="false"] {
-            --tray-titlebar-bg: rgba(0,0,0,0.24);
-        }
-    }
+    --slider-track-color: rgba(255, 255, 255, 0.42);
+  }
 }

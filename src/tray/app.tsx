@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import Configuration from './configuration';
+import './app.css';
 
 function Fallback(props: FallbackProps) {
   const { resetErrorBoundary } = props;

@@ -295,27 +295,3 @@ body[data-is-win11="true"] {
         }
     }
 }
-
-
-.actionButton {
-  font-size: 16px;
-  font-family: 'Segoe UI Variable Text', 'Segoe UI';
-  width: 100%;
-  padding: 12px 15px;
-  border: none;
-  text-align: left;
-  background-color: transparent;
-  color: var(--tray-text);
-  display: flex;
-  align-items: center;
-  & .spacing {
-    width: 36px;
-    height: 24px;
-  }
-  &.selected {
-    background-color: #333;
-  }
-  &:hover {
-    background-color: var(--tray-border);
-  }
-}

@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import EntityUtils from '../utils/entity-utils';
 import SwitchElement from './elements/switch-element';
 import LightElement from './elements/light-element';
+import SensorElement from './elements/sensor-element';
+import SelectElement from './elements/select-element';
 
 export default function Configuration() {
   const { data: entities, isSuccess: isSuccessEntities } = useQuery({
@@ -58,6 +60,28 @@ export default function Configuration() {
           key={entity.entity_id}
           state={state}
           entity={entity}
+        />
+      );
+    }
+
+    if (EntityUtils.isSensorType(state)) {
+      return (
+        <SensorElement
+          key={entity.entity_id}
+          state={state}
+          entity={entity}
+          refetch={refetch}
+        />
+      );
+    }
+
+    if (EntityUtils.isSelectType(state)) {
+      return (
+        <SelectElement
+          key={entity.entity_id}
+          state={state}
+          entity={entity}
+          refetch={refetch}
         />
       );
     }

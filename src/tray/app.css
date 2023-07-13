@@ -22,6 +22,8 @@
     --input-border-hover: #000;
     --input-active-background: #ddd;
 
+    --icon-color: #888;
+    --icon-hover-color: #000;
 
     --action-hover: rgb(0 0 0 / 0.04);
     --slider-track: 0 0 0; /* rgb(0, 0, 0) */
@@ -39,6 +41,9 @@
       --action-hover: rgb(255 255 255 / 0.08);
 
       --slider-track: 255 255 255; /* rgb(255, 255, 255) */
+
+      --icon-color: #888;
+      --icon-hover-color: #fff;
     }
   }
 

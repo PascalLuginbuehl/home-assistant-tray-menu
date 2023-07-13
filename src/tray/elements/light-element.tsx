@@ -7,6 +7,7 @@ import { mdiBrightness6, mdiPalette } from '@mdi/js';
 import { HexColorPicker, RgbColor, RgbColorPicker } from 'react-colorful';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { usePrevious } from 'react-use';
+import BrightnessMediumIcon from '@mui/icons-material/BrightnessMedium';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
 import IState, { LightAttributes } from '../../types/state';
@@ -24,7 +25,7 @@ export default function LightElement(props: LightElementProps) {
   const { state, entity } = props;
 
   const [brightness, setBrightness] = useState<number>(Math.round((state.attributes.brightness ?? 0) / 2.55));
-  const [color, setColor] = useState<>({ r: 0, g: 0, b: 0 });
+  const [color, setColor] = useState<RgbColor>({ r: state.attributes.rgb_color?.[0] ?? 0, g: state.attributes.rgb_color?.[1] ?? 0, b: state.attributes.rgb_color?.[2] ?? 0 });
   const [collapse, setCollapse] = useState<boolean>(false);
   const [selectColor, setSelectColor] = useState<boolean>(false);
 
@@ -70,9 +71,9 @@ export default function LightElement(props: LightElementProps) {
 
   return (
     <div
-      className="py-2 px-3 w-full"
+      className="w-full"
     >
-      <div className="w-full flex items-center">
+      <div className="w-full flex items-center py-2 px-3 hover:bg-action-hover">
         <div className="w-10 min-h-[32px]">
           {entity.icon && <Icon path={getIconsPath(entity.icon)} size={1.2} />}
         </div>
@@ -83,7 +84,7 @@ export default function LightElement(props: LightElementProps) {
         <div className="flex-1" />
 
         <button
-          className="rounded-full border-primary border-2 h-5 w-5"
+          className="rounded-full border-icon-main hover:border-icon-hover border-2 h-6 w-6"
           style={{ background: `rgb(${color.r} ${color.g} ${color.b})` }}
           type="button"
           onClick={() => {
@@ -94,23 +95,22 @@ export default function LightElement(props: LightElementProps) {
         </button>
 
         <button
-          className="rounded"
+          className="rounded text-icon-main hover:text-icon-hover pl-2"
           type="button"
           onClick={() => {
             setCollapse(!collapse);
           }}
         >
-          <ExpandLessIcon />
-          {/* <Icon path={mdiPalette} size={0.8} /> */}
+          <BrightnessMediumIcon />
         </button>
       </div>
 
-      <div className={`${!selectColor && 'hidden'}`}>
+      <div className={`${!selectColor && 'hidden'} py-2 px-3`}>
         <RgbColorPicker color={color} onChange={saveColor} className="colorful" />
       </div>
 
       <div
-        className={`${!collapse && 'hidden'}`}
+        className={`${!collapse && 'hidden'} py-2 px-3`}
         onWheel={onWheel}
       >
         <div className="flex w-full items-center">

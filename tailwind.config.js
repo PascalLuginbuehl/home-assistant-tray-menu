@@ -19,6 +19,10 @@ module.exports = {
       action: {
         hover: 'var(--action-hover)'
       },
+      icon: {
+        main: 'var(--icon-color)',
+        hover: 'var(--icon-hover-color)',
+      },
 
       transparent: 'transparent'
     },

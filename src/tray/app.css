@@ -54,18 +54,3 @@
     color: rgb(var(--text-primary));
   }
 }
-
-
-@layer components {
-  .custom-slider input[type=range]::-webkit-slider-runnable-track {
-    @apply w-full h-[2px] bg-slider/[.42];
-  }
-
-  .custom-slider input[type=range]::-webkit-slider-thumb {
-    @apply w-[8px] h-[24px] appearance-none rounded-full -mt-[11px] bg-accent-main z-10 relative
-  }
-
-  .custom-slider input[type=range]:hover::-webkit-slider-thumb {
-    @apply bg-text-primary;
-  }
-}

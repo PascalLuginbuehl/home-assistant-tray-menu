@@ -28,3 +28,8 @@ root.render(
 window.electronAPI.registerHeightRequestCallback(() => {
   window.electronAPI.sendHeight(container.offsetHeight);
 });
+
+// eslint-disable-next-line import/prefer-default-export
+export function sendHeight() {
+  window.electronAPI.sendHeight(container.offsetHeight);
+}

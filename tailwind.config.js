@@ -4,14 +4,20 @@ module.exports = {
   theme: {
     colors: {
       accent: {
-        light: 'rgb(var(--system-accent-light) / <alpha-value>)',
+        light: 'rgb(var(--accent-light) / <alpha-value>)',
         main: 'rgb(var(--accent-main) / <alpha-value>)',
-        dark: 'rgb(var(--system-accent-dark) / <alpha-value>)',
+        dark: 'rgb(var(--accent-dark) / <alpha-value>)',
       },
       slider: 'rgb(var(--slider-track) / <alpha-value>)',
-
       text: {
         primary: 'rgb(var(--text-primary) / <alpha-value>)',
+      },
+      background: {
+        tray: 'var(--tray-background)',
+        trayBorder: 'var(--tray-border)',
+      },
+      action: {
+        hover: 'var(--action-hover)'
       },
 
       transparent: 'transparent'

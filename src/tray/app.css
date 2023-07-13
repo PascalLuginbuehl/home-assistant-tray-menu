@@ -3,10 +3,56 @@
 @tailwind utilities;
 
 @layer base {
-  /* :root {
-    --color-primary: 255 115 179;
-    --color-secondary: 111 114 185;
-  } */
+  :root {
+    --accent-light: 177 223 246; /* rgb(177 223 246) */
+    --accent-main: 22 146 208; /* rgb(22 146 208) */
+    --accent-dark: 10 65 92; /* rgb(10, 65, 92) */
+
+
+    --system-accent-light: hsl(200, 80%, 83%);
+    --system-accent-main: hsl(200, 81%, 45%);
+    --system-accent-dark: hsl(200, 80%, 20%);
+
+    --text-primary: 0 0 0; /* rgb(0, 0, 0) */
+
+    --tray-background: #e4e4e4;
+    --tray-border: #aaaaaa;
+
+    --input-border: #555;
+    --input-border-hover: #000;
+    --input-active-background: #ddd;
+
+
+    --action-hover: rgb(0 0 0 / 0.04);
+    --slider-track: 0 0 0; /* rgb(0, 0, 0) */
+
+    @media screen and (prefers-color-scheme: dark) {
+      --text-primary: 255 255 255; /* rgb(255, 255, 255) */
+
+      --tray-background: #1f1f1f;
+      --tray-border: #434343;
+
+      --input-border: #6f6f6f;
+      --input-border-hover: #fff;
+      --input-active-background: #444;
+
+      --action-hover: rgb(255 255 255 / 0.08);
+
+      --slider-track: 255 255 255; /* rgb(255, 255, 255) */
+    }
+  }
+
+  html,
+  body {
+    background: transparent;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    font-family: 'Segoe UI Variable Text', 'Segoe UI';
+    color: rgb(var(--text-primary));
+  }
 }
 
 

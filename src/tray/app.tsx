@@ -18,11 +18,7 @@ function Fallback(props: FallbackProps) {
 export default function App() {
   const { reset } = useQueryErrorResetBoundary();
   return (
-    <div className="window-base">
-      {/* <div className="titlebar">
-        <h2 className="title">Home Assistant Controls</h2>
-      </div> */}
-
+    <div className="bg-background-tray shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]">
       <ErrorBoundary
         onReset={reset}
         fallbackRender={Fallback}

@@ -57,5 +57,7 @@
     user-select: none;
     font-family: 'Segoe UI Variable Text', 'Segoe UI';
     color: rgb(var(--text-primary));
+    @apply dark:[color-scheme:dark]
   }
+
 }

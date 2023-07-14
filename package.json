@@ -1,7 +1,7 @@
 {
   "name": "home-assistant-tray-menu",
   "productName": "Home Assistant Tray Menu",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Home Assistant Tray App for Windows Quick Actions",
   "main": ".webpack/main",
   "repository": "github:pascalluginbuehl/home-assistant-tray-menu",

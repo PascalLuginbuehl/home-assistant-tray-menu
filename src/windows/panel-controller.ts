@@ -117,9 +117,9 @@ export function createPanel(): BrowserWindow {
   // and load the index.html of the app.
   panelWindow.loadURL(TRAY_WINDOW_WEBPACK_ENTRY);
 
-  // panelWindow.on('blur', () => {
-  //   hidePanel();
-  // });
+  panelWindow.on('blur', () => {
+    hidePanel();
+  });
 
   attachResizeEvent();
 

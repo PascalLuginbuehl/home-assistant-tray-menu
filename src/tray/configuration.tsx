@@ -1,8 +1,5 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Icon from '@mdi/react';
-import { getIconsPath } from '../settings/routes/entities/icons';
-import IState, { SensorAttributes } from '../types/state';
 import EntityUtils from '../utils/entity-utils';
 import SwitchElement from './elements/switch-element';
 import LightElement from './elements/light-element';
@@ -41,7 +38,7 @@ export default function Configuration() {
 
   return (
     <>
-      <div className="grid grid-cols-4 gap-[1px] mb-[1px]">
+      <div className="mb-[1px] grid grid-cols-4 gap-[1px]">
         {entities.map((entity) => {
           const state = EntityUtils.getState(entity, states);
 

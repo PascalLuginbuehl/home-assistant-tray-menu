@@ -15,7 +15,8 @@ import { IEntityConfig } from '../../../store';
 import IState from '../../../types/state';
 import type { TFormValues } from './entities';
 import EntityUtils from '../../../utils/entity-utils';
-import icons, { getIconsPath } from './icons';
+import icons from './icons';
+import MdiIcon from '../../../components/mdi-icon';
 
 interface DraggableListItemProps {
   entity: IEntityConfig,
@@ -81,7 +82,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
               !isEditing ? (
                 <>
                   <ListItemIcon sx={{ minWidth: 36 }}>
-                    {entity.icon && <Icon path={getIconsPath(entity.icon)} size={1} />}
+                    {entity.icon && <MdiIcon iconName={entity.icon} size={1} />}
                   </ListItemIcon>
                   <ListItemText
                     primary={EntityUtils.getEntityName(entity, state)}

@@ -90,12 +90,19 @@ export default function LightElement(props: LightElementProps) {
 
   return (
     <div
-      className="w-full"
+      className={`${state.state === 'unavailable' && 'opacity-50 pointer-events-none'}`}
     >
       <div className="w-full flex items-center h-[50px] px-3 hover:bg-action-hover">
-        <div className="w-10">
+        <button
+          type="button"
+          className="w-10"
+          onClick={async () => {
+            await window.electronAPI.state.callServiceAction('light', state.state === 'off' ? 'turn_on' : 'turn_off', { entity_id: entity.entity_id });
+            await refetch();
+          }}
+        >
           {entity.icon && <Icon path={getIconsPath(entity.icon)} size={1.2} />}
-        </div>
+        </button>
 
         <h2>
           {EntityUtils.getEntityName(entity, state)}
@@ -110,7 +117,8 @@ export default function LightElement(props: LightElementProps) {
             handleSetOpenSettings(OpenSettingsEnum.effect);
           }}
         >
-          {state.state}
+
+          {state.attributes.effect}
         </button>
 
         <button
@@ -145,17 +153,17 @@ export default function LightElement(props: LightElementProps) {
 
       {openSettings === OpenSettingsEnum.effect && (
         <div className="max-h-64 overflow-x-auto">
-          {state.attributes.effect_list?.map((option) => (
+          {state.attributes.effect_list?.map((effect) => (
             <button
-              key={option}
+              key={effect}
               type="button"
-              className={`w-full hover:bg-gray-500 py-2 px-3 flex items-center ${state?.state === option ? 'bg-accent-main hover:bg-accent-dark/70' : 'hover:bg-action-hover'}`}
+              className={`w-full hover:bg-gray-500 py-2 px-3 flex items-center ${state?.attributes.effect === effect ? 'bg-accent-dark hover:bg-accent-dark/70' : 'hover:bg-action-hover'}`}
               onClick={async () => {
-                await window.electronAPI.state.callServiceAction('select', 'select_option', { entity_id: entity.entity_id, option });
+                await window.electronAPI.state.callServiceAction('light', 'turn_on', { entity_id: entity.entity_id, effect });
                 await refetch();
               }}
             >
-              {option}
+              {effect}
             </button>
           ))}
         </div>

@@ -18,7 +18,7 @@ export default function SwitchElement(props: SwitchElementProps) {
   return (
     <button
       type="button"
-      className={`w-full hover:bg-gray-500 h-[50px] px-3 flex items-center ${state?.state === 'on' ? 'bg-accent-dark hover:bg-accent-dark/70' : 'hover:bg-action-hover'}`}
+      className={`w-full h-[50px] px-3 flex items-center ${state?.state === 'on' ? 'bg-accent-dark hover:bg-accent-dark/70' : 'hover:bg-action-hover'} ${state.state === 'unavailable' && 'opacity-50 pointer-events-none'}`}
       onClick={async () => {
         await window.electronAPI.state.callServiceAction('switch', 'toggle', { entity_id: entity.entity_id });
         await refetch();

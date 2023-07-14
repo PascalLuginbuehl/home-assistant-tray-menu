@@ -5,7 +5,7 @@ const camelize = (s: string) => s.replace(/-./g, (x) => x[1].toUpperCase());
 
 const metaValues = [...Object.values(meta)];
 
-export const getIconsPath = (iconName: string) => {
+export const getIconsPath = (iconName: string): string | null => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const icon = icons[camelize(`mdi-${iconName}`)];

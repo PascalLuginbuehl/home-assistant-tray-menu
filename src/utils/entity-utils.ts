@@ -1,4 +1,6 @@
-import IState from '../types/state';
+import IState, {
+  LightAttributes, SelectAttributes, SensorAttributes, SwitchAttributes,
+} from '../types/state';
 import { IEntityConfig } from '../store';
 
 export default class EntityUtils {
@@ -22,5 +24,21 @@ export default class EntityUtils {
     }
 
     return null;
+  }
+
+  public static isSwitchType(state: IState): state is IState<SwitchAttributes> {
+    return state.entity_id.startsWith('switch.');
+  }
+
+  public static isLightType(state: IState): state is IState<LightAttributes> {
+    return state.entity_id.startsWith('light.');
+  }
+
+  public static isSensorType(state: IState): state is IState<SensorAttributes> {
+    return state.entity_id.startsWith('sensor.');
+  }
+
+  public static isSelectType(state: IState): state is IState<SelectAttributes> {
+    return state.entity_id.startsWith('select.');
   }
 }

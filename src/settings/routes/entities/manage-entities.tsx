@@ -5,14 +5,16 @@ import {
 import { AutocompleteElement, useController, useFieldArray } from 'react-hook-form-mui';
 import {
   Box,
-  List, ListItem, ListItemText, alpha,
+  List, ListItem, ListItemIcon, ListItemText, alpha,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import Icon from '@mdi/react';
 import type { TFormValues } from './entities';
 import FormOnFieldChange from '../../components/form/FormOnFieldChange';
 import type IState from '../../../types/state';
 import DraggableListItem from './draggable-list-item';
 import EntityUtils from '../../../utils/entity-utils';
+import { getIconsPath } from './icons';
 
 interface ManageSwitchesProps {
   states: IState[]
@@ -40,7 +42,9 @@ export default function ManageEntities(props: ManageSwitchesProps) {
 
   const filteredOptions = states.filter((state) => fields.find((field) => state.entity_id === field.entity_id) === undefined);
 
-  const mappedFilteredOptions = filteredOptions.map((e) => ({ id: e.entity_id, label: e.attributes.friendly_name, secondary: e.entity_id }));
+  const mappedFilteredOptions = filteredOptions.map((e) => ({
+    id: e.entity_id, label: e.attributes.friendly_name, secondary: e.entity_id, path: e.attributes.icon && getIconsPath(e.attributes.icon.replace('mdi:', '')),
+  }));
 
   return (
     <>
@@ -98,6 +102,9 @@ export default function ManageEntities(props: ManageSwitchesProps) {
           renderOption: (optionProps, option, { selected }) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <ListItem {...optionProps} key={option.id} dense disablePadding>
+              <ListItemIcon sx={{ minWidth: 36 }}>
+                {option.path && <Icon path={option.path} size={1} />}
+              </ListItemIcon>
               <ListItemText
                 primaryTypographyProps={selected ? { fontWeight: 'bold' } : undefined}
                 primary={option.label}

@@ -4,16 +4,17 @@ import { app } from 'electron';
 
 export interface IEntityConfig {
   entity_id: string,
-  // domain: 'switch',
-  // service: 'toggle',
   icon: string | null,
   label: string | null,
 }
 export interface ISettings {
-  longLivedAccessToken: string,
-  hassApiUrl: string,
+  longLivedAccessToken: string
+  hassApiUrl: string
   isAutoLaunchEnabled: boolean
   entities: IEntityConfig[]
+  development: {
+    keepTrayWindowOpen: boolean
+  }
 }
 
 export type SchemaType = {
@@ -37,6 +38,16 @@ const schema: JSONSchemaType<SchemaType> = {
         isAutoLaunchEnabled: {
           type: 'boolean',
           default: true,
+        },
+        development: {
+          type: 'object',
+          properties: {
+            keepTrayWindowOpen: {
+              type: 'boolean',
+            },
+          },
+          default: { keepTrayWindowOpen: false },
+          required: ['keepTrayWindowOpen'],
         },
         entities: {
           type: 'array',
@@ -62,7 +73,7 @@ const schema: JSONSchemaType<SchemaType> = {
           default: [],
         },
       },
-      required: ['longLivedAccessToken', 'hassApiUrl', 'entities', 'isAutoLaunchEnabled'],
+      required: ['longLivedAccessToken', 'hassApiUrl', 'entities', 'isAutoLaunchEnabled', 'development'],
     },
   },
   required: ['settings'],
@@ -82,6 +93,9 @@ const store = new Store<SchemaType>({
       hassApiUrl: '',
       longLivedAccessToken: '',
       isAutoLaunchEnabled: true,
+      development: {
+        keepTrayWindowOpen: false,
+      },
     },
   },
 });

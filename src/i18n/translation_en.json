@@ -14,5 +14,9 @@
   "ENTITIES": {
     "TITLE": "Entities",
     "ADD_ENTITY": "Add entity"
+  },
+  "DEVELOPMENT": {
+    "TITLE": "Development",
+    "KEEP_TRAY_OPEN": "Keep tray open"
   }
 }

@@ -3,11 +3,18 @@ import { BrowserWindow, screen, shell } from 'electron';
 declare const SETTINGS_WINDOW_WEBPACK_ENTRY: string;
 declare const SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
+let settingsWindow: BrowserWindow | null = null;
+
 const openSettings = () => {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
+  if (settingsWindow && !settingsWindow.isDestroyed) {
+    settingsWindow.focus();
+    return;
+  }
+
   // Settings from Twinkle tray
-  const settingsWindow = new BrowserWindow({
+  settingsWindow = new BrowserWindow({
     width: (width >= 1200 ? 1024 : 600),
     height: (height >= 768 ? 720 : 500),
     minHeight: 450,

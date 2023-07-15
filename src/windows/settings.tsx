@@ -1,4 +1,5 @@
 import { BrowserWindow, screen, shell } from 'electron';
+import icon from '../../assets/home-assistant-icon-pretty.png';
 
 declare const SETTINGS_WINDOW_WEBPACK_ENTRY: string;
 declare const SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -26,7 +27,8 @@ const openSettings = () => {
     autoHideMenuBar: true,
     // backgroundColor: "#00000000",
     // frame: false,
-    // icon: './src/assets/logo.ico',
+    icon,
+
     title: 'Home Assistant Tray Menu Settings',
     webPreferences: {
       preload: SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY,

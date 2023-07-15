@@ -5,7 +5,7 @@ import {
 import { AutocompleteElement, useController, useFieldArray } from 'react-hook-form-mui';
 import {
   Box,
-  List, ListItem, ListItemIcon, ListItemText, alpha,
+  List, ListItem, ListItemIcon, ListItemText, alpha, createFilterOptions,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Icon from '@mdi/react';
@@ -43,7 +43,11 @@ export default function ManageEntities(props: ManageSwitchesProps) {
   const filteredOptions = states.filter((state) => fields.find((field) => state.entity_id === field.entity_id) === undefined);
 
   const mappedFilteredOptions = filteredOptions.map((e) => ({
-    id: e.entity_id, label: e.attributes.friendly_name, secondary: e.entity_id, path: e.attributes.icon && getIconsPath(e.attributes.icon.replace('mdi:', '')),
+    id: e.entity_id,
+    label: e.attributes.friendly_name,
+    secondary: e.entity_id,
+    path: e.attributes.icon && getIconsPath(e.attributes.icon.replace('mdi:', '')),
+    state: e.state,
   }));
 
   return (
@@ -99,6 +103,11 @@ export default function ManageEntities(props: ManageSwitchesProps) {
         autocompleteProps={{
           fullWidth: true,
 
+          filterOptions: createFilterOptions({
+            stringify: (option) => `${option.label} ${option.secondary}`,
+            limit: 100,
+          }),
+
           renderOption: (optionProps, option, { selected }) => (
             // eslint-disable-next-line react/jsx-props-no-spreading
             <ListItem {...optionProps} key={option.id} dense disablePadding>
@@ -110,6 +119,7 @@ export default function ManageEntities(props: ManageSwitchesProps) {
                 primary={option.label}
                 secondary={option.secondary}
               />
+              {option.state}
             </ListItem>
           ),
         }}

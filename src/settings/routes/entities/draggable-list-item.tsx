@@ -1,5 +1,5 @@
 import {
-  Box, FilterOptionsState, IconButton, ListItem, ListItemIcon, ListItemText, createFilterOptions,
+  Box, IconButton, ListItem, ListItemIcon, ListItemText, createFilterOptions,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
@@ -25,11 +25,6 @@ interface DraggableListItemProps {
   onRemove: () => void,
 }
 
-const OPTIONS_LIMIT = 100;
-const defaultFilterOptions = createFilterOptions();
-
-const filterOptions = (options: unknown[], state: FilterOptionsState<unknown>) => defaultFilterOptions(options, state).slice(0, OPTIONS_LIMIT);
-
 export default function DraggableListItem(props: DraggableListItemProps) {
   const {
     index, state, onRemove,
@@ -53,6 +48,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
           sx={{ userSelect: 'none', gap: 1, pr: isEditing ? 12 : undefined }}
           key={entity.entity_id}
           ref={provided.innerRef}
+          dense
           secondaryAction={!isEditing ? (
             <IconButton edge="end" aria-label="rename" onClick={() => setEditing(true)}>
               <DriveFileRenameOutlineIcon />
@@ -86,7 +82,9 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                   </ListItemIcon>
                   <ListItemText
                     primary={EntityUtils.getEntityName(entity, state)}
+                    secondary={entity.entity_id}
                   />
+                  {state?.state}
                 </>
               ) : (
                 <>
@@ -96,7 +94,10 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                     label="Icon"
                     matchId
                     autocompleteProps={{
-                      filterOptions,
+                      filterOptions: createFilterOptions({
+                        limit: 100,
+                        stringify: (option) => `${option.label} ${option.aliases.join(' ')}`,
+                      }),
                       fullWidth: true,
 
                       renderOption: (optionProps, option, { selected }) => (

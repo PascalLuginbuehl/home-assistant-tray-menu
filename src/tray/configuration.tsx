@@ -17,7 +17,9 @@ export default function Configuration() {
   const { data: states, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
     refetchOnWindowFocus: true,
-    staleTime: 1 * 60 * 1000,
+    retry: false,
+    staleTime: 0.5 * 60 * 1000,
+    refetchInterval: 15 * 1000,
     queryFn: async () => window.electronAPI.state.getStates(),
     select: (fetchedStates) => fetchedStates.filter((state) => entities?.map((e) => e.entity_id).includes(state.entity_id)),
     suspense: true,
@@ -31,7 +33,9 @@ export default function Configuration() {
   if (entities.length === 0) {
     return (
       <div style={{ height: 100, padding: 24 }}>
-        No entities configured
+        No entities configured.
+        <br />
+        Right-click on the tray icon to open settings.
       </div>
     );
   }

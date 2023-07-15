@@ -5,7 +5,7 @@ import {
 import { AutocompleteElement, useController, useFieldArray } from 'react-hook-form-mui';
 import {
   Box,
-  List, ListItem, ListItemIcon, ListItemText, alpha, createFilterOptions,
+  List, ListItem, ListItemIcon, ListItemText, Typography, alpha, createFilterOptions,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Icon from '@mdi/react';
@@ -52,6 +52,9 @@ export default function ManageEntities(props: ManageSwitchesProps) {
 
   return (
     <>
+      <Typography variant="subtitle2" fontWeight="medium">
+        Note: The order of the sensors does not matter. They will always be placed at the top of the tray menu.
+      </Typography>
       <DragDropContext onDragEnd={handleDrag}>
         <List
           sx={(theme) => ({

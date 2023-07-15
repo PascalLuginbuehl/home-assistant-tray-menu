@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useSettings } from '../../../utils/use-settings';
 import { ISettings } from '../../../store';
 import APIUrlStateEnum from '../../../types/api-state-enum';
@@ -95,6 +95,22 @@ export default function Connection() {
         <Grid xs={12}>
           <SwitchElement<TFormValues> name="isAutoLaunchEnabled" label={t('LAUNCH_AT_STARTUP')} />
         </Grid>
+
+        <Box mt={2}>
+          <Typography variant="h5" gutterBottom>HASS URL</Typography>
+          <Typography paragraph>
+            Copy and paste the URL you use to access Home Assistant from your browser. This could be an external facing address, DuckDNS or Nabu Casa URL.
+            <br />
+            Make sure you prefix http:// or https://.
+          </Typography>
+
+          <Typography variant="h5" gutterBottom>Long Lived Access Token</Typography>
+          <Typography paragraph>
+            To create a token within HA, login to HA and click on your profile.
+            <br />
+            Then scroll to the bottom. Under &quot;Long-Lived Access Tokens&quot;, create a new token, give it any name and copy the token into this configuration window.
+          </Typography>
+        </Box>
 
         <AutoSave
           onSubmit={onSaveFunction}

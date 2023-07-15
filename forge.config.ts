@@ -10,12 +10,12 @@ import { rendererConfig } from './webpack.renderer.config';
 
 const config: ForgeConfig = {
   packagerConfig: {
-    icon: './assets/home-assistant-icon-pretty'
+    icon: path.resolve(__dirname, "./assets/home-assistant-icon-pretty"),
   },
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      iconUrl: path.resolve(__dirname, "./assets/home-assistant-icon-pretty.ico"),
+      iconUrl: "https://raw.githubusercontent.com/pascalluginbuehl/home-assistant-tray-menu/main/assets/home-assistant-icon-pretty.ico",
       setupIcon: path.resolve(__dirname, "./assets/home-assistant-icon-pretty.ico"),
     }),
     new MakerZIP({}, ['darwin']),

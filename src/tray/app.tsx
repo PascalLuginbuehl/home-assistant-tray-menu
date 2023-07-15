@@ -7,10 +7,12 @@ import './app.css';
 function Fallback(props: FallbackProps) {
   const { resetErrorBoundary } = props;
   return (
-    <div style={{ height: 100, padding: 24 }}>
+    <div style={{ height: 200, padding: 24 }}>
       There was an error!
       <br />
-      <button onClick={() => resetErrorBoundary()} type="button">Retry</button>
+      Please check your API connection by right-clicking on the tray icon and opening settings.
+      <br />
+      <button onClick={() => resetErrorBoundary()} type="button" className="bg-accent-main p-2 font-medium">Retry</button>
     </div>
   );
 }

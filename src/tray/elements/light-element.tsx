@@ -165,7 +165,7 @@ export default function LightElement(props: LightElementProps) {
               type="button"
               className={clsx(
                 'flex w-full items-center px-3 py-2',
-                state?.attributes.effect === effect ? 'bg-accent-dark hover:bg-accent-dark/70' : 'hover:bg-action-hover',
+                state?.attributes.effect === effect ? 'bg-accent-main hover:bg-accent-main/70' : 'hover:bg-action-hover',
               )}
               onClick={async () => {
                 await window.electronAPI.state.callServiceAction('light', 'turn_on', { entity_id: entity.entity_id, effect });

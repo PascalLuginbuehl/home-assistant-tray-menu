@@ -13,7 +13,9 @@ For easy configuration, entities can be added, sorted, and edited using a GUI.
 
 # Installation
 - Download from the [Releases page](https://github.com/PascalLuginbuehl/home-assistant-tray-menu/releases) and run the installer EXE.
-- Once installation has finished, you should see the Home Assistant icon in your system tray.
+- A "Windows protected your PC" message will pop up, click "More info" and then "Run anyway" This is a precaution from Windows because this application is not signed.
+- Once the installation is complete, you should see the Home Assistant icon in your system tray.
+- Right-click on the tray icon to open settings
 
 # Stack
 - Built using electron-forge and react

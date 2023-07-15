@@ -6,7 +6,7 @@
   },
   "CONNECTION": {
     "TITLE": "API Connection",
-    "LONG_LIVED_ACCESS_TOKEN": "Long Lived Access Token",
+    "LONG_LIVED_ACCESS_TOKEN": "Long-Lived Access Token",
     "LAUNCH_AT_STARTUP": "Launch at startup",
     "LLAT_UNAUTHORIZED": "long lived access token was not authorized on the server",
     "NETWORK_ERROR": "Could not reach server"
@@ -14,5 +14,9 @@
   "ENTITIES": {
     "TITLE": "Entities",
     "ADD_ENTITY": "Add entity"
+  },
+  "DEVELOPMENT": {
+    "TITLE": "Development",
+    "KEEP_TRAY_OPEN": "Keep tray open"
   }
 }

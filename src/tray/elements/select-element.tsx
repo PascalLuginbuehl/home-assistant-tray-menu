@@ -50,7 +50,7 @@ export default function SelectElement(props: SelectElementProps) {
               type="button"
               className={clsx(
                 'flex w-full items-center px-3 py-2',
-                state?.state === option ? 'bg-accent-main hover:bg-accent-dark/70' : 'hover:bg-action-hover',
+                state?.state === option ? 'bg-accent-main hover:bg-accent-main/70' : 'hover:bg-action-hover',
               )}
               onClick={async () => {
                 await window.electronAPI.state.callServiceAction('select', 'select_option', { entity_id: entity.entity_id, option });

@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, systemPreferences } from 'electron';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
@@ -52,3 +52,5 @@ ipcMain.handle('electron-store:set', async (event, key, val) => {
     setAutoLaunch(val.isAutoLaunchEnabled);
   }
 });
+
+ipcMain.handle('system:accent', async () => systemPreferences.getAccentColor());

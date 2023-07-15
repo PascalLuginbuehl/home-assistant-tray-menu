@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import Connection from './routes/connection/connection';
 import Entities from './routes/entities/entities';
 import Navigation from './navigation';
+import Development from './routes/development/development';
 
 export default function App() {
   return (
@@ -18,9 +19,14 @@ export default function App() {
             element={<Connection />}
           />
           <Route
+            path="/development"
+            element={<Development />}
+          />
+          <Route
             path="/"
             element={<Entities />}
           />
+
         </Routes>
       </Box>
     </Box>

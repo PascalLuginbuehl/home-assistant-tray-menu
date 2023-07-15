@@ -33,7 +33,7 @@ export function setTrayMenu() {
   tray.setContextMenu(contextMenu);
 }
 
-const createTray = (): void => {
+const createTray = () => {
   const panelWindow = createPanel();
 
   // trigger reload to load new API Keys and API Url
@@ -50,6 +50,8 @@ const createTray = (): void => {
     panelWindow.webContents.send('request-height');
     panelWindow.focus();
   });
+
+  return panelWindow;
 };
 
 export const setIconStatus = (status: APIUrlStateEnum) => {

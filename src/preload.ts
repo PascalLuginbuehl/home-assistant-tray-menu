@@ -28,6 +28,7 @@ const contextBridgeApi = {
       serviceData: { entity_id: string } & Record<string, unknown>,
     ): Promise<void> => ipcRenderer.invoke('service:call-action', domain, service, serviceData),
   },
+  getAccentColor: async (): Promise<string> => ipcRenderer.invoke('system:accent'),
 };
 
 export type ContextBridgeApi = typeof contextBridgeApi;

@@ -19,7 +19,7 @@ export default function SwitchElement(props: SwitchElementProps) {
       type="button"
       className={clsx(
         'flex h-[50px] w-full items-center px-3',
-        state?.state === 'on' ? 'bg-accent-dark hover:bg-accent-dark/70' : 'hover:bg-action-hover',
+        state?.state === 'on' ? 'bg-accent-main hover:bg-accent-main/70' : 'hover:bg-action-hover',
         state.state === 'unavailable' && 'pointer-events-none opacity-50',
       )}
       onClick={async () => {

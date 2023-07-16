@@ -30,3 +30,10 @@ I appreciate feedback and contributions to this repo!
 - <https://github.com/addyire/ha-menu>
 - <https://github.com/PiotrMachowski/Home-Assistant-Taskbar-Menu>
 - <https://github.com/LAB02-Research/HASS.Agent>
+
+# Build Instructions
+If you wish to run a development build of Home Assistant Tray Menu:
+- Download or clone.
+- Install the build tools for node-gyp, if not already installed. You may already have these from installing NodeJS.
+- Run `npm install`.
+- Run `npm run make` to build an executable or `npm start` to run actual development.

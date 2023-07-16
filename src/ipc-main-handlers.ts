@@ -1,4 +1,4 @@
-import { ipcMain, systemPreferences } from 'electron';
+import { ipcMain, nativeTheme, systemPreferences } from 'electron';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
@@ -62,7 +62,9 @@ ipcMain.handle('electron-store:set', async (event, key, val) => {
   store.set(key, val);
 
   if (key === 'settings') {
-    setAutoLaunch(val.isAutoLaunchEnabled);
+    const settings = val as ISettings;
+    nativeTheme.themeSource = settings.development.theme;
+    setAutoLaunch(settings.isAutoLaunchEnabled);
   }
 });
 

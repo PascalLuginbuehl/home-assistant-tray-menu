@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import {
-  FormContainer, SubmitHandler, SwitchElement, useForm,
+  FormContainer, SelectElement, SubmitHandler, SwitchElement, useForm,
 } from 'react-hook-form-mui';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ export default function Development() {
   const formDefaultValues = useMemo<TFormValues>(() => ({
     keepTrayWindowOpen: settings.development.keepTrayWindowOpen,
     useMockBackend: settings.development.useMockBackend,
+    theme: settings.development.theme,
   }), [settings]);
 
   const formContext = useForm<TFormValues>({
@@ -40,7 +41,7 @@ export default function Development() {
     <FormContainer<TFormValues>
       formContext={formContext}
     >
-      <Grid container spacing={0}>
+      <Grid container spacing={0} gap={1}>
         <Grid xs={12}>
           <Typography variant="h4" gutterBottom>{t('TITLE')}</Typography>
         </Grid>
@@ -51,6 +52,15 @@ export default function Development() {
 
         <Grid xs={12}>
           <SwitchElement<TFormValues> name="useMockBackend" label={t('USE_MOCK_BACKEND')} />
+        </Grid>
+
+        <Grid xs={12}>
+          <SelectElement<TFormValues>
+            name="theme"
+            label={t('OVERWRITE_THEME')}
+            options={[{ id: 'system', label: 'System' }, { id: 'light', label: 'light' }, { id: 'dark', label: 'dark' }]}
+            fullWidth
+          />
         </Grid>
 
         <AutoSave

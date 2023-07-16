@@ -18,6 +18,7 @@
   "DEVELOPMENT": {
     "TITLE": "Development",
     "KEEP_TRAY_OPEN": "Keep tray open",
-    "USE_MOCK_BACKEND": "Use mock backend"
+    "USE_MOCK_BACKEND": "Use mock backend",
+    "OVERWRITE_THEME": "Overwrite theme"
   }
 }

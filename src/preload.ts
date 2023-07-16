@@ -29,6 +29,7 @@ const contextBridgeApi = {
     ): Promise<void> => ipcRenderer.invoke('service:call-action', domain, service, serviceData),
   },
   getAccentColor: async (): Promise<string> => ipcRenderer.invoke('system:accent'),
+  getIsWin11: async (): Promise<boolean> => ipcRenderer.invoke('get-win-version:get'),
 };
 
 export type ContextBridgeApi = typeof contextBridgeApi;

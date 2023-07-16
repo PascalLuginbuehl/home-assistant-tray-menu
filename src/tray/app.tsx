@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import clsx from 'clsx';
 import Configuration from './configuration';
 import './app.css';
 
@@ -35,9 +36,18 @@ export default function App() {
     });
   }, []);
 
+  // const os = useOsTheme();
+
   const { reset } = useQueryErrorResetBoundary();
   return (
-    <div className="bg-background-tray shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]">
+    <div className={
+      clsx(
+        'bg-background-tray',
+        // win10 ? 'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]'
+        //   : 'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]',
+      )
+    }
+    >
       <ErrorBoundary
         onReset={reset}
         fallbackRender={Fallback}

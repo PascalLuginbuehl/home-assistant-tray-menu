@@ -1,21 +1,14 @@
-import IState from '../types/state';
+import { IEntityConfig } from '../store';
+import IState, { ColorModeEnum } from '../types/state';
 
-const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>> = [
+const mockStateArray: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>> = [
   {
-    entity_id: 'switch.pascal_bedroom_light',
+    entity_id: 'switch.light',
     state: 'on',
     attributes: {
-      friendly_name: 'Pascal Light',
+      friendly_name: 'Light',
     },
-  },
-  {
-    entity_id: 'switch.pascal_bedroom_corner_lamp',
-    state: 'off',
-    attributes: {
-      friendly_name: 'Pascal Corner Lamp',
-    },
-  },
-  {
+  }, {
     entity_id: 'switch.corridor_led_strip',
     state: 'off',
     attributes: {
@@ -23,23 +16,23 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
     },
   },
   {
-    entity_id: 'sensor.bedroom_co2',
+    entity_id: 'sensor.co2',
     state: '796.0',
     attributes: {
       state_class: 'measurement',
       unit_of_measurement: 'ppm',
       device_class: 'carbon_dioxide',
-      friendly_name: 'Bedroom Carbon dioxide',
+      friendly_name: 'Carbon dioxide',
     },
   },
   {
-    entity_id: 'sensor.bedroom_temperature',
+    entity_id: 'sensor.temperature',
     state: '25.9',
     attributes: {
       state_class: 'measurement',
       unit_of_measurement: '°C',
       device_class: 'temperature',
-      friendly_name: 'Bedroom Temperature',
+      friendly_name: 'Temperature',
     },
   },
   {
@@ -53,7 +46,7 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
       friendly_name: 'Pixel 7 Battery Level',
     },
   }, {
-    entity_id: 'light.wled_pascal',
+    entity_id: 'light.wled_unavailable',
     state: 'unavailable',
     attributes: {
       effect_list: [
@@ -61,10 +54,10 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
         'Wipe Random',
       ],
       supported_color_modes: [
-        'rgb',
+        ColorModeEnum.RGB,
       ],
       icon: 'mdi:led-strip-variant',
-      friendly_name: 'WLED Pascal',
+      friendly_name: 'WLED Unavailable',
       supported_features: 36,
     },
   }, {
@@ -76,9 +69,9 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
         'Wipe Random',
       ],
       supported_color_modes: [
-        'rgb',
+        ColorModeEnum.RGB,
       ],
-      color_mode: 'rgb',
+      color_mode: ColorModeEnum.RGB,
       brightness: 128,
       hs_color: [
         37.647,
@@ -95,11 +88,19 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
       ],
       effect: 'Solid',
       icon: 'mdi:led-strip-variant',
-      friendly_name: 'WLED Pascal',
+      friendly_name: 'WLED',
       supported_features: 36,
     },
   }, {
-    entity_id: 'select.wled_pascal_preset',
+    entity_id: 'light.only_toggle',
+    state: 'on',
+    attributes: {
+      color_mode: ColorModeEnum.ONOFF,
+      icon: 'mdi:led-strip-variant',
+      friendly_name: 'Only toggle light',
+    },
+  }, {
+    entity_id: 'select.wled_preset',
     state: 'unknown',
     attributes: {
       options: [
@@ -110,7 +111,7 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
       friendly_name: 'WLED Pascal Preset',
     },
   }, {
-    entity_id: 'number.wled_pascal_speed',
+    entity_id: 'number.wled_speed',
     state: '128',
     attributes: {
       min: 0,
@@ -118,14 +119,14 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
       step: 1,
       mode: 'auto',
       icon: 'mdi:speedometer',
-      friendly_name: 'WLED Pascal Speed',
+      friendly_name: 'WLED Speed Number',
     },
   }, {
-    entity_id: 'button.wled_pascal_restart',
+    entity_id: 'button.wled_restart',
     state: 'unknown',
     attributes: {
       device_class: 'restart',
-      friendly_name: 'WLED Pascal Restart',
+      friendly_name: 'WLED Restart Button',
     },
   }, {
     entity_id: 'automation.switch',
@@ -148,4 +149,45 @@ const mockState: Array<Omit<IState, 'last_changed' | 'last_updated' | 'context'>
   },
 ];
 
-export default mockState as IState[];
+const mockEntities: Partial<IEntityConfig>[] = [{
+  entity_id: 'sensor.co2',
+  icon: 'molecule-co2',
+}, {
+  entity_id: 'sensor.temperature',
+  icon: 'home-thermometer-outline',
+}, {
+  icon: 'cellphone-charging',
+  entity_id: 'sensor.pixel_7_battery_level',
+}, {
+  entity_id: 'switch.light',
+  icon: 'wall-sconce-flat-outline',
+}, {
+  entity_id: 'switch.corridor_led_strip',
+  icon: 'led-strip-variant',
+}, {
+  entity_id: 'light.wled_unavailable',
+}, {
+  entity_id: 'light.wled',
+  icon: 'desk',
+}, {
+  entity_id: 'select.wled_preset',
+  icon: 'led-strip-variant',
+}, {
+  entity_id: 'number.wled_speed',
+}, {
+  entity_id: 'button.wled_restart',
+}, {
+  entity_id: 'automation.switch',
+}, {
+  entity_id: 'light.only_toggle',
+}, {
+  entity_id: 'binary_sensor.pixel_7_is_charging',
+}];
+
+export const mockConfigEntities = mockEntities.map((entity) => ({
+  label: null,
+  icon: null,
+  ...entity,
+} as IEntityConfig));
+
+export const mockState = mockStateArray as IState[];

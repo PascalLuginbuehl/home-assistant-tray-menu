@@ -15,7 +15,9 @@ export interface ISettings {
   development: {
     keepTrayWindowOpen: boolean
     useMockBackend: boolean
+    useMockConfig: boolean
     theme: 'system' | 'light' | 'dark'
+    osTheme: 'system' | 'win10' | 'win11'
   }
 }
 
@@ -52,13 +54,23 @@ const schema: JSONSchemaType<SchemaType> = {
               type: 'boolean',
               default: false,
             },
+            useMockConfig: {
+              type: 'boolean',
+              default: false,
+            },
             theme: {
               type: 'string',
               default: 'system',
             },
+            osTheme: {
+              type: 'string',
+              default: 'system',
+            },
           },
-          default: { keepTrayWindowOpen: false, useMockBackend: false, theme: 'system' },
-          required: ['keepTrayWindowOpen', 'useMockBackend', 'theme'],
+          default: {
+            keepTrayWindowOpen: false, useMockBackend: false, theme: 'system', osTheme: 'system', useMockConfig: false,
+          },
+          required: ['keepTrayWindowOpen', 'useMockBackend', 'theme', 'osTheme'],
         },
         entities: {
           type: 'array',
@@ -107,7 +119,9 @@ const store = new Store<SchemaType>({
       development: {
         keepTrayWindowOpen: false,
         useMockBackend: false,
+        useMockConfig: false,
         theme: 'system',
+        osTheme: 'system',
       },
     },
   },

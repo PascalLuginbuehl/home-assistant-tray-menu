@@ -4,6 +4,7 @@ import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
 import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
+import mockState from './mocks/mock-state';
 
 const handleError = (e: unknown) => {
   setIconStatus(APIUrlStateEnum.badRequest);
@@ -24,10 +25,16 @@ ipcMain.handle(
 
 ipcMain.handle(
   'service:call-action',
-  (event, domain: string, service: string, serviceData: { entity_id: string }) => baseApiClient.post(`/api/services/${domain}/${service}`, serviceData)
-    .then((response) => response.data)
-    .then(handleAPIStatus)
-    .catch(handleError),
+  (event, domain: string, service: string, serviceData: { entity_id: string }) => {
+    if (store.get('settings').development.useMockBackend) {
+      return Promise.resolve();
+    }
+
+    return baseApiClient.post(`/api/services/${domain}/${service}`, serviceData)
+      .then((response) => response.data)
+      .then(handleAPIStatus)
+      .catch(handleError);
+  },
 );
 
 ipcMain.on('reload-api', (event, storeSettings: ISettings) => {
@@ -36,10 +43,16 @@ ipcMain.on('reload-api', (event, storeSettings: ISettings) => {
 
 ipcMain.handle(
   'state:get-states',
-  () => baseApiClient.get<IState[]>('/api/states')
-    .then((response) => response.data)
-    .then(handleAPIStatus)
-    .catch(handleError),
+  () => {
+    if (store.get('settings').development.useMockBackend) {
+      return Promise.resolve(mockState);
+    }
+
+    return baseApiClient.get<IState[]>('/api/states')
+      .then((response) => response.data)
+      .then(handleAPIStatus)
+      .catch(handleError);
+  },
 );
 
 // electron-store

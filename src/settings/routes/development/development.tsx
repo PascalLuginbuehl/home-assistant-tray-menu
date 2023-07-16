@@ -18,6 +18,7 @@ export default function Development() {
 
   const formDefaultValues = useMemo<TFormValues>(() => ({
     keepTrayWindowOpen: settings.development.keepTrayWindowOpen,
+    useMockBackend: settings.development.useMockBackend,
   }), [settings]);
 
   const formContext = useForm<TFormValues>({
@@ -46,6 +47,10 @@ export default function Development() {
 
         <Grid xs={12}>
           <SwitchElement<TFormValues> name="keepTrayWindowOpen" label={t('KEEP_TRAY_OPEN')} />
+        </Grid>
+
+        <Grid xs={12}>
+          <SwitchElement<TFormValues> name="useMockBackend" label={t('USE_MOCK_BACKEND')} />
         </Grid>
 
         <AutoSave

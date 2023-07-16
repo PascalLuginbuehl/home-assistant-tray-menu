@@ -14,6 +14,7 @@ export interface ISettings {
   entities: IEntityConfig[]
   development: {
     keepTrayWindowOpen: boolean
+    useMockBackend: boolean
   }
 }
 
@@ -44,10 +45,15 @@ const schema: JSONSchemaType<SchemaType> = {
           properties: {
             keepTrayWindowOpen: {
               type: 'boolean',
+              default: false,
+            },
+            useMockBackend: {
+              type: 'boolean',
+              default: false,
             },
           },
-          default: { keepTrayWindowOpen: false },
-          required: ['keepTrayWindowOpen'],
+          default: { keepTrayWindowOpen: false, useMockBackend: false },
+          required: ['keepTrayWindowOpen', 'useMockBackend'],
         },
         entities: {
           type: 'array',
@@ -95,6 +101,7 @@ const store = new Store<SchemaType>({
       isAutoLaunchEnabled: true,
       development: {
         keepTrayWindowOpen: false,
+        useMockBackend: false,
       },
     },
   },

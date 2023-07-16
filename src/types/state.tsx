@@ -28,13 +28,20 @@ export interface NumberAttributes {
   step: number
 }
 
+export interface AutomationAttributes {
+  id: string,
+  last_triggered: string,
+  mode: string,
+  current: 0,
+}
+
 export interface SelectAttributes {
   options: string[]
 }
 
 export type SwitchAttributes = void;
 
-export type CombinedAttributes = LightAttributes | SensorAttributes | NumberAttributes | SelectAttributes | SwitchAttributes;
+export type CombinedAttributes = LightAttributes | SensorAttributes | NumberAttributes | SelectAttributes | SwitchAttributes | AutomationAttributes;
 
 export default interface IState<IAttributes extends CombinedAttributes = CombinedAttributes> {
   entity_id: string

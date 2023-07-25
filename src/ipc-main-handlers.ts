@@ -59,30 +59,31 @@ ipcMain.handle(
   },
 );
 
-// electron-store
-ipcMain.handle('electron-store:get', async (event, val) => {
-  if (val === 'settings') {
-    const settings = store.get('settings');
+ipcMain.handle('settings:get', async () => {
+  const settings = store.get('settings');
 
-    if (settings.development.useMockConfig) {
-      return { ...settings, entities: mockConfigEntities };
-    }
-
-    return settings;
+  if (settings.development.useMockConfig) {
+    return { ...settings, entities: mockConfigEntities };
   }
 
-  return store.get(val);
+  return settings;
 });
 
-ipcMain.handle('electron-store:set', async (event, key, val) => {
-  store.set(key, val);
+export interface SystemAttributes {
+  accentColor: string;
+  osTheme: 'win10' | 'win11';
+}
 
-  if (key === 'settings') {
-    const settings = val as ISettings;
-    nativeTheme.themeSource = settings.development.theme;
-    setAutoLaunch(settings.isAutoLaunchEnabled);
-  }
+ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), osTheme: isReallyWin11 ? 'win11' : 'win10' }));
+
+ipcMain.handle('settings:set', async (event, value) => {
+  const settings = value as ISettings;
+
+  store.set('settings', value);
+
+  // Set the theme of the app to match the one set in development settings
+  nativeTheme.themeSource = settings.development.theme;
+
+  // Adjust the auto launch setting
+  setAutoLaunch(settings.isAutoLaunchEnabled);
 });
-
-ipcMain.handle('system:accent', async () => systemPreferences.getAccentColor());
-ipcMain.handle('get-win-version:get', async () => isReallyWin11);

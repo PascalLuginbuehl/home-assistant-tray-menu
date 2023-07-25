@@ -5,14 +5,14 @@ import SwitchElement from './elements/switch-element';
 import LightElement from './elements/light-element';
 import SensorElement from './elements/sensor-element';
 import SelectElement from './elements/select-element';
+import { IEntityConfig } from '../store';
 
-export default function Configuration() {
-  const { data: entities, isSuccess: isSuccessEntities } = useQuery({
-    queryKey: ['entities'],
-    queryFn: async () => window.electronAPI.store.getSettings(),
-    select: (res) => res.entities,
-    suspense: true,
-  });
+interface ConfigurationProps {
+  entities: IEntityConfig[]
+}
+
+export default function Configuration(props: ConfigurationProps) {
+  const { entities } = props;
 
   const { data: states, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
@@ -23,10 +23,9 @@ export default function Configuration() {
     queryFn: async () => window.electronAPI.state.getStates(),
     select: (fetchedStates) => fetchedStates.filter((state) => entities?.map((e) => e.entity_id).includes(state.entity_id)),
     suspense: true,
-    enabled: isSuccessEntities,
   });
 
-  if (!isSuccess || !isSuccessEntities) {
+  if (!isSuccess) {
     return null;
   }
 

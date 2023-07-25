@@ -8,7 +8,6 @@
     --accent-main: 22 146 208; /* rgb(22 146 208) */
     --accent-dark: 10 65 92; /* rgb(10, 65, 92) */
 
-
     --system-accent-light: hsl(200, 80%, 83%);
     --system-accent-main: hsl(200, 81%, 45%);
     --system-accent-dark: hsl(200, 80%, 20%);
@@ -47,6 +46,23 @@
     }
   }
 
+
+
+  /* Windows 11 style */
+  body[data-os-theme="win11"] {
+    --tray-background: #f2f2f2;
+    /* --tray-border is the same as win in 10 */
+
+    --input-border: rgba(0, 0, 0, 0.77);
+
+    @media screen and (prefers-color-scheme: dark) {
+        --tray-background: #242424;
+
+        --input-border: rgba(255, 255, 255, 0.77);
+    }
+  }
+
+
   html,
   body {
     background: transparent;
@@ -59,5 +75,4 @@
     color: rgb(var(--text-primary));
     @apply dark:[color-scheme:dark]
   }
-
 }

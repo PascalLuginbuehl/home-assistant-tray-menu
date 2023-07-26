@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useSettings } from '../../utils/use-settings';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
@@ -58,10 +59,13 @@ export default function SelectElement(props: SelectElementProps) {
             <button
               key={option}
               type="button"
-              className={clsx(
+              className={twMerge(clsx(
                 'flex w-full items-center px-3 py-2',
-                state?.state === option ? 'bg-accent-main hover:bg-accent-main/70' : 'hover:bg-action-hover',
-              )}
+                'hover:bg-action-hover',
+                {
+                  'bg-accent-main text-accent-mainContrastText hover:bg-accent-main/70': state?.state === option,
+                },
+              ))}
               onClick={async () => {
                 await window.electronAPI.state.callServiceAction('select', 'select_option', { entity_id: entity.entity_id, option });
                 await refetch();

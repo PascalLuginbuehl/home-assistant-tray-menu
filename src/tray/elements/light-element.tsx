@@ -7,6 +7,7 @@ import { mdiBrightness6 } from '@mdi/js';
 import { RgbColor, RgbColorPicker } from 'react-colorful';
 import BrightnessMediumIcon from '@mui/icons-material/BrightnessMedium';
 import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import { useSettings } from '../../utils/use-settings';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
@@ -106,7 +107,7 @@ export default function LightElement(props: LightElementProps) {
       >
         <div
           className={clsx(
-            'flex h-[50px] w-full items-center px-3 hover:bg-action-hover',
+            'flex h-[50px] w-full items-center hover:bg-action-hover',
             {
               'rounded-lg': computedOsTheme === 'win11',
             },
@@ -114,7 +115,12 @@ export default function LightElement(props: LightElementProps) {
         >
           <button
             type="button"
-            className="w-10"
+            className={clsx(
+              'box-content h-full w-7 px-3 hover:bg-action-hover',
+              {
+                'rounded-lg': computedOsTheme === 'win11',
+              },
+            )}
             onClick={async () => {
               await window.electronAPI.state.callServiceAction('light', 'toggle', { entity_id: entity.entity_id });
               await refetch();
@@ -129,38 +135,45 @@ export default function LightElement(props: LightElementProps) {
 
           <div className="grow" />
 
-          <button
-            type="button"
-            className="mr-1 rounded-full bg-text-primary/[.15] px-3 py-[6px] text-sm font-medium leading-none hover:bg-text-primary/[.3]"
-            onClick={() => {
-              handleSetOpenSettings(OpenSettingsEnum.effect);
-            }}
-          >
-            {state.attributes.effect ?? state.state }
-          </button>
+          {state.attributes.effect !== undefined && (
+            <button
+              type="button"
+              className="mr-1 rounded-full bg-text-primary/[.15] px-3 py-[6px] text-sm font-medium leading-none hover:bg-text-primary/[.3]"
+              onClick={() => {
+                handleSetOpenSettings(OpenSettingsEnum.effect);
+              }}
+            >
+              { state.attributes.effect }
+            </button>
+          )}
 
-          <button
-            className="group h-full px-1"
-            type="button"
-            onClick={() => {
-              handleSetOpenSettings(OpenSettingsEnum.color);
-            }}
-          >
-            <div
-              className="h-6 w-6 rounded-full border-2 border-icon-main group-hover:border-icon-hover"
-              style={{ background: `rgb(${color.r} ${color.g} ${color.b})` }}
-            />
-          </button>
+          {state.attributes.rgb_color !== undefined && (
+            <button
+              className="group h-full px-1"
+              type="button"
+              onClick={() => {
+                handleSetOpenSettings(OpenSettingsEnum.color);
+              }}
+            >
+              <div
+                className="h-6 w-6 rounded-full border-2 border-icon-main group-hover:border-icon-hover"
+                style={{ background: `rgb(${color.r} ${color.g} ${color.b})` }}
+              />
+            </button>
+          )}
 
-          <button
-            className="h-full px-1 text-icon-main hover:text-icon-hover"
-            type="button"
-            onClick={() => {
-              handleSetOpenSettings(OpenSettingsEnum.brightness);
-            }}
-          >
-            <BrightnessMediumIcon />
-          </button>
+          {state.attributes.brightness !== undefined && (
+            <button
+              className="h-full px-1 text-icon-main hover:text-icon-hover"
+              type="button"
+              onClick={() => {
+                handleSetOpenSettings(OpenSettingsEnum.brightness);
+              }}
+            >
+              <BrightnessMediumIcon />
+            </button>
+          )}
+          <div className="w-3" />
         </div>
 
         { openSettings === OpenSettingsEnum.color && (
@@ -175,10 +188,13 @@ export default function LightElement(props: LightElementProps) {
             <button
               key={effect}
               type="button"
-              className={clsx(
+              className={twMerge(clsx(
                 'flex w-full items-center px-3 py-2',
-                state?.attributes.effect === effect ? 'bg-accent-main hover:bg-accent-main/70' : 'hover:bg-action-hover',
-              )}
+                'hover:bg-action-hover',
+                {
+                  'bg-accent-main text-accent-mainContrastText hover:bg-accent-main/70 hover:text-accent-mainContrastText': state?.attributes.effect === effect,
+                },
+              ))}
               onClick={async () => {
                 await window.electronAPI.state.callServiceAction('light', 'turn_on', { entity_id: entity.entity_id, effect });
                 await refetch();

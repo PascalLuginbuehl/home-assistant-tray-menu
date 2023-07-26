@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
+import invert from 'invert-color';
 import Configuration from './configuration';
 import './app.css';
 import { useSettings } from '../utils/use-settings';
@@ -20,7 +21,10 @@ export default function App() {
   useEffect(() => {
     window.document.body.dataset.osTheme = systemAttributes.computedOsTheme;
     const rgba = hexToRgb(systemAttributes.accentColor);
-    window.document.body.style.setProperty('--accent-main', `${rgba?.r} ${rgba?.g} ${rgba?.b}`);
+    if (!rgba) return;
+
+    window.document.body.style.setProperty('--accent-main', `${rgba.r} ${rgba.g} ${rgba.b}`);
+    window.document.body.style.setProperty('--accent-main-contrast-text', invert(rgba, true));
   }, [systemAttributes]);
 
   return (
@@ -30,7 +34,7 @@ export default function App() {
         'flex flex-col',
         {
           'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]': systemAttributes.computedOsTheme === 'win10',
-          'rounded-[8px] shadow-[0_0_0_1px_#41414144_inset] m-[12px] p-4 gap-2': systemAttributes.computedOsTheme === 'win11',
+          'rounded-[8px] shadow-[0_0_0_1px_#41414144_inset] m-[12px] p-3 gap-2': systemAttributes.computedOsTheme === 'win11',
         },
       )
     }

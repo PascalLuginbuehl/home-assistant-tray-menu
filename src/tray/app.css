@@ -6,6 +6,7 @@
   :root {
     --accent-light: 177 223 246; /* rgb(177 223 246) */
     --accent-main: 22 146 208; /* rgb(22 146 208) */
+    --accent-main-contrast-text: #fff;
     --accent-dark: 10 65 92; /* rgb(10, 65, 92) */
 
     --system-accent-light: hsl(200, 80%, 83%);

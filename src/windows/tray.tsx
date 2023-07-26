@@ -59,5 +59,3 @@ export function setIconStatus(status: APIUrlStateEnum) {
     tray.setImage(ICON_PATHS.ERROR);
   }
 }
-
-export default createTray;

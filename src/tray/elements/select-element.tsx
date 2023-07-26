@@ -49,7 +49,7 @@ export default function SelectElement(props: SelectElementProps) {
         </h2>
         <div className="grow" />
         <div className="mr-1 rounded-full bg-text-primary/[.15] px-3 py-[6px] text-sm font-medium leading-none">{state.state}</div>
-        <div className={`${!expanded && 'rotate-180'}`}>
+        <div className={clsx(!expanded && 'rotate-180')}>
           <ExpandLessIcon />
         </div>
       </button>

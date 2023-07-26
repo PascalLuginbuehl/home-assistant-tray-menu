@@ -7,9 +7,6 @@ import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
 import { mockState, mockConfigEntities } from './mocks/mock-state';
 
-// From https://github.com/xanderfrangos/twinkle-tray/blob/d238796f2cbe3c521a12df46fabedff6adee115b/src/electron.js#L52C1-L53C76
-const isReallyWin11 = parseInt(os.release()?.split('.')[2], 10) >= 22000;
-
 const handleError = (e: unknown) => {
   setIconStatus(APIUrlStateEnum.badRequest);
   throw e;
@@ -69,13 +66,6 @@ ipcMain.handle('settings:get', async () => {
   return settings;
 });
 
-export interface SystemAttributes {
-  accentColor: string;
-  osTheme: 'win10' | 'win11';
-}
-
-ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), osTheme: isReallyWin11 ? 'win11' : 'win10' }));
-
 ipcMain.handle('settings:set', async (event, value) => {
   const settings = value as ISettings;
 
@@ -87,3 +77,13 @@ ipcMain.handle('settings:set', async (event, value) => {
   // Adjust the auto launch setting
   setAutoLaunch(settings.isAutoLaunchEnabled);
 });
+
+export interface SystemAttributes {
+  accentColor: string;
+  osTheme: 'win10' | 'win11';
+}
+
+// From https://github.com/xanderfrangos/twinkle-tray/blob/d238796f2cbe3c521a12df46fabedff6adee115b/src/electron.js#L52C1-L53C76
+const isReallyWin11 = parseInt(os.release()?.split('.')[2], 10) >= 22000;
+
+ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), osTheme: isReallyWin11 ? 'win11' : 'win10' }));

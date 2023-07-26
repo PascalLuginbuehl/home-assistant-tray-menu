@@ -2,10 +2,15 @@ import Grid from '@mui/material/Unstable_Grid2';
 import {
   FormContainer, SelectElement, SubmitHandler, SwitchElement, useForm,
 } from 'react-hook-form-mui';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Typography } from '@mui/material';
+import {
+  Autocomplete, Box, TextField, Typography,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
+import IState from '../../../types/state';
 import { useSettings } from '../../../utils/use-settings';
 import { ISettings } from '../../../store';
 import AutoSave from '../../components/form/auto-save';
@@ -44,6 +49,10 @@ export default function Development() {
     select: (data) => data.filter((e) => settings.entities.map((entities) => entities.entity_id).includes(e.entity_id)),
     retry: false,
   });
+
+  const [debugState, setDebugState] = useState<IState | null>(null);
+
+  if (!states) return null;
 
   return (
     <FormContainer<TFormValues>
@@ -86,9 +95,17 @@ export default function Development() {
 
         <Grid xs={12}>
           <Typography variant="h4">Raw State Data</Typography>
+          <Typography gutterBottom>Select the state you want to debug</Typography>
+
+          <Autocomplete
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            renderInput={(params) => <TextField {...params} label="Entity" />}
+            options={states.map((state, index) => ({ id: index, label: state.entity_id }))}
+            onChange={(event, value) => setDebugState(value?.id !== undefined ? states[value.id] : null)}
+          />
 
           <Box component="pre" whiteSpace="pre-wrap" fontSize="small">
-            {JSON.stringify(states, (key, value) => {
+            {JSON.stringify(debugState, (key, value) => {
             // filter out last_changed last_updated context
               const filteredKeys = ['last_changed', 'last_updated', 'context'];
               if (filteredKeys.includes(key)) {

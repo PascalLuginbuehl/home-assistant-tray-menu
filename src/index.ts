@@ -1,7 +1,7 @@
 import {
   app, BrowserWindow,
 } from 'electron';
-import createTray from './windows/tray';
+import { createTray } from './windows/tray';
 import './ipc-main-handlers';
 import { checkAPIStatusPeriodically } from './hass-api';
 import { showPanel } from './windows/panel-controller';

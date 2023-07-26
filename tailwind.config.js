@@ -6,6 +6,7 @@ module.exports = {
       accent: {
         light: 'rgb(var(--accent-light) / <alpha-value>)',
         main: 'rgb(var(--accent-main) / <alpha-value>)',
+        mainContrastText: 'var(--accent-main-contrast-text)',
         dark: 'rgb(var(--accent-dark) / <alpha-value>)',
       },
       slider: 'rgb(var(--slider-track) / <alpha-value>)',

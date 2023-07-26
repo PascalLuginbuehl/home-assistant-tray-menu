@@ -1,12 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
 import { HashRouter } from 'react-router-dom';
-import darkTheme from '../theme/dark-theme';
 import '../i18next';
 import App from './app';
 import { SettingsProvider } from '../utils/use-settings';
+import darkTheme from '../theme/dark-theme';
+import lightTheme from '../theme/light-theme';
 
 // this element does 100% exist
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -16,17 +17,24 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 
 const queryClient = new QueryClient();
 
-// const theme = useMediaQuery("(prefers-color-scheme: dark)") ? darkTheme : lightTheme;
+function MuiThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useMediaQuery('(prefers-color-scheme: dark)') ? darkTheme : lightTheme;
+  return (
+    <ThemeProvider theme={theme}>
+      {children}
+    </ThemeProvider>
+  );
+}
 
 root.render(
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={darkTheme}>
+    <MuiThemeProvider>
       <CssBaseline enableColorScheme />
       <HashRouter>
         <SettingsProvider>
           <App />
         </SettingsProvider>
       </HashRouter>
-    </ThemeProvider>
+    </MuiThemeProvider>
   </QueryClientProvider>,
 );

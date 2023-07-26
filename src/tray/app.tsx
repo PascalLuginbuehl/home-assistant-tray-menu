@@ -27,7 +27,7 @@ export default function App() {
     <div className={
       clsx('bg-background-tray', {
         'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]': systemAttributes.computedOsTheme === 'win10',
-        'rounded-[8px] shadow-[0_0_0_1px_#41414144_inset]': systemAttributes.computedOsTheme === 'win11',
+        'rounded-[8px] shadow-[0_0_0_1px_#41414144_inset] m-[12px]': systemAttributes.computedOsTheme === 'win11',
 
       })
     }

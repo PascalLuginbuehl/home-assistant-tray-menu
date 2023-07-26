@@ -70,10 +70,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       settings,
       refetchAPIUrlState,
       saveSettings,
-      systemAttributes: {
-        computedOsTheme: settings.development.osTheme === 'system' ? systemAttributes.osTheme : settings.development.osTheme,
-        accentColor: systemAttributes.accentColor,
-      },
+      systemAttributes,
     };
   }, [apiURLState, settings, refetchAPIUrlState, saveSettings, systemAttributes]);
 

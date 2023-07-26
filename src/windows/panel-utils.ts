@@ -1,5 +1,11 @@
 import { BrowserWindow, screen } from 'electron';
-import type { IPanelSize, ITaskbarPosition, TaskbarPositionsEnum } from './panel-controller';
+import type { IPanelSize } from './panel-controller';
+
+export type TaskbarPositionsEnum = 'LEFT' | 'TOP' | 'RIGHT' | 'BOTTOM';
+export interface ITaskbarPosition {
+  position: TaskbarPositionsEnum,
+  gap: number
+}
 
 export function taskbarPosition(): ITaskbarPosition {
   const primaryDisplay = screen.getPrimaryDisplay();
@@ -28,11 +34,7 @@ export function taskbarPosition(): ITaskbarPosition {
 export function repositionPanel(window: BrowserWindow, panelSize: IPanelSize) {
   try {
     const primaryDisplay = screen.getPrimaryDisplay();
-
     const taskbar = taskbarPosition();
-    // TODO rewrite
-    // eslint-disable-next-line no-param-reassign
-    panelSize.taskbar = taskbar;
 
     if (window) {
       if (taskbar.position === 'LEFT') {
@@ -57,9 +59,6 @@ export function repositionPanel(window: BrowserWindow, panelSize: IPanelSize) {
           y: primaryDisplay.bounds.y + primaryDisplay.bounds.height - panelSize.height - taskbar.gap,
         });
       }
-      // TODO rewrite
-      // eslint-disable-next-line no-param-reassign
-      panelSize.base = window.getBounds().y;
     }
   } catch (e) {
     // eslint-disable-next-line no-console

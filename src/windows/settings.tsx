@@ -6,10 +6,10 @@ declare const SETTINGS_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
 let settingsWindow: BrowserWindow | null = null;
 
-const openSettings = () => {
+export default function openSettings() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  if (settingsWindow && !settingsWindow.isDestroyed) {
+  if (settingsWindow && !settingsWindow.isDestroyed()) {
     settingsWindow.focus();
     return;
   }
@@ -43,6 +43,4 @@ const openSettings = () => {
     }
     return { action: 'deny' };
   });
-};
-
-export default openSettings;
+}

@@ -10,10 +10,11 @@ import clsx from 'clsx';
 import MdiIcon from '../../components/mdi-icon';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
-import IState, { LightAttributes } from '../../types/state';
+import IState, { ColorModeEnum, LightAttributes, SwitchAttributes } from '../../types/state';
 import { sendHeight } from '../send-height';
 import './slider.css';
 import './colorful.css';
+import SwitchElement from './switch-element';
 
 interface LightElementProps {
   state: IState<LightAttributes>
@@ -91,73 +92,74 @@ export default function LightElement(props: LightElementProps) {
     }
   };
 
-  // console.log(state.state === 'unavailable');
+  const supportedColorModes = state.attributes.supported_color_modes;
 
-  return (
-    <div
-      className={`${state.state === 'unavailable' && 'pointer-events-none opacity-50'}`}
-    >
+  if (supportedColorModes?.includes(ColorModeEnum.RGB) || supportedColorModes?.includes(ColorModeEnum.RGBW) || supportedColorModes?.includes(ColorModeEnum.RGBWW)) {
+    return (
       <div
-        className="flex h-[50px] w-full items-center px-3 hover:bg-action-hover"
+        className={`${state.state === 'unavailable' && 'pointer-events-none opacity-50'}`}
       >
-        <button
-          type="button"
-          className="w-10"
-          onClick={async () => {
-            await window.electronAPI.state.callServiceAction('light', state.state === 'off' ? 'turn_on' : 'turn_off', { entity_id: entity.entity_id });
-            await refetch();
-          }}
+        <div
+          className="flex h-[50px] w-full items-center px-3 hover:bg-action-hover"
         >
-          {entity.icon && <MdiIcon iconName={entity.icon} size={1.2} />}
-        </button>
+          <button
+            type="button"
+            className="w-10"
+            onClick={async () => {
+              await window.electronAPI.state.callServiceAction('light', 'toggle', { entity_id: entity.entity_id });
+              await refetch();
+            }}
+          >
+            {entity.icon && <MdiIcon iconName={entity.icon} size={1.2} />}
+          </button>
 
-        <h2>
-          {EntityUtils.getEntityName(entity, state)}
-        </h2>
+          <h2>
+            {EntityUtils.getEntityName(entity, state)}
+          </h2>
 
-        <div className="grow" />
+          <div className="grow" />
 
-        <button
-          type="button"
-          className="mr-1 rounded-full bg-text-primary/[.15] px-3 py-[6px] text-sm font-medium leading-none hover:bg-text-primary/[.3]"
-          onClick={() => {
-            handleSetOpenSettings(OpenSettingsEnum.effect);
-          }}
-        >
-          {state.attributes.effect ?? state.state }
-        </button>
+          <button
+            type="button"
+            className="mr-1 rounded-full bg-text-primary/[.15] px-3 py-[6px] text-sm font-medium leading-none hover:bg-text-primary/[.3]"
+            onClick={() => {
+              handleSetOpenSettings(OpenSettingsEnum.effect);
+            }}
+          >
+            {state.attributes.effect ?? state.state }
+          </button>
 
-        <button
-          className="group h-full px-1"
-          type="button"
-          onClick={() => {
-            handleSetOpenSettings(OpenSettingsEnum.color);
-          }}
-        >
-          <div
-            className="h-6 w-6 rounded-full border-2 border-icon-main group-hover:border-icon-hover"
-            style={{ background: `rgb(${color.r} ${color.g} ${color.b})` }}
-          />
-        </button>
+          <button
+            className="group h-full px-1"
+            type="button"
+            onClick={() => {
+              handleSetOpenSettings(OpenSettingsEnum.color);
+            }}
+          >
+            <div
+              className="h-6 w-6 rounded-full border-2 border-icon-main group-hover:border-icon-hover"
+              style={{ background: `rgb(${color.r} ${color.g} ${color.b})` }}
+            />
+          </button>
 
-        <button
-          className="h-full px-1 text-icon-main hover:text-icon-hover"
-          type="button"
-          onClick={() => {
-            handleSetOpenSettings(OpenSettingsEnum.brightness);
-          }}
-        >
-          <BrightnessMediumIcon />
-        </button>
-      </div>
+          <button
+            className="h-full px-1 text-icon-main hover:text-icon-hover"
+            type="button"
+            onClick={() => {
+              handleSetOpenSettings(OpenSettingsEnum.brightness);
+            }}
+          >
+            <BrightnessMediumIcon />
+          </button>
+        </div>
 
-      { openSettings === OpenSettingsEnum.color && (
+        { openSettings === OpenSettingsEnum.color && (
         <div className="px-3 py-2">
           <RgbColorPicker color={color} onChange={saveColor} className="colorful" />
         </div>
-      )}
+        )}
 
-      {openSettings === OpenSettingsEnum.effect && (
+        {openSettings === OpenSettingsEnum.effect && (
         <div className="max-h-64 overflow-x-auto">
           {state.attributes.effect_list?.map((effect) => (
             <button
@@ -176,9 +178,9 @@ export default function LightElement(props: LightElementProps) {
             </button>
           ))}
         </div>
-      )}
+        )}
 
-      {openSettings === OpenSettingsEnum.brightness && (
+        {openSettings === OpenSettingsEnum.brightness && (
         <div
           className="px-3 py-2"
           onWheel={onWheel}
@@ -201,7 +203,18 @@ export default function LightElement(props: LightElementProps) {
             <h2 className="-mr-1 w-[52px] pl-2 text-center text-xl">{brightness}</h2>
           </div>
         </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  }
+
+  if (supportedColorModes?.includes(ColorModeEnum.ONOFF)) {
+    return <SwitchElement entity={entity} state={state as IState<SwitchAttributes>} refetch={refetch} />;
+  }
+
+  if (supportedColorModes?.includes(ColorModeEnum.BRIGHTNESS)) {
+    return <div>TODO: implement</div>;
+  }
+
+  return <div>{`Color mode ${supportedColorModes} not supported`}</div>;
 }

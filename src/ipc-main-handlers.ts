@@ -1,9 +1,14 @@
-import { ipcMain, systemPreferences } from 'electron';
+import { ipcMain, nativeTheme, systemPreferences } from 'electron';
+import os from 'os';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
 import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
+import { mockState, mockConfigEntities } from './mocks/mock-state';
+
+// From https://github.com/xanderfrangos/twinkle-tray/blob/d238796f2cbe3c521a12df46fabedff6adee115b/src/electron.js#L52C1-L53C76
+const isReallyWin11 = parseInt(os.release()?.split('.')[2], 10) >= 22000;
 
 const handleError = (e: unknown) => {
   setIconStatus(APIUrlStateEnum.badRequest);
@@ -24,10 +29,16 @@ ipcMain.handle(
 
 ipcMain.handle(
   'service:call-action',
-  (event, domain: string, service: string, serviceData: { entity_id: string }) => baseApiClient.post(`/api/services/${domain}/${service}`, serviceData)
-    .then((response) => response.data)
-    .then(handleAPIStatus)
-    .catch(handleError),
+  (event, domain: string, service: string, serviceData: { entity_id: string }) => {
+    if (store.get('settings').development.useMockBackend) {
+      return Promise.resolve();
+    }
+
+    return baseApiClient.post(`/api/services/${domain}/${service}`, serviceData)
+      .then((response) => response.data)
+      .then(handleAPIStatus)
+      .catch(handleError);
+  },
 );
 
 ipcMain.on('reload-api', (event, storeSettings: ISettings) => {
@@ -36,21 +47,43 @@ ipcMain.on('reload-api', (event, storeSettings: ISettings) => {
 
 ipcMain.handle(
   'state:get-states',
-  () => baseApiClient.get<IState[]>('/api/states')
-    .then((response) => response.data)
-    .then(handleAPIStatus)
-    .catch(handleError),
+  () => {
+    if (store.get('settings').development.useMockBackend) {
+      return Promise.resolve(mockState);
+    }
+
+    return baseApiClient.get<IState[]>('/api/states')
+      .then((response) => response.data)
+      .then(handleAPIStatus)
+      .catch(handleError);
+  },
 );
 
-// electron-store
-ipcMain.handle('electron-store:get', async (event, val) => store.get(val));
+ipcMain.handle('settings:get', async () => {
+  const settings = store.get('settings');
 
-ipcMain.handle('electron-store:set', async (event, key, val) => {
-  store.set(key, val);
-
-  if (key === 'settings') {
-    setAutoLaunch(val.isAutoLaunchEnabled);
+  if (settings.development.useMockConfig) {
+    return { ...settings, entities: mockConfigEntities };
   }
+
+  return settings;
 });
 
-ipcMain.handle('system:accent', async () => systemPreferences.getAccentColor());
+export interface SystemAttributes {
+  accentColor: string;
+  osTheme: 'win10' | 'win11';
+}
+
+ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), osTheme: isReallyWin11 ? 'win11' : 'win10' }));
+
+ipcMain.handle('settings:set', async (event, value) => {
+  const settings = value as ISettings;
+
+  store.set('settings', value);
+
+  // Set the theme of the app to match the one set in development settings
+  nativeTheme.themeSource = settings.development.theme;
+
+  // Adjust the auto launch setting
+  setAutoLaunch(settings.isAutoLaunchEnabled);
+});

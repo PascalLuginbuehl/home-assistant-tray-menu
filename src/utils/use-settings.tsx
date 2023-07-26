@@ -11,6 +11,10 @@ interface ISettingsContext {
   apiURLState: APIUrlStateEnum | undefined
   refetchAPIUrlState: () => void
   saveSettings: (settings: Partial<ISettings>) => Promise<void>
+  systemAttributes: {
+    computedOsTheme: 'win10' | 'win11'
+    accentColor: string
+  }
 }
 
 const SettingsContext = createContext<ISettingsContext | null>(null);
@@ -26,7 +30,12 @@ export function useSettings(): ISettingsContext {
 }
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const { data: settings, isSuccess: settingsSuccess, refetch: refetchSettings } = useQuery({
+  const { data: systemAttributes } = useQuery({
+    queryKey: ['system-attributes'],
+    queryFn: async () => window.electronAPI.getSystemAttributes(),
+  });
+
+  const { data: settings, refetch: refetchSettings } = useQuery({
     queryKey: ['settings'],
     queryFn: async () => window.electronAPI.store.getSettings(),
     retry: false,
@@ -52,7 +61,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, [settings, refetchSettings]);
 
   const value = useMemo<ISettingsContext | null>(() => {
-    if (!settingsSuccess) {
+    if (!settings || !systemAttributes) {
       return null;
     }
 
@@ -61,8 +70,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       settings,
       refetchAPIUrlState,
       saveSettings,
+      systemAttributes,
     };
-  }, [apiURLState, settings, refetchAPIUrlState, settingsSuccess, saveSettings]);
+  }, [apiURLState, settings, refetchAPIUrlState, saveSettings, systemAttributes]);
 
   if (value === null) {
     return (

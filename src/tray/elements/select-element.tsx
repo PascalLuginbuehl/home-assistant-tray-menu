@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import clsx from 'clsx';
+import { useSettings } from '../../utils/use-settings';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
 import IState, { SelectAttributes } from '../../types/state';
 import { sendHeight } from '../send-height';
-import MdiIcon from '../../components/mdi-icon';
+import ElementIcon from './element-icon';
 
 interface SelectElementProps {
   state: IState<SelectAttributes>
@@ -16,6 +17,7 @@ interface SelectElementProps {
 export default function SelectElement(props: SelectElementProps) {
   const { state, entity, refetch } = props;
 
+  const { systemAttributes: { computedOsTheme } } = useSettings();
   const [expanded, setExpanded] = useState<boolean>(false);
 
   // Update height after every render
@@ -24,14 +26,22 @@ export default function SelectElement(props: SelectElementProps) {
   }, [expanded]);
 
   return (
-    <div className={clsx(state.state === 'unavailable' && 'pointer-events-none opacity-50')}>
+    <div className={clsx({
+      'pointer-events-none opacity-50': state.state === 'unavailable',
+    })}
+    >
       <button
-        className="flex h-[50px] w-full items-center px-3 hover:bg-action-hover"
+        className={clsx(
+          'flex h-[50px] w-full items-center px-3 hover:bg-action-hover',
+          {
+            'rounded-lg': computedOsTheme === 'win11',
+          },
+        )}
         type="button"
         onClick={() => setExpanded(!expanded)}
       >
         <div className="w-10">
-          {entity.icon && <MdiIcon iconName={entity.icon} size={1.2} />}
+          <ElementIcon iconName={entity.icon || state.attributes.icon} />
         </div>
         <h2 className="flex gap-1">
           {EntityUtils.getEntityName(entity, state)}

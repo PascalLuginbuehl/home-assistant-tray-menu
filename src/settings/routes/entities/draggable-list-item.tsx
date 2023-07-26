@@ -37,6 +37,8 @@ export default function DraggableListItem(props: DraggableListItemProps) {
     label: option.name, id: option.name, path: option.path, aliases: option.aliases,
   }));
 
+  const iconName = entity.icon || state?.attributes.icon;
+
   return (
     <Draggable
       draggableId={`entity-${entity.entity_id}`}
@@ -78,7 +80,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
               !isEditing ? (
                 <>
                   <ListItemIcon sx={{ minWidth: 36 }}>
-                    {entity.icon && <MdiIcon iconName={entity.icon} size={1} />}
+                    {iconName && <MdiIcon iconName={iconName} size={1} />}
                   </ListItemIcon>
                   <ListItemText
                     primary={EntityUtils.getEntityName(entity, state)}
@@ -91,7 +93,7 @@ export default function DraggableListItem(props: DraggableListItemProps) {
                   <AutocompleteElement<TFormValues>
                     name={`entities.${index}.icon`}
                     options={autocompleteOptions}
-                    label="Icon"
+                    label="Overwrite icon"
                     matchId
                     autocompleteProps={{
                       filterOptions: createFilterOptions({

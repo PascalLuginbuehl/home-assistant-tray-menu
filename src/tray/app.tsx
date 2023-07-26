@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Configuration from './configuration';
 import './app.css';
+import { useSettings } from '../utils/use-settings';
 
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -15,45 +15,27 @@ function hexToRgb(hex: string) {
 }
 
 export default function App() {
-  // const os = useOsTheme();
-
-  const { data: settings, isSuccess } = useQuery({
-    queryKey: ['entities'],
-    queryFn: async () => window.electronAPI.store.getSettings(),
-    suspense: true,
-  });
-
-  const { data: systemAttributes } = useQuery({
-    queryKey: ['system-attributes'],
-    queryFn: async () => window.electronAPI.getSystemAttributes(),
-    suspense: true,
-  });
+  const { settings, systemAttributes } = useSettings();
 
   useEffect(() => {
-    if (settings && systemAttributes) {
-      const { accentColor, osTheme } = systemAttributes;
-
-      window.document.body.dataset.osTheme = settings.development.osTheme === 'system' ? osTheme : settings.development.osTheme;
-
-      const rgba = hexToRgb(accentColor);
-      window.document.body.style.setProperty('--accent-main', `${rgba?.r} ${rgba?.g} ${rgba?.b}`);
-    }
-  }, [settings, systemAttributes]);
-
-  if (!isSuccess) {
-    return null;
-  }
+    window.document.body.dataset.osTheme = systemAttributes.computedOsTheme;
+    const rgba = hexToRgb(systemAttributes.accentColor);
+    window.document.body.style.setProperty('--accent-main', `${rgba?.r} ${rgba?.g} ${rgba?.b}`);
+  }, [systemAttributes]);
 
   return (
     <div className={
       clsx(
         'bg-background-tray',
-        // win10 ? 'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]'
-        //   : 'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]',
+        'flex flex-col',
+        {
+          'shadow-[0.5px_0.5px_0_0.5px_var(--tray-border)_inset]': systemAttributes.computedOsTheme === 'win10',
+          'rounded-[8px] shadow-[0_0_0_1px_#41414144_inset] m-[12px] p-4 gap-2': systemAttributes.computedOsTheme === 'win11',
+        },
       )
     }
     >
-      <Configuration entities={settings?.entities} />
+      <Configuration entities={settings.entities} />
     </div>
   );
 }

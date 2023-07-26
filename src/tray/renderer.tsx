@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider, useQueryErrorResetBoundary } from '@tanstack/react-query';
 import '../i18next';
 import { ErrorBoundary } from 'react-error-boundary';
+import { SettingsProvider } from '../utils/use-settings';
 import { registerSendHeightCallback } from './send-height';
 import App from './app';
 
@@ -42,7 +43,9 @@ root.render(
       <Suspense
         fallback="Loading"
       >
-        <App />
+        <SettingsProvider>
+          <App />
+        </SettingsProvider>
       </Suspense>
     </ErrorBoundary>
   </QueryClientProvider>,

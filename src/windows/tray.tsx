@@ -21,19 +21,7 @@ const ICON_PATHS = {
 
 let tray: Tray | null = null;
 
-export function setTrayMenu() {
-  if (tray === null) return;
-
-  const contextMenu = Menu.buildFromTemplate([
-    { label: i18next.t('SETTINGS'), type: 'normal', click: () => openSettings() },
-    { type: 'separator' },
-    { label: i18next.t('QUIT'), type: 'normal', click: () => app.quit() },
-  ]);
-
-  tray.setContextMenu(contextMenu);
-}
-
-const createTray = () => {
+export function createTray() {
   const panelWindow = createPanel();
 
   // trigger reload to load new API Keys and API Url
@@ -43,7 +31,13 @@ const createTray = () => {
 
   tray = new Tray(ICON_PATHS.DEFAULT);
   tray.setToolTip('Home Assistant Controlls');
-  setTrayMenu();
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: i18next.t('SETTINGS'), type: 'normal', click: () => openSettings() },
+    { type: 'separator' },
+    { label: i18next.t('QUIT'), type: 'normal', click: () => app.quit() },
+  ]);
+  tray.setContextMenu(contextMenu);
 
   tray.on('click', async () => {
     showPanel();
@@ -52,9 +46,9 @@ const createTray = () => {
   });
 
   return panelWindow;
-};
+}
 
-export const setIconStatus = (status: APIUrlStateEnum) => {
+export function setIconStatus(status: APIUrlStateEnum) {
   if (!tray) {
     return;
   }
@@ -64,6 +58,6 @@ export const setIconStatus = (status: APIUrlStateEnum) => {
   } else {
     tray.setImage(ICON_PATHS.ERROR);
   }
-};
+}
 
 export default createTray;

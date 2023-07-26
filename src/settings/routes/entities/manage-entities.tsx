@@ -46,7 +46,7 @@ export default function ManageEntities(props: ManageSwitchesProps) {
     id: e.entity_id,
     label: e.attributes.friendly_name,
     secondary: e.entity_id,
-    path: e.attributes.icon && getIconsPath(e.attributes.icon.replace('mdi:', '')),
+    path: e.attributes.icon && getIconsPath(e.attributes.icon),
     state: e.state,
   }));
 

@@ -1,14 +1,11 @@
 import { ipcMain, nativeTheme, systemPreferences } from 'electron';
-import os from 'os';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
 import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
 import { mockState, mockConfigEntities } from './mocks/mock-state';
-
-// From https://github.com/xanderfrangos/twinkle-tray/blob/d238796f2cbe3c521a12df46fabedff6adee115b/src/electron.js#L52C1-L53C76
-const isReallyWin11 = parseInt(os.release()?.split('.')[2], 10) >= 22000;
+import getComputedOsTheme from './windows/get-os-theme';
 
 const handleError = (e: unknown) => {
   setIconStatus(APIUrlStateEnum.badRequest);
@@ -69,17 +66,16 @@ ipcMain.handle('settings:get', async () => {
   return settings;
 });
 
-export interface SystemAttributes {
-  accentColor: string;
-  osTheme: 'win10' | 'win11';
-}
+ipcMain.handle('settings:set', async (event, value: ISettings) => {
+  const settings = value;
 
-ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), osTheme: isReallyWin11 ? 'win11' : 'win10' }));
+  // Prevent from overwriting the entities with the mock ones
+  const previousSettings = store.get('settings');
+  if (settings.development.useMockConfig || previousSettings.development.useMockConfig) {
+    settings.entities = previousSettings.entities;
+  }
 
-ipcMain.handle('settings:set', async (event, value) => {
-  const settings = value as ISettings;
-
-  store.set('settings', value);
+  store.set('settings', settings);
 
   // Set the theme of the app to match the one set in development settings
   nativeTheme.themeSource = settings.development.theme;
@@ -87,3 +83,10 @@ ipcMain.handle('settings:set', async (event, value) => {
   // Adjust the auto launch setting
   setAutoLaunch(settings.isAutoLaunchEnabled);
 });
+
+export interface SystemAttributes {
+  accentColor: string;
+  computedOsTheme: 'win10' | 'win11';
+}
+
+ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), computedOsTheme: getComputedOsTheme() }));

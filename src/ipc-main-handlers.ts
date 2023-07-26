@@ -66,10 +66,16 @@ ipcMain.handle('settings:get', async () => {
   return settings;
 });
 
-ipcMain.handle('settings:set', async (event, value) => {
-  const settings = value as ISettings;
+ipcMain.handle('settings:set', async (event, value: ISettings) => {
+  const settings = value;
 
-  store.set('settings', value);
+  // Prevent from overwriting the entities with the mock ones
+  const previousSettings = store.get('settings');
+  if (settings.development.useMockConfig || previousSettings.development.useMockConfig) {
+    settings.entities = previousSettings.entities;
+  }
+
+  store.set('settings', settings);
 
   // Set the theme of the app to match the one set in development settings
   nativeTheme.themeSource = settings.development.theme;

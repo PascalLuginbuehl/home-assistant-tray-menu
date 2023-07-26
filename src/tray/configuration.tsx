@@ -1,5 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import clsx from 'clsx';
+import { useSettings } from '../utils/use-settings';
 import EntityUtils from '../utils/entity-utils';
 import SwitchElement from './elements/switch-element';
 import LightElement from './elements/light-element';
@@ -13,6 +15,7 @@ interface ConfigurationProps {
 
 export default function Configuration(props: ConfigurationProps) {
   const { entities } = props;
+  const { systemAttributes: { computedOsTheme } } = useSettings();
 
   const { data: states, isSuccess, refetch } = useQuery({
     queryKey: ['states'],
@@ -41,7 +44,16 @@ export default function Configuration(props: ConfigurationProps) {
 
   return (
     <>
-      <div className="mb-[1px] grid grid-cols-4 gap-[1px]">
+      <div className={
+        clsx(
+          'mb-[1px] grid',
+          {
+            'grid-cols-4 gap-[1px]': computedOsTheme === 'win10',
+            'grid-cols-3 gap-2': computedOsTheme === 'win11',
+          },
+        )
+      }
+      >
         {entities.map((entity) => {
           const state = EntityUtils.getState(entity, states);
 

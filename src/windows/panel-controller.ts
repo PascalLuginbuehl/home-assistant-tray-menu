@@ -50,7 +50,7 @@ export function hidePanel() {
 ipcMain.on('panel-height', (event, height) => {
   const osTheme = getComputedOsTheme();
 
-  panelSize.height = height;// + (osTheme === 'win11' ? 24 : 0);
+  panelSize.height = height + (osTheme === 'win11' ? 24 : 0);
   panelSize.width = 356 + (osTheme === 'win11' ? 24 : 0);
 
   if (panelSize.visible) {

@@ -7,6 +7,7 @@ import { mdiBrightness6 } from '@mdi/js';
 import { RgbColor, RgbColorPicker } from 'react-colorful';
 import BrightnessMediumIcon from '@mui/icons-material/BrightnessMedium';
 import clsx from 'clsx';
+import { useSettings } from '../../utils/use-settings';
 import MdiIcon from '../../components/mdi-icon';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
@@ -30,6 +31,8 @@ enum OpenSettingsEnum {
 
 export default function LightElement(props: LightElementProps) {
   const { state, entity, refetch } = props;
+
+  const { systemAttributes: { computedOsTheme } } = useSettings();
 
   const [color, setColor] = useState<RgbColor>({ r: state.attributes.rgb_color?.[0] ?? 0, g: state.attributes.rgb_color?.[1] ?? 0, b: state.attributes.rgb_color?.[2] ?? 0 });
   const [brightness, setBrightness] = useState<number>(Math.round((state.attributes.brightness ?? 0) / 2.55));
@@ -97,10 +100,17 @@ export default function LightElement(props: LightElementProps) {
   if (supportedColorModes?.includes(ColorModeEnum.RGB) || supportedColorModes?.includes(ColorModeEnum.RGBW) || supportedColorModes?.includes(ColorModeEnum.RGBWW)) {
     return (
       <div
-        className={`${state.state === 'unavailable' && 'pointer-events-none opacity-50'}`}
+        className={clsx({
+          'pointer-events-none opacity-50': state.state === 'unavailable',
+        })}
       >
         <div
-          className="flex h-[50px] w-full items-center px-3 hover:bg-action-hover"
+          className={clsx(
+            'flex h-[50px] w-full items-center px-3 hover:bg-action-hover',
+            {
+              'rounded-lg': computedOsTheme === 'win11',
+            },
+          )}
         >
           <button
             type="button"

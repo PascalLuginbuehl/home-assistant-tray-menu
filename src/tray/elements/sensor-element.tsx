@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { useSettings } from '../../utils/use-settings';
 import { IEntityConfig } from '../../store';
 import IState, { SensorAttributes } from '../../types/state';
-import MdiIcon from '../../components/mdi-icon';
+import ElementIcon from './element-icon';
 
 interface SensorElementProps {
   state: IState<SensorAttributes>
@@ -25,7 +25,7 @@ export default function SensorElement(props: SensorElementProps) {
       )
 }
     >
-      {entity.icon && <MdiIcon iconName={entity.icon} size={1} />}
+      <ElementIcon iconName={entity.icon || state.attributes.icon} />
       <div className="flex gap-[2px]">
         <p className="text-lg font-medium leading-none">
           {state.state}

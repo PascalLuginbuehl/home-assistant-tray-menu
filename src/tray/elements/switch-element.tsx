@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useSettings } from '../../utils/use-settings';
-import MdiIcon from '../../components/mdi-icon';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
 import IState, { SwitchAttributes } from '../../types/state';
+import ElementIcon from './element-icon';
 
 interface SwitchElementProps {
   state: IState<SwitchAttributes>
@@ -34,7 +34,7 @@ export default function SwitchElement(props: SwitchElementProps) {
       }}
     >
       <div className="w-10">
-        {entity.icon && <MdiIcon iconName={entity.icon} size={1.2} />}
+        <ElementIcon iconName={entity.icon || state.attributes.icon} />
       </div>
       <h2>
         {EntityUtils.getEntityName(entity, state)}

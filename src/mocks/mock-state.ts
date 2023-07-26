@@ -95,6 +95,9 @@ const mockStateArray: Array<Omit<IState, 'last_changed' | 'last_updated' | 'cont
     entity_id: 'light.only_toggle',
     state: 'on',
     attributes: {
+      supported_color_modes: [
+        ColorModeEnum.ONOFF,
+      ],
       color_mode: ColorModeEnum.ONOFF,
       icon: 'mdi:led-strip-variant',
       friendly_name: 'Only toggle light',

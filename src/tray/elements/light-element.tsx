@@ -8,7 +8,6 @@ import { RgbColor, RgbColorPicker } from 'react-colorful';
 import BrightnessMediumIcon from '@mui/icons-material/BrightnessMedium';
 import clsx from 'clsx';
 import { useSettings } from '../../utils/use-settings';
-import MdiIcon from '../../components/mdi-icon';
 import { IEntityConfig } from '../../store';
 import EntityUtils from '../../utils/entity-utils';
 import IState, { ColorModeEnum, LightAttributes, SwitchAttributes } from '../../types/state';
@@ -16,6 +15,7 @@ import { sendHeight } from '../send-height';
 import './slider.css';
 import './colorful.css';
 import SwitchElement from './switch-element';
+import ElementIcon from './element-icon';
 
 interface LightElementProps {
   state: IState<LightAttributes>
@@ -120,7 +120,7 @@ export default function LightElement(props: LightElementProps) {
               await refetch();
             }}
           >
-            {entity.icon && <MdiIcon iconName={entity.icon} size={1.2} />}
+            <ElementIcon iconName={entity.icon || state.attributes.icon} />
           </button>
 
           <h2>

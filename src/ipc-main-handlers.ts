@@ -6,6 +6,7 @@ import store, { ISettings, setAutoLaunch } from './store';
 import IState from './types/state';
 import { mockState, mockConfigEntities } from './mocks/mock-state';
 import getComputedOsTheme from './windows/get-os-theme';
+import checkForUpdates from './updates';
 
 const handleError = (e: unknown) => {
   setIconStatus(APIUrlStateEnum.badRequest);
@@ -90,3 +91,5 @@ export interface SystemAttributes {
 }
 
 ipcMain.handle('system-attributes:get', async () => ({ accentColor: systemPreferences.getAccentColor(), computedOsTheme: getComputedOsTheme() }));
+
+ipcMain.handle('get-latest-version', () => checkForUpdates());

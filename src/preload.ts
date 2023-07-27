@@ -3,6 +3,7 @@ import { SchemaType } from './store';
 import IState from './types/state';
 import APIUrlStateEnum from './types/api-state-enum';
 import { SystemAttributes } from './ipc-main-handlers';
+import { IRelease } from './updates';
 
 const contextBridgeApi = {
   registerHeightRequestCallback: (callback: () => void) => {
@@ -30,6 +31,7 @@ const contextBridgeApi = {
       serviceData: { entity_id: string } & Record<string, unknown>,
     ): Promise<void> => ipcRenderer.invoke('service:call-action', domain, service, serviceData),
   },
+  getLatestsVersion: (): Promise<IRelease | null> => ipcRenderer.invoke('get-latest-version'),
 };
 
 export type ContextBridgeApi = typeof contextBridgeApi;

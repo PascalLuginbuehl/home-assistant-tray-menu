@@ -20,13 +20,10 @@ export default function openSettings() {
     height: (height >= 768 ? 720 : 500),
     minHeight: 450,
     minWidth: 400,
-    // show: false,
     maximizable: true,
     resizable: true,
     minimizable: true,
     autoHideMenuBar: true,
-    // backgroundColor: "#00000000",
-    // frame: false,
     icon,
 
     title: 'Home Assistant Tray Menu Settings',

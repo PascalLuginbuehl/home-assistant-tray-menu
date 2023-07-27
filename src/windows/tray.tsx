@@ -1,6 +1,6 @@
 import {
   app,
-  ipcMain, Menu, nativeTheme, Tray,
+  ipcMain, Menu, nativeTheme, shell, Tray,
 } from 'electron';
 import path from 'path';
 import i18next from '../i18next';
@@ -42,6 +42,13 @@ export function createTray() {
     showPanel();
     panelWindow.webContents.send('request-height');
     panelWindow.focus();
+  });
+
+  panelWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('https:') || url.startsWith('http:')) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
   });
 
   return panelWindow;

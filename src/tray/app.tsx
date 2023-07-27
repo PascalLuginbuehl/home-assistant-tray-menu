@@ -4,6 +4,7 @@ import invert from 'invert-color';
 import Configuration from './configuration';
 import './app.css';
 import { useSettings } from '../utils/use-settings';
+import CheckForUpdates from './check-for-update';
 
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -39,6 +40,7 @@ export default function App() {
       )
     }
     >
+      <CheckForUpdates />
       <Configuration entities={settings.entities} />
     </div>
   );

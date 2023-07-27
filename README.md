@@ -1,9 +1,12 @@
 # Home Assistant Tray Menu
-<a href="https://github.com/PascalLuginbuehl/home-assistant-tray-menu/releases" target="_blank"><img src="https://img.shields.io/github/package-json/v/PascalLuginbuehl/home-assistant-tray-menu" alt="Latest release" /></a><br />
+<a href="https://github.com/PascalLuginbuehl/home-assistant-tray-menu/releases" target="_blank">
+  <img src="https://img.shields.io/github/package-json/v/PascalLuginbuehl/home-assistant-tray-menu" alt="Latest release" />
+  <img src="https://img.shields.io/github/downloads/pascalluginbuehl/home-assistant-tray-menu/total" alt="downloads">
+</a>
+
 Home Assistant integration into the Windows System Tray.
 
-![Home Assistant System Tray Windows 10](https://github.com/PascalLuginbuehl/home-assistant-tray-menu/assets/17087783/824b3e90-b28e-4595-a0d6-fc5611753b9c)
-![Home Assistant System Tray Windows 11](https://github.com/PascalLuginbuehl/home-assistant-tray-menu/assets/17087783/fd3bd4bd-07f8-4dc5-bff0-76d9e24d3335)
+![Home Assistant System Tray Windows](https://github.com/PascalLuginbuehl/home-assistant-tray-menu/assets/17087783/b81f4978-418e-4cfa-9071-db49e995ff52)
 
 This enables the user to control Home Assistant entities from within the system tray.
 Compared to other similar libraries, this feels like a native Windows menu (similar to the one found in the Sounds tray).

@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
+import WebhookIcon from '@mui/icons-material/Webhook';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -47,7 +48,6 @@ export default function Navigation() {
             {apiURLState === APIUrlStateEnum.ok ? <TaskAltIcon color="success" /> : <CancelIcon color="error" />}
           </ListItemIcon>
           <ListItemText primary={t('GENERIC:API_STATUS')} />
-
         </ListItem>
         <Divider />
         <ListItemLink to="/">
@@ -56,9 +56,15 @@ export default function Navigation() {
           </ListItemIcon>
           <ListItemText primary={t('ENTITIES:TITLE')} />
         </ListItemLink>
-        <ListItemLink to="/connection">
+        <ListItemLink to="/general">
           <ListItemIcon sx={{ minWidth: 36 }}>
             <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('GENERAL:TITLE')} />
+        </ListItemLink>
+        <ListItemLink to="/connection">
+          <ListItemIcon sx={{ minWidth: 36 }}>
+            <WebhookIcon />
           </ListItemIcon>
           <ListItemText primary={t('CONNECTION:TITLE')} />
         </ListItemLink>

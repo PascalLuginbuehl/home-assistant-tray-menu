@@ -1,8 +1,9 @@
-import { ipcMain, nativeTheme, systemPreferences } from 'electron';
+import { ipcMain, systemPreferences } from 'electron';
+import { setOsTheme, setAutoLaunch } from './windows/startup';
 import APIUrlStateEnum from './types/api-state-enum';
 import { setIconStatus } from './windows/tray';
 import { baseApiClient, checkAPIUrl, setAxiosParameters } from './hass-api';
-import store, { ISettings, setAutoLaunch } from './store';
+import store, { ISettings } from './store';
 import IState from './types/state';
 import { mockState, mockConfigEntities } from './mocks/mock-state';
 import getComputedOsTheme from './windows/get-os-theme';
@@ -79,10 +80,12 @@ ipcMain.handle('settings:set', async (event, value: ISettings) => {
   store.set('settings', settings);
 
   // Set the theme of the app to match the one set in development settings
-  nativeTheme.themeSource = settings.development.theme;
+  setOsTheme(settings.general.theme);
 
   // Adjust the auto launch setting
   setAutoLaunch(settings.isAutoLaunchEnabled);
+
+  setIconStatus(APIUrlStateEnum.ok);
 });
 
 export interface SystemAttributes {

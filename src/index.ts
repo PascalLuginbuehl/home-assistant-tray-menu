@@ -3,8 +3,8 @@ import {
 } from 'electron';
 import { createTray } from './windows/tray';
 import './ipc-main-handlers';
-import { checkAPIStatusPeriodically } from './hass-api';
 import { showPanel } from './windows/panel-controller';
+import { onStartup } from './windows/startup';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // eslint-disable-next-line global-require
@@ -12,10 +12,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-checkAPIStatusPeriodically();
-
 let panelWindow: BrowserWindow | null = null;
-
 const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
@@ -30,6 +27,7 @@ if (!gotTheLock) {
 
   app.on('ready', () => {
     panelWindow = createTray();
+    onStartup();
   });
 }
 

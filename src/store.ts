@@ -1,6 +1,5 @@
 import Store from 'electron-store';
 import { JSONSchemaType } from 'ajv';
-import { app } from 'electron';
 
 export interface IEntityConfig {
   entity_id: string,
@@ -16,8 +15,11 @@ export interface ISettings {
     keepTrayWindowOpen: boolean
     useMockBackend: boolean
     useMockConfig: boolean
+  }
+  general: {
     theme: 'system' | 'light' | 'dark'
     osTheme: 'system' | 'win10' | 'win11'
+    trayIconColor: 'system' | 'white' | 'black'
   }
 }
 
@@ -43,6 +45,27 @@ const schema: JSONSchemaType<SchemaType> = {
           type: 'boolean',
           default: true,
         },
+        general: {
+          type: 'object',
+          properties: {
+            theme: {
+              type: 'string',
+              default: 'system',
+            },
+            osTheme: {
+              type: 'string',
+              default: 'system',
+            },
+            trayIconColor: {
+              type: 'string',
+              default: 'system',
+            },
+          },
+          default: {
+            theme: 'system', osTheme: 'system', trayIconColor: 'system',
+          },
+          required: ['theme', 'osTheme', 'trayIconColor'],
+        },
         development: {
           type: 'object',
           properties: {
@@ -58,19 +81,11 @@ const schema: JSONSchemaType<SchemaType> = {
               type: 'boolean',
               default: false,
             },
-            theme: {
-              type: 'string',
-              default: 'system',
-            },
-            osTheme: {
-              type: 'string',
-              default: 'system',
-            },
           },
           default: {
-            keepTrayWindowOpen: false, useMockBackend: false, theme: 'system', osTheme: 'system', useMockConfig: false,
+            keepTrayWindowOpen: false, useMockBackend: false, useMockConfig: false,
           },
-          required: ['keepTrayWindowOpen', 'useMockBackend', 'theme', 'osTheme'],
+          required: ['keepTrayWindowOpen', 'useMockBackend', 'useMockConfig'],
         },
         entities: {
           type: 'array',
@@ -120,29 +135,14 @@ const store = new Store<SchemaType>({
         keepTrayWindowOpen: false,
         useMockBackend: false,
         useMockConfig: false,
+      },
+      general: {
         theme: 'system',
         osTheme: 'system',
+        trayIconColor: 'system',
       },
     },
   },
 });
-
-export async function setAutoLaunch(state: boolean) {
-  // Don't set autoLaunch for dev environment
-  if (!app.isPackaged) {
-    return;
-  }
-
-  const { openAtLogin } = await app.getLoginItemSettings();
-
-  if (openAtLogin === state) {
-    return;
-  }
-
-  app.setLoginItemSettings({ openAtLogin: state });
-}
-
-// Set auto-launch state
-setAutoLaunch(store.get('settings').isAutoLaunchEnabled);
 
 export default store;

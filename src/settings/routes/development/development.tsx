@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2';
 import {
-  FormContainer, SelectElement, SubmitHandler, SwitchElement, useForm,
+  FormContainer, SubmitHandler, SwitchElement, useForm,
 } from 'react-hook-form-mui';
 import React, {
   useCallback, useEffect, useMemo, useState,
@@ -73,24 +73,6 @@ export default function Development() {
 
         <Grid xs={12}>
           <SwitchElement<TFormValues> name="useMockConfig" label={t('USE_CONFIG')} />
-        </Grid>
-
-        <Grid xs={12}>
-          <SelectElement<TFormValues>
-            name="theme"
-            label={t('OVERWRITE_THEME')}
-            options={[{ id: 'system', label: 'System' }, { id: 'light', label: 'light' }, { id: 'dark', label: 'dark' }]}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid xs={12}>
-          <SelectElement<TFormValues>
-            name="osTheme"
-            label={t('OPERATING_SYSTEM_THEME')}
-            options={[{ id: 'system', label: 'System' }, { id: 'win10', label: 'Windows 10' }, { id: 'win11', label: 'Windows 11' }]}
-            fullWidth
-          />
         </Grid>
 
         <Grid xs={12}>

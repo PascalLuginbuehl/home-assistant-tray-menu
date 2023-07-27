@@ -7,5 +7,5 @@ const osTheme = isReallyWin11 ? 'win11' : 'win10';
 
 export default function getComputedOsTheme() {
   const settings = store.get('settings');
-  return settings.development.osTheme === 'system' ? osTheme : settings.development.osTheme;
+  return settings.general.osTheme === 'system' ? osTheme : settings.general.osTheme;
 }

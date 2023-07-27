@@ -19,8 +19,12 @@
     "TITLE": "Development",
     "KEEP_TRAY_OPEN": "Keep tray open",
     "USE_MOCK_BACKEND": "Use mock backend",
-    "OVERWRITE_THEME": "Overwrite theme",
-    "OPERATING_SYSTEM_THEME": "Operating system theme",
     "USE_CONFIG": "Use mock config"
+  },
+  "GENERAL": {
+    "TITLE": "General",
+    "OPERATING_SYSTEM_THEME": "Operating system theme",
+    "OVERWRITE_THEME": "Overwrite theme",
+    "TRAY_ICON_COLOR": "Tray icon color"
   }
 }

@@ -7,6 +7,7 @@ import Connection from './routes/connection/connection';
 import Entities from './routes/entities/entities';
 import Navigation from './navigation';
 import Development from './routes/development/development';
+import General from './routes/general/general';
 
 export default function App() {
   return (
@@ -23,10 +24,13 @@ export default function App() {
             element={<Development />}
           />
           <Route
+            path="/general"
+            element={<General />}
+          />
+          <Route
             path="/"
             element={<Entities />}
           />
-
         </Routes>
       </Box>
     </Box>

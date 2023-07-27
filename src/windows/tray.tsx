@@ -3,6 +3,7 @@ import {
   ipcMain, Menu, nativeTheme, shell, Tray,
 } from 'electron';
 import path from 'path';
+import store from '../store';
 import i18next from '../i18next';
 import { createPanel, showPanel } from './panel-controller';
 import openSettings from './settings';
@@ -17,6 +18,21 @@ const ICON_PATHS = {
   ERROR: path.resolve(__dirname, errorIconImagePath),
 };
 
+function getTrayIconImage() {
+  const settings = store.get('settings');
+  switch (settings.general.trayIconColor) {
+    case 'system':
+      return nativeTheme.shouldUseDarkColors ? ICON_PATHS.DEFAULT : ICON_PATHS.DEFAULT_DARK;
+    case 'white':
+      return ICON_PATHS.DEFAULT;
+    case 'black':
+      return ICON_PATHS.DEFAULT_DARK;
+    default:
+      // error
+      return ICON_PATHS.ERROR;
+  }
+}
+
 let tray: Tray | null = null;
 
 export function createTray() {
@@ -27,7 +43,7 @@ export function createTray() {
     panelWindow.reload();
   });
 
-  tray = new Tray(nativeTheme.shouldUseDarkColors ? ICON_PATHS.DEFAULT : ICON_PATHS.DEFAULT_DARK);
+  tray = new Tray(getTrayIconImage());
 
   tray.setToolTip('Home Assistant Controlls');
 
@@ -60,7 +76,7 @@ export function setIconStatus(status: APIUrlStateEnum) {
   }
 
   if (status === APIUrlStateEnum.ok) {
-    tray.setImage(nativeTheme.shouldUseDarkColors ? ICON_PATHS.DEFAULT : ICON_PATHS.DEFAULT_DARK);
+    tray.setImage(getTrayIconImage());
   } else {
     tray.setImage(ICON_PATHS.ERROR);
   }

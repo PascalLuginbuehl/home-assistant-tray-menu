@@ -15,11 +15,12 @@ setAxiosParameters(store.get('settings'));
 
 export const checkAPIUrl = async (hassApiUrl: string, longLivedAccessToken: string): Promise<APIUrlStateEnum> => {
   try {
-    await axios.get(`${hassApiUrl}/api/`, {
+    await axios.get('/api/', {
       headers: {
         Authorization: `Bearer ${longLivedAccessToken}`,
         'Content-Type': 'application/json',
       },
+      baseURL: hassApiUrl,
     });
 
     return APIUrlStateEnum.ok;
